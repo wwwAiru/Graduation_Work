@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div>
+    <form method="post" >
+        <input name="text" placeholder="Описание инвестиционного продукта" required type="text" />
+        <input name="minDeposit" placeholder="минимальная сумма" required type="number" />
+        <input name="maxDeposit" placeholder="максимальная сумма" required type="number" />
+        <input type="submit" value="Добавить">
+    </form>
+</div>
+<h1>th:each</h1>
+<h1>Product list</h1>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>TEXT</th>
+        <th>TAG</th>
+    </tr>
+    <tr th:each="invProduct : ${invProducts}">
+        <td th:text="${invProduct.getId}"></td>
+        <td th:text="${invProduct.getDescription}"></td>
+        <td th:text="${invProduct.getMinDeposit}"></td>
+        <td th:text="${invProduct.getMaxDeposit}"></td>
+    </tr>
+</table>
+</body>
+</html>
