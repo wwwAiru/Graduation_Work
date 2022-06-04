@@ -1,8 +1,8 @@
 package com.golikov.bank;
 
 import com.golikov.bank.entity.InvestProduct;
-import com.golikov.bank.entity.User;
-import com.golikov.bank.entity.UserInvestProd;
+import com.golikov.bank.entity.Client;
+import com.golikov.bank.entity.ClientInvestProd;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ public class TestEntityMain {
         LocalDateTime createAt;
         LocalDateTime endDate;
 
-        User user = new User(
+        Client client = new Client(
                 "Первый",
                 "Второвов",
                 "Третьевич",
@@ -27,14 +27,14 @@ public class TestEntityMain {
                 new BigDecimal(1000),
                 new BigDecimal(1.11),
                 10000000L);
-        UserInvestProd userInvestProd = new UserInvestProd(
+        ClientInvestProd clientInvestProd = new ClientInvestProd(
                 new BigDecimal(10000000),
-                user,
+                client,
                 investProduct,
                 createAt = LocalDateTime.now(),
                 endDate = LocalDateTime.now());
-        user.AddUserInvestProd(userInvestProd);
-        System.out.println(user.getUserInvestProds());
+        client.AddClientInvestProd(clientInvestProd);
+        System.out.println(client.getClientInvestProds());
 
 
     }

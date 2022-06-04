@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "user_invest_products")
-public class UserInvestProd {
+@Table(name = "client_invest_products")
+public class ClientInvestProd {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
     @Column(name = "id")
@@ -20,11 +20,12 @@ public class UserInvestProd {
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE})
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "invest_prod_id")
     private InvestProduct investProduct;
 
@@ -34,12 +35,12 @@ public class UserInvestProd {
     @Column(name = "expire_date")
     private LocalDateTime expireDate;
 
-    public UserInvestProd() {
+    public ClientInvestProd() {
     }
 
-    public UserInvestProd(BigDecimal productDeposit, User user, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
+    public ClientInvestProd(BigDecimal productDeposit, Client client, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
         this.productDeposit = productDeposit;
-        this.user = user;
+        this.client = client;
         this.investProduct = investProduct;
         this.beginDate = beginDate;
         this.expireDate = expireDate;
@@ -61,12 +62,12 @@ public class UserInvestProd {
         this.productDeposit = productDeposit;
     }
 
-    public User getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public InvestProduct getInvestProduct() {
@@ -95,9 +96,9 @@ public class UserInvestProd {
 
     @Override
     public String toString() {
-        return "UserInvestProd{" +
+        return "ClientInvestProd{" +
                 ", productDeposit=" + productDeposit +
-                ", user=" + user +
+                ", client=" + client +
                 ", investProduct=" + investProduct +
                 ", beginDate=" + beginDate +
                 ", expireDate=" + expireDate +

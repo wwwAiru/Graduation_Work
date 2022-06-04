@@ -30,7 +30,7 @@ public class InvestProduct {
     @OneToMany(mappedBy = "investProduct", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH})
-    private List<UserInvestProd> userInvestProd;
+    private List<ClientInvestProd> clientInvestProd;
 
     @Column(name = "deposit_term")
     private Long depositTerm;
@@ -87,12 +87,12 @@ public class InvestProduct {
         this.interestRate = interestRate;
     }
 
-    public List<UserInvestProd> getUserInvestProd() {
-        return userInvestProd;
+    public List<ClientInvestProd> getClientInvestProd() {
+        return clientInvestProd;
     }
 
-    public void setUserInvestProd(List<UserInvestProd> userInvestProd) {
-        this.userInvestProd = userInvestProd;
+    public void setClientInvestProd(List<ClientInvestProd> clientInvestProd) {
+        this.clientInvestProd = clientInvestProd;
     }
 
     public Long getDepositTerm() {

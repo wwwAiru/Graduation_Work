@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
-public class User {
+@Table(name = "clients")
+public class Client {
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @Column(name = "id")
@@ -31,18 +31,20 @@ public class User {
     @Column(name = "balance", nullable = false)
     private BigDecimal balance;
 
-    @OneToMany(mappedBy = "")
-    private List<UserInvestProd> userInvestProds;
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.REFRESH})
+    private List<ClientInvestProd> clientInvestProds;
 
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST,
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH})
     private List<DepositAccount> depositAccounts;
 
-    public User() {
+    public Client() {
     }
 
-    public User(String firstName, String lastName, String middleName, String email, String password, BigDecimal balance) {
+    public Client(String firstName, String lastName, String middleName, String email, String password, BigDecimal balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
@@ -107,19 +109,19 @@ public class User {
         this.balance = balance;
     }
 
-    public List<UserInvestProd> getUserInvestProds() {
-        return userInvestProds;
+    public List<ClientInvestProd> getClientInvestProds() {
+        return clientInvestProds;
     }
 
     public List<DepositAccount> getDepositAccounts() {
         return depositAccounts;
     }
 
-    public void AddUserInvestProd(UserInvestProd userInvestProd) {
-        if (userInvestProds == null) {
-            userInvestProds = new ArrayList<>();
+    public void AddClientInvestProd(ClientInvestProd clientInvestProd) {
+        if (clientInvestProds == null) {
+            clientInvestProds = new ArrayList<>();
         }
-        userInvestProds.add(userInvestProd);
-        userInvestProd.setUser(this);
+        clientInvestProds.add(clientInvestProd);
+        clientInvestProd.setClient(this);
     }
 }

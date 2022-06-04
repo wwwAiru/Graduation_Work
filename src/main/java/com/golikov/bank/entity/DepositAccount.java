@@ -22,17 +22,17 @@ public class DepositAccount {
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE})
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "client_id")
+    private Client client;
 
     public DepositAccount() {
     }
 
-    public DepositAccount(String name, String currency, Long accountNumber, User user) {
+    public DepositAccount(String name, String currency, Long accountNumber, Client client) {
         this.name = name;
         this.currency = currency;
         this.accountNumber = accountNumber;
-        this.user = user;
+        this.client = client;
     }
 
     public Long getId() {
@@ -67,11 +67,11 @@ public class DepositAccount {
         this.accountNumber = accountNumber;
     }
 
-    public User getUser() {
-        return user;
+    public Client getClient() {
+        return client;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setClient(Client client) {
+        this.client = client;
     }
 }
