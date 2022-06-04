@@ -24,7 +24,7 @@ public class InvestProduct {
     @Column(name = "max_deposit")
     private BigDecimal maxDeposit;
 
-    @Column(name = "nterest rate")
+    @Column(name = "iterest_rate")
     private BigDecimal interestRate;
 
     @OneToMany(mappedBy = "investProduct", cascade = {CascadeType.PERSIST,
