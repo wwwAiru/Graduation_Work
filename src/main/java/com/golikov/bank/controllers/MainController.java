@@ -1,4 +1,4 @@
-package com.golikov.bank;
+package com.golikov.bank.controllers;
 
 import com.golikov.bank.entity.InvestProduct;
 import com.golikov.bank.repository.InvestProdRepository;
@@ -12,34 +12,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.math.BigDecimal;
 
 @Controller
-public class GreetingController {
+public class MainController {
     @Autowired
     private InvestProdRepository investProdRepository;
 
-    @GetMapping("/greeting")
-    public String greeting(
-            @RequestParam(name="name", required=false, defaultValue="World") String name,
-            Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
+    @GetMapping("/")
+    public String homepage(Model model) {
+        model.addAttribute("title", "Главная страница");
+        return "homepage";
     }
 
-    @GetMapping
+    @GetMapping("/deposits")
     public String main(Model model){
         Iterable<InvestProduct> invProducts = investProdRepository.findAll();
         model.addAttribute("invProducts", invProducts);
-        return "index";
+        return "deposits";
     }
-    @PostMapping
+
+    @PostMapping("/add_inv_product")
     public String addinvProduct(@RequestParam String name,
                                 @RequestParam String description,
                                 @RequestParam BigDecimal minDeposit,
                                 @RequestParam BigDecimal maxDeposit,
                                 @RequestParam BigDecimal interestRate,
-                                @RequestParam Long depositTerm){
-        InvestProduct invProduct = new InvestProduct(name, description, minDeposit, maxDeposit, interestRate, depositTerm);
+                                @RequestParam Long depositTerm,
+                                @RequestParam boolean isActive){
+        InvestProduct invProduct = new InvestProduct(name, description, minDeposit, maxDeposit, interestRate, depositTerm, isActive);
         investProdRepository.save(invProduct);
-        return "index";
+        return "deposits";
     }
 
 }
