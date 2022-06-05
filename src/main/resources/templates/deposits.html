@@ -14,17 +14,17 @@
         </h2>
     <div class="conteiner col-6 mx-auto">
         <form method="post" th:action="@{add_inv_product}">
-            <input class="form-control" name="name" placeholder="Название инвестиционного продукта" required type="text" /><br>
-            <input class="form-control" name="description" placeholder="Описание инвестиционного продукта" required type="text" /><br>
-            <input class="form-control" name="minDeposit" placeholder="минимальная сумма" required type="number" min="0" /><br>
-            <input class="form-control" name="maxDeposit" placeholder="максимальная сумма" required type="number" min="0" /><br>
-            <input class="form-control" name="interestRate" placeholder="ставка/доходность" required type="number" min="0" step="0.01" /><br>
-            <input class="form-control" name="depositTerm" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /><br>
+            <input class="form-control" name="name" placeholder="Название инвестиционного продукта" required type="text" /> <br>
+            <textarea class="form-control" style="height: 100px" name="description" placeholder="Описание инвестиционного продукта" required type="text"></textarea> <br>
+            <input class="form-control" name="minDeposit" placeholder="минимальная сумма" required type="number" min="0" /> <br>
+            <input class="form-control" name="maxDeposit" placeholder="максимальная сумма" required type="number" min="0" /> <br>
+            <input class="form-control" name="interestRate" placeholder="ставка/доходность" required type="number" min="0" step="0.01" /> <br>
+            <input class="form-control" name="depositTerm" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
             <select class="form-select" name="isActive" required="required">
                 <option value="">Выберите актуальность продукта</option>
                 <option value="true">Действующий</option>
                 <option value="false">Архивный/удалённый</option>
-            </select><br>
+            </select> <br>
             <input class="btn btn-outline-success" type="submit" value="Добавить">
         </form>
     </div>
