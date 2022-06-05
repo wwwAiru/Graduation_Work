@@ -27,6 +27,9 @@ public class InvestProduct {
     @Column(name = "iterest_rate")
     private BigDecimal interestRate;
 
+    @Column(name = "is_active")
+    private boolean isActive;
+
     @OneToMany(mappedBy = "investProduct", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH})
@@ -38,12 +41,13 @@ public class InvestProduct {
     public InvestProduct() {
     }
 
-    public InvestProduct(String name, String description, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, Long depositTerm) {
+    public InvestProduct(String name, String description, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, Long depositTerm, boolean isActive ) {
         this.name = name;
         this.description = description;
         this.minDeposit = minDeposit;
         this.maxDeposit = maxDeposit;
         this.interestRate = interestRate;
+        this.isActive = isActive;
         this.depositTerm = depositTerm;
     }
 
@@ -53,6 +57,14 @@ public class InvestProduct {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -94,7 +106,6 @@ public class InvestProduct {
     public void setClientInvestProd(List<ClientInvestProd> clientInvestProd) {
         this.clientInvestProd = clientInvestProd;
     }
-
     public Long getDepositTerm() {
         return depositTerm;
     }
@@ -103,15 +114,11 @@ public class InvestProduct {
         this.depositTerm = depositTerm;
     }
 
-    @Override
-    public String toString() {
-        return "InvestProduct{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", minDeposit=" + minDeposit +
-                ", maxDeposit=" + maxDeposit +
-                ", interestRate=" + interestRate +
-                ", depositTerm=" + depositTerm +
-                '}';
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }
