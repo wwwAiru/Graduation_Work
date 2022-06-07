@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
@@ -41,10 +42,11 @@ public class MainController {
         investProdRepository.save(invProduct);
         return "deposits";
     }
-    @PostMapping("/deposit_filter")
-    public String productFilter(@RequestParam String name, Model model){
-
-        return "depostits";
+    @RequestMapping("/deposit_filter")
+    public String productFilter(Model model){
+        Iterable<InvestProduct> invProducts = investProdRepository.findAllByOrderByInterestRateDesc();
+        model.addAttribute("invProducts", invProducts);
+        return "deposits";
     }
 
 
