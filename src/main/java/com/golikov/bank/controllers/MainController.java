@@ -40,9 +40,9 @@ public class MainController {
                                 @RequestParam boolean isActive){
         InvestProduct invProduct = new InvestProduct(name, description, minDeposit, maxDeposit, interestRate, depositTerm, isActive);
         investProdRepository.save(invProduct);
-        return "deposits";
+        return "redirect:/deposits";
     }
-    @RequestMapping("/deposit_filter")
+    @GetMapping("/deposit_filter")
     public String productFilter(Model model){
         Iterable<InvestProduct> invProducts = investProdRepository.findAllByOrderByInterestRateDesc();
         model.addAttribute("invProducts", invProducts);
