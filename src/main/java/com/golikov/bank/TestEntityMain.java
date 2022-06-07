@@ -18,8 +18,7 @@ public class TestEntityMain {
                 "Второвов",
                 "Третьевич",
                 "zato@yandex.ru",
-                "pass",
-                new BigDecimal(100000000));
+                "pass");
         client.setId(Long.valueOf(20));
 
 //        StringBuffer res = AccountNumGenerator.generate(client.getId());
