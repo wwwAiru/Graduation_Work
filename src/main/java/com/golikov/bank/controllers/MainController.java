@@ -41,5 +41,11 @@ public class MainController {
         investProdRepository.save(invProduct);
         return "deposits";
     }
+    @PostMapping("/deposit_filter")
+    public String productFilter(@RequestParam String name, Model model){
+
+        return "depostits";
+    }
+
 
 }
