@@ -1,5 +1,8 @@
-<div th:fragment="header">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<div th:fragment="header"
+     xmlns:th="https://www.thymeleaf.org"
+     xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="/">Домашняя страница</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,15 +10,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
+
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/deposits">Инвестиционные продукты</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Регистрация</a>
+
+                    <li sec:authorize="isAnonymous()" class="nav-item">
+                        <a class="nav-link active" th:href="@{/registration}">Регистрация</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled">Вход</a>
+
+                    <li sec:authorize="isAnonymous()" class="nav-item">
+                        <a class="nav-link active" th:href="@{/login}">Вход</a>
                     </li>
+
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post">
+                            <a class="nav-link active" href="#" onclick="this.parentNode.submit()">Выход</a>
+                        </form>
+                    </li>
+
                 </ul>
                 <form class="d-flex">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
