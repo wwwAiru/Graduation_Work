@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "clients")
@@ -29,7 +30,7 @@ public class Client {
     private String password;
 
     @Column(name = "balance", nullable = false)
-    private BigDecimal balance;
+    private BigDecimal balance = new BigDecimal(0);
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
@@ -41,16 +42,23 @@ public class Client {
             CascadeType.REFRESH})
     private List<DepositAccount> depositAccounts;
 
+    @Column(name = "active")
+    private boolean active;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "clients_roles", joinColumns = @JoinColumn(name = "client_id"))
+    @Enumerated(EnumType.STRING) //тип энам, строковый
+    private Set<Role> roles;
+
     public Client() {
     }
 
-    public Client(String firstName, String lastName, String middleName, String email, String password, BigDecimal balance) {
+    public Client(String firstName, String lastName, String middleName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.email = email;
         this.password = password;
-        this.balance = balance;
     }
 
     public Long getId() {
@@ -115,6 +123,22 @@ public class Client {
 
     public List<DepositAccount> getDepositAccounts() {
         return depositAccounts;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void AddClientInvestProd(ClientInvestProd clientInvestProd) {
