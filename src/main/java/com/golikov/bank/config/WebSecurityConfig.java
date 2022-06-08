@@ -1,5 +1,6 @@
 package com.golikov.bank.config;
 
+import com.golikov.bank.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -8,16 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 
-import javax.sql.DataSource;
-
 // конфигурация Security
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //автоинжект подключения к б.д.
+    //инжект клиент сервис для получения объекта пользователя из б.д. в методе configure()
     @Autowired
-    private DataSource dataSource;
+    ClientService clientService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,20 +32,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout()
                     .permitAll();
     }
-    // переопределение метода, dataSource - объект подключения к б.д.,
+
     // passwordEncoder шифрование пароля
-    // usersByUsernameQuery поиск пользователя в б.д. по емэйлу
-    // authoritiesByUsernameQuery авторизация по ролям
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .usersByUsernameQuery("SELECT email, password, active FROM clients WHERE email=?")
-                .authoritiesByUsernameQuery("SELECT cl.email, cr.roles " +
-                                            "FROM clients cl " +
-                                            "INNER JOIN clients_roles cr " +
-                                            "ON cl.id=cr.client_id " +
-                                            "WHERE cl.email=?");
+        auth.userDetailsService(clientService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
 }
