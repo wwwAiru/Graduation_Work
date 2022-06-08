@@ -30,10 +30,12 @@
                     </li>
 
                 </ul>
+                <div th:if="${currentPage == 'deposits'}">
                 <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Поиск">
                     <button class="btn btn-outline-success" type="submit">Поиск</button>
                 </form>
+                </div>
             </div>
         </div>
     </nav>
