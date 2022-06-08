@@ -9,7 +9,7 @@
 </head>
 
 <body>
-<header th:insert="blocks/header :: header"></header>
+<header th:insert="blocks/navbar :: header"></header>
 <div class="container p-4">
     <div class="text-center lh-base p-4 mt-5">
         <h2>
@@ -33,30 +33,28 @@
         </div>
     </div>
 
-    <div class="conteiner">
-        <h1 class="text-center lh-base p-4 mt-5">Инвестиционные продукты</h1>
-        <table class="table">
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Description</th>
-                <th scope="col">Min deposit</th>
-                <th scope="col">Max deposit</th>
-                <th scope="col">Interest rate</th>
-                <th scope="col">Deposit term</th>
-            </tr>
+    <section class="py-5 text-center mt-5 container"><h1>Инвестиционные продукты</h1></section>
 
-            <tr th:each="invProduct : ${invProducts}">
-                <div th:if="${invProduct.isActive}">
-                    <td th:text="${invProduct.getName}"></td>
-                    <td th:text="${invProduct.getDescription}"></td>
-                    <td th:text="${invProduct.getMinDeposit}"></td>
-                    <td th:text="${invProduct.getMaxDeposit}"></td>
-                    <td th:text="${invProduct.getInterestRate}"></td>
-                    <td th:text="${invProduct.getDepositTerm}"></td>
+    <div class="album py-5 bg-light">
+
+        <div th:each="invProduct : ${invProducts}" class="container mt-5">
+            <div th:if="${invProduct.isActive}" class="card">
+                <h5 class="card-header" style="background: #afecda;">Тип продукта</h5>
+                <div class="card-body">
+                    <h5 th:text="${invProduct.getName}" class="card-title"></h5>
+                    <p th:text="${invProduct.getDescription}" class="card-text"></p>
+                    <div class="card-footer">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Инвестировать</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
+                        </div>
+                    </div>
                 </div>
-            </tr>
+            </div>
+        </div>
 
-        </table>
     </div>
 </div>
 <div th:insert="/blocks/footer :: footer"></div>
