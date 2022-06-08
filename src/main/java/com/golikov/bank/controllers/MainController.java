@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
@@ -27,6 +26,7 @@ public class MainController {
     public String main(Model model){
         Iterable<InvestProduct> invProducts = investProdRepository.findAll();
         model.addAttribute("invProducts", invProducts);
+        model.addAttribute("currentPage", "deposits");
         return "deposits";
     }
 
