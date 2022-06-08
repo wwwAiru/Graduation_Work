@@ -23,7 +23,7 @@ public class MainController {
     }
 
     @GetMapping("/deposits")
-    public String main(Model model){
+    public String deposits(Model model){
         Iterable<InvestProduct> invProducts = investProdRepository.findAll();
         model.addAttribute("invProducts", invProducts);
         model.addAttribute("currentPage", "deposits");
@@ -42,8 +42,8 @@ public class MainController {
         investProdRepository.save(invProduct);
         return "redirect:/deposits";
     }
-    @GetMapping("/deposit_filter")
-    public String productFilter(Model model){
+    @GetMapping("/deposit_by_rate")
+    public String depositsByRate(Model model){
         Iterable<InvestProduct> invProducts = investProdRepository.findAllByOrderByInterestRateDesc();
         model.addAttribute("invProducts", invProducts);
         return "deposits";

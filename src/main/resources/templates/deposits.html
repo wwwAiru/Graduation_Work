@@ -9,12 +9,12 @@
 </head>
 
 <body>
-    <header th:insert="blocks/header :: header"></header>
-    <div class="container p-4">
-        <div class="text-center lh-base p-4 mt-5">
-            <h2>
-                Добавить инвестиционный продукт.
-            </h2>
+<header th:insert="blocks/header :: header"></header>
+<div class="container p-4">
+    <div class="text-center lh-base p-4 mt-5">
+        <h2>
+            Добавить инвестиционный продукт.
+        </h2>
         <div class="conteiner col-6 mx-auto">
             <form method="post" th:action="@{add_inv_product}">
                 <input class="form-control" name="name" placeholder="Название инвестиционного продукта" required type="text" /> <br>
@@ -31,9 +31,9 @@
                 <input class="btn btn-outline-success" type="submit" value="Добавить">
             </form>
         </div>
-        </div>
+    </div>
 
-        <div class="conteiner">
+    <div class="conteiner">
         <h1 class="text-center lh-base p-4 mt-5">Инвестиционные продукты</h1>
         <table class="table">
             <tr>
@@ -53,8 +53,8 @@
                 <td th:text="${invProduct.getDepositTerm}"></td>
             </tr>
         </table>
-        </div>
     </div>
+</div>
 <div th:insert="/blocks/footer :: footer"></div>
 </body>
 </html>
