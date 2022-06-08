@@ -44,14 +44,18 @@
                 <th scope="col">Interest rate</th>
                 <th scope="col">Deposit term</th>
             </tr>
+
             <tr th:each="invProduct : ${invProducts}">
-                <td th:text="${invProduct.getName}"></td>
-                <td th:text="${invProduct.getDescription}"></td>
-                <td th:text="${invProduct.getMinDeposit}"></td>
-                <td th:text="${invProduct.getMaxDeposit}"></td>
-                <td th:text="${invProduct.getInterestRate}"></td>
-                <td th:text="${invProduct.getDepositTerm}"></td>
+                <div th:if="${invProduct.isActive}">
+                    <td th:text="${invProduct.getName}"></td>
+                    <td th:text="${invProduct.getDescription}"></td>
+                    <td th:text="${invProduct.getMinDeposit}"></td>
+                    <td th:text="${invProduct.getMaxDeposit}"></td>
+                    <td th:text="${invProduct.getInterestRate}"></td>
+                    <td th:text="${invProduct.getDepositTerm}"></td>
+                </div>
             </tr>
+
         </table>
     </div>
 </div>
