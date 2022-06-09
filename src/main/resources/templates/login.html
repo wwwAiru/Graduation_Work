@@ -10,24 +10,65 @@
 <body>
 <header th:insert="blocks/navbar :: header"></header>
 
-<div class="album py-5 bg-light">
-    <div class="container py-5">
+<div class="text-center lh-base p-4 mt-5">
+    <h2> Вход </h2>
+    <br>
+    <div class="conteiner col-4 mx-auto">
+    </div>
+    <br>
+</div>
 
+<div class="container album py-5 bg-light">
+    <div class="conteiner col-4 mx-auto">
         <div th:if="${param.error}">
             Неверная связка почта-пароль
         </div>
         <div th:if="${param.logout}">
             Вы вышли из системы.
         </div>
-        <form th:action="@{/login}" method="post">
-            <div><label> Почта : <input type="text" name="username"/> </label></div>
-            <div><label> Пароль: <input type="password" name="password"/> </label></div>
-            <div><input type="submit" value="Войти"/></div>
-        </form>
-
-        <div th:insert="/blocks/footer :: footer"></div>
     </div>
+    <div class="conteiner col-4 mx-auto">
+    <form th:action="@{/login}" method="post" name="login_user_form">
+    <p><label>Адрес электронной почты</label> <input class="form-control col-6" name="username" type="email"> </p>
+    <p><label>Пароль </label><input class="form-control col-6" id="password" name="password" type="password" ></p>
+
+    <div class="form-check form-check-inline">
+        <label>Показать пароль<input class="form-check-input" id="show_pass" type="checkbox"></label>
+    </div>
+    <div class="form-check form-check-inline">
+        <p><label for="remember">Запомнить меня</label> <input class="form-check-input" id="remember" name="remember" type="checkbox" value="y"></p>
+    </div>
+    <p><input id="next" name="next" type="hidden" value=""></p>
+
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+            <div class="btn-group mx-auto" role="group" aria-label="First group">
+                <button class="btn btn-outline-success" type="submit">Войти</button>
+            </div>
+
+            <div class="btn-group mx-auto" role="group" aria-label="Second group">
+                <button type="button" class="btn btn-outline-success"  onclick="location.href = '/registration'">Зарегистрироваться</button>
+            </div>
+        </div>
+
+    </form>
+</div>
 
 </div>
+
+
+<!-- jquery и чекбокс показать пароль -->
+    <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script>
+    $('body').on('click', '#show_pass', function(){
+        if ($(this).is(':checked')){
+            $('#password').attr('type', 'text');
+        } else {
+            $('#password').attr('type', 'password');
+        }
+    });
+</script>
+
+
+
 </body>
 </html>
