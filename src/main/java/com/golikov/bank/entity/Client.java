@@ -5,8 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -38,12 +38,12 @@ public class Client implements UserDetails {
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH})
-    private List<ClientInvestProd> clientInvestProds;
+            CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    private Set<ClientInvestProd> clientInvestProds;
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH}, fetch = FetchType.EAGER)
+            CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private List<DepositAccount> depositAccounts;
 
     @Column(name = "active")
@@ -151,7 +151,7 @@ public class Client implements UserDetails {
         this.balance = balance;
     }
 
-    public List<ClientInvestProd> getClientInvestProds() {
+    public Set<ClientInvestProd> getClientInvestProds() {
         return clientInvestProds;
     }
 
@@ -177,7 +177,7 @@ public class Client implements UserDetails {
 
     public void AddClientInvestProd(ClientInvestProd clientInvestProd) {
         if (clientInvestProds == null) {
-            clientInvestProds = new ArrayList<>();
+            clientInvestProds = new HashSet<>();
         }
         clientInvestProds.add(clientInvestProd);
         clientInvestProd.setClient(this);
