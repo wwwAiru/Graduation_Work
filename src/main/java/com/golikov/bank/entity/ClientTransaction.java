@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "clients_history")
+@Table(name = "client_transaction")
 public class ClientTransaction {
     @Id
     @GeneratedValue(strategy= GenerationType.SEQUENCE)
@@ -30,9 +30,10 @@ public class ClientTransaction {
     public ClientTransaction() {
     }
 
-    public ClientTransaction(String ownerName, String cardNumber, LocalDateTime date, Long clientId) {
+    public ClientTransaction(String ownerName, String cardNumber, BigDecimal amount, LocalDateTime date, Long clientId) {
         this.ownerName = ownerName;
         this.cardNumber = cardNumber;
+        this.amount = amount;
         this.date = date;
         this.clientId = clientId;
     }
@@ -75,5 +76,13 @@ public class ClientTransaction {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 }
