@@ -16,27 +16,25 @@ public class DepositAccount {
     private String name;
 
     @Column(name = "account_number")
-    private Long accountNumber;
+    private String accountNumber;
 
     @Column(name = "currency")
     private String currency;
 
     @Column(name = "deposit_balance")
-    private BigDecimal depositBalance;
+    private BigDecimal depositBalance = new BigDecimal(0);
 
     @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE})
+            CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private Client client;
 
     public DepositAccount() {
     }
 
-    public DepositAccount(String name, Long accountNumber, String currency, BigDecimal depositBalance, Client client) {
+    public DepositAccount(String name, String currency, Client client) {
         this.name = name;
-        this.accountNumber = accountNumber;
         this.currency = currency;
-        this.depositBalance = depositBalance;
         this.client = client;
     }
 
@@ -56,11 +54,11 @@ public class DepositAccount {
         this.name = name;
     }
 
-    public Long getAccountNumber() {
+    public String getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(Long accountNumber) {
+    public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
 
