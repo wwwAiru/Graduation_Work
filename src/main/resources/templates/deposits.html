@@ -9,52 +9,49 @@
 </head>
 
 <body>
-<header th:insert="blocks/navbar :: header"></header>
-<div class="container p-4">
-    <div class="text-center lh-base p-4 mt-5">
-        <h2>
-            Добавить инвестиционный продукт.
-        </h2>
-        <div class="conteiner col-6 mx-auto">
-            <form method="post" th:action="@{add_inv_product}">
-                <input class="form-control" name="name" placeholder="Название инвестиционного продукта" required type="text" /> <br>
-                <textarea class="form-control" style="height: 100px" name="description" placeholder="Описание инвестиционного продукта" required type="text"></textarea> <br>
-                <input class="form-control" name="minDeposit" placeholder="минимальная сумма" required type="number" min="0" /> <br>
-                <input class="form-control" name="maxDeposit" placeholder="максимальная сумма" required type="number" min="0" /> <br>
-                <input class="form-control" name="interestRate" placeholder="ставка/доходность" required type="number" min="0" step="0.01" /> <br>
-                <input class="form-control" name="depositTerm" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
-                <select class="form-select" name="isActive" required="required">
-                    <option value="">Выберите актуальность продукта</option>
-                    <option value="true">Действующий</option>
-                    <option value="false">Архивный/удалённый</option>
-                </select> <br>
-                <input class="btn btn-outline-success" type="submit" value="Добавить">
-            </form>
-        </div>
+<header th:insert="blocks/navbar :: navbar"></header>
+<div class="text-center lh-base p-4 mt-5">
+    <h2>
+        Добавить инвестиционный продукт.
+    </h2>
+    <div class="conteiner col-6 mx-auto">
+        <form method="post" th:action="@{add_inv_product}">
+            <input class="form-control" name="name" placeholder="Название инвестиционного продукта" required type="text" /> <br>
+            <textarea class="form-control" style="height: 100px" name="description" placeholder="Описание инвестиционного продукта" required type="text"></textarea> <br>
+            <input class="form-control" name="minDeposit" placeholder="минимальная сумма" required type="number" min="0" /> <br>
+            <input class="form-control" name="maxDeposit" placeholder="максимальная сумма" required type="number" min="0" /> <br>
+            <input class="form-control" name="interestRate" placeholder="ставка/доходность" required type="number" min="0" step="0.01" /> <br>
+            <input class="form-control" name="depositTerm" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
+            <select class="form-select" name="isActive" required="required">
+                <option value="">Выберите актуальность продукта</option>
+                <option value="true">Действующий</option>
+                <option value="false">Архивный/удалённый</option>
+            </select> <br>
+            <input class="btn btn-outline-success" type="submit" value="Добавить">
+        </form>
     </div>
+</div>
 
-    <section class="py-5 text-center mt-5 container"><h1>Инвестиционные продукты</h1></section>
+<section class="py-5 text-center mt-5 container"><h1>Инвестиционные продукты</h1></section>
 
-    <div class="album py-5 bg-light">
+<div class="container album py-5 bg-light">
 
-        <div th:each="invProduct : ${invProducts}" class="container mt-5">
-            <div th:if="${invProduct.isActive}" class="card">
-                <h5 class="card-header" style="background: #afecda;">Тип продукта</h5>
-                <div class="card-body">
-                    <h5 th:text="${invProduct.getName}" class="card-title"></h5>
-                    <p th:text="${invProduct.getDescription}" class="card-text"></p>
-                    <div class="card-footer">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Инвестировать</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
-                        </div>
+    <div th:each="invProduct : ${invProducts}" class="container mt-5">
+        <div th:if="${invProduct.isActive}" class="card">
+            <h5 class="card-header" style="background: #afecda;">Тип продукта</h5>
+            <div class="card-body">
+                <h5 th:text="${invProduct.getName}" class="card-title"></h5>
+                <p th:text="${invProduct.getDescription}" class="card-text"></p>
+                <div class="card-footer">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Инвестировать</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <div th:insert="/blocks/footer :: footer"></div>
