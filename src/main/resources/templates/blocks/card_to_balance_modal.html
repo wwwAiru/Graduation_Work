@@ -1,0 +1,77 @@
+<div th:fragment="card">
+    <!-- Modal -->
+    <div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                <h1 class="text-center">Пополнение баланса</h1>
+
+                <div class="container px-5">
+                        <form>
+                            <div class="form-group  col-7">
+                                <label for="amount">Сумма пополнения</label>
+                                <input type="text" class="form-control" id="amount">
+                            </div>
+
+                            <div class="form-group col-7">
+                                <label for="owner">Фамилия Имя владельца</label>
+                                <input type="text" class="form-control" id="owner">
+                            </div>
+
+                            <div class="form-group col-7">
+                                <label>Номер карты</label>
+                                <input type="text" class="form-control">
+                            </div>
+
+
+                            <div class="form-group col-3">
+                                <label>CVV</label>
+                                <input type="text" class="form-control">
+                            </div><br>
+
+                            <div class="select-group">
+                                <label>Срок действия до:  </label>
+                                <select>
+                                    <option value="01">Январь</option>
+                                    <option value="02">Февраль </option>
+                                    <option value="03">Март</option>
+                                    <option value="04">Апрель</option>
+                                    <option value="05">Май</option>
+                                    <option value="06">Июнь</option>
+                                    <option value="07">Июль</option>
+                                    <option value="08">Август</option>
+                                    <option value="09">Сентябрь</option>
+                                    <option value="10">Октябрь</option>
+                                    <option value="11">Ноябрь</option>
+                                    <option value="12">Декабрь</option>
+                                </select>
+                                <select>
+                                    <option value="19"> 2019</option>
+                                    <option value="20"> 2020</option>
+                                    <option value="21"> 2021</option>
+                                    <option value="22"> 2022</option>
+                                    <option value="23"> 2023</option>
+                                    <option value="24"> 2024</option>
+                                </select>
+                            </div>
+                            <br>
+
+                            <div class="form-group">
+                                <img src="https://bootstraptema.ru/snippets/form/2017/visa.jpg" id="visa">
+                                <img src="https://bootstraptema.ru/snippets/form/2017/mastercard.jpg" id="mastercard">
+                                <img src="https://bootstraptema.ru/snippets/form/2017/amex.jpg" id="amex">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-success">Пополнить</button>
+                                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>
+                            </div>
+
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
