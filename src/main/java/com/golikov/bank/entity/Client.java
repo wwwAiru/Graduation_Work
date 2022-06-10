@@ -43,7 +43,7 @@ public class Client implements UserDetails {
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH})
+            CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private List<DepositAccount> depositAccounts;
 
     @Column(name = "active")
@@ -181,5 +181,9 @@ public class Client implements UserDetails {
         }
         clientInvestProds.add(clientInvestProd);
         clientInvestProd.setClient(this);
+    }
+
+    public String getFullName(){
+        return lastName + " " + firstName + " " + middleName ;
     }
 }
