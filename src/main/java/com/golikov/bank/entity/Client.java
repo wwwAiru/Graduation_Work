@@ -43,7 +43,7 @@ public class Client implements UserDetails {
 
     @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
             CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH}, fetch = FetchType.LAZY)
+            CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private List<DepositAccount> depositAccounts;
 
     @Column(name = "active")
