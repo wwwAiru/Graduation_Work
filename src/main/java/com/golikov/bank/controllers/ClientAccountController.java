@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
@@ -24,20 +23,16 @@ public class ClientAccountController {
 
     @RequestMapping("/account")
     public String login(@AuthenticationPrincipal Client client, Model model) {
-        model.addAttribute(client);
+        model.addAttribute("client",client);
+        model.addAttribute("clientTransaction", new ClientTransaction());
         return "account";
     }
 
     @PostMapping("/up_balance")
     public String upBalance(@AuthenticationPrincipal Client client,
-                            @RequestParam BigDecimal amount,
-                            @RequestParam String ownerName,
-                            @RequestParam String cardNumber){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        ClientTransaction clientTransaction = new ClientTransaction(ownerName,
-                                                                    cardNumber,
-                                                                    amount,
-                                                                    localDateTime, client.getId());
+                            @ModelAttribute("clientTransaction") ClientTransaction clientTransaction){
+        clientTransaction.setDate(LocalDateTime.now());
+        clientTransaction.setClientId(client.getId());
         bankService.cardToBaLance(clientTransaction, client);
         return "redirect:/account";
     }
