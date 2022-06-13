@@ -41,8 +41,7 @@ public class Client implements UserDetails {
             CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Set<ClientInvestProd> clientInvestProds;
 
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE,
+    @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private List<DepositAccount> depositAccounts;
 
