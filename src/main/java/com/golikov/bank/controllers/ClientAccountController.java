@@ -3,6 +3,7 @@ package com.golikov.bank.controllers;
 
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.ClientTransaction;
+import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,10 +26,11 @@ public class ClientAccountController {
     public String login(@AuthenticationPrincipal Client client, Model model) {
         model.addAttribute("client",client);
         model.addAttribute("clientTransaction", new ClientTransaction());
+        model.addAttribute("newDepoAcc", new DepositAccount());
         return "account";
     }
 
-    @PostMapping("/up_balance")
+    @PostMapping("/up-balance")
     public String upBalance(@AuthenticationPrincipal Client client,
                             @ModelAttribute("clientTransaction") ClientTransaction clientTransaction){
         clientTransaction.setDate(LocalDateTime.now());
@@ -36,4 +38,12 @@ public class ClientAccountController {
         bankService.cardToBaLance(clientTransaction, client);
         return "redirect:/account";
     }
+
+    @PostMapping("/create-deposit-account")
+    public String createDepoAcc(@AuthenticationPrincipal Client client, @ModelAttribute("newDepoAcc") DepositAccount depositAccount) {
+        bankService.createDepositAccount(client, depositAccount);
+        return "redirect:/account";
+    }
+
+
 }
