@@ -1,0 +1,35 @@
+<div th:fragment="createAccDepo">
+    <!-- Modal -->
+    <div class="modal fade" id="createDepoAccModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <h1 class="text-center">Инвестиционный счёт</h1>
+
+                <div class="container px-5">
+                    Выберите валюту счёта:
+                    <form th:action="@{/create-deposit-account}" method="post" th:object="${newDepoAcc}">
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            <input type="radio" class="btn-check" name="currency" value="RUR" itemtype="text" id="btnradio1" autocomplete="off" checked/>
+                            <label class="btn btn-outline-info" for="btnradio1">RUR</label>
+
+                            <input type="radio" class="btn-check" name="currency" value="USD" itemtype="text" id="btnradio2" autocomplete="off" />
+                            <label class="btn btn-outline-info" for="btnradio2">USD</label>
+
+                            <input type="radio" class="btn-check" name="currency" value="EUR" itemtype="text" id="btnradio3" autocomplete="off"/>
+                            <label class="btn btn-outline-info" for="btnradio3">EUR</label>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-outline-success">Открыть счёт</button>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
