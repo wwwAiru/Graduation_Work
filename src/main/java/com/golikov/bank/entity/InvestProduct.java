@@ -8,7 +8,7 @@ import java.util.List;
 @Table(name = "invest_products")
 public class InvestProduct {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -30,8 +30,7 @@ public class InvestProduct {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(mappedBy = "investProduct", cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE,
+    @OneToMany(mappedBy = "investProduct", cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH})
     private List<ClientInvestProd> clientInvestProd;
 

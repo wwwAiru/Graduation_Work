@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "clients")
 public class Client implements UserDetails {
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
