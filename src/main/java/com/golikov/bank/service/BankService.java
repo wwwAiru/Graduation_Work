@@ -9,6 +9,9 @@ import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.utils.AccountNumGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Service
 public class BankService {
@@ -23,14 +26,18 @@ public class BankService {
     ClientTransactionRepository clientTransactionRepository;
 
     // метод для пополнения баланса клиента и запись истории транзакции
+    @Transactional
     public void cardToBaLance(ClientTransaction clientTransaction, Client client){
-        client.setBalance(clientTransaction.getAmount());
+        BigDecimal currentBalance = client.getBalance();
+        BigDecimal amount = clientTransaction.getAmount();
+        client.setBalance(currentBalance.add(amount));
         clientRepository.save(client);
         clientTransactionRepository.save(clientTransaction);
     }
 
     // метод для создания инвестиционных счетов, в этом методе дополняется сущность депозит акаунта
     // генерируется номер счёта, и устанавливается клиент владелец
+    @Transactional
     public void createDepositAccount(Client client, DepositAccount depositAccount){
         depositAccount.setClient(client);
         depositAccount.setAccountNumber(AccountNumGenerator.generate(client.getId()));

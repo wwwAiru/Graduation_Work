@@ -1,6 +1,14 @@
 package com.golikov.bank.entity;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Entity
@@ -8,7 +16,7 @@ import java.math.BigDecimal;
 public class DepositAccount {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -24,8 +32,7 @@ public class DepositAccount {
     @Column(name = "deposit_balance")
     private BigDecimal depositBalance = new BigDecimal(0);
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "client_id")
     private Client client;
 

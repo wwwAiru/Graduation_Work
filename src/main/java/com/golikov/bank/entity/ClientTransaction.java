@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Table(name = "client_transaction")
 public class ClientTransaction {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

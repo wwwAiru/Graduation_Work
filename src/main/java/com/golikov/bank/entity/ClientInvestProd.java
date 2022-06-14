@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "client_invest_products")
 public class ClientInvestProd {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -23,8 +23,7 @@ public class ClientInvestProd {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
             CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinColumn(name = "invest_prod_id")
     private InvestProduct investProduct;
