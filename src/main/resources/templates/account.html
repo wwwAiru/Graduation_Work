@@ -20,7 +20,7 @@
         <div class="card-body">
             <h5 class="card-title" th:text="'Ваш баланс: '+${client.getBalance}"></h5>
             <p class="card-text">В любое время вы можете пополнить ваш баланс банковской картой.</p>
-            <p class="card-text" th:if="${client.getDepositAccounts().isEmpty()}">
+            <p class="card-text" th:if="${depoAccs.isEmpty()}">
                 У вас ещё нет инвестиционного счёта, для того чтобы начать пользоваться инвест-продуктами, откройте свой первый инвестиционный счёт и пополните его.
             </p>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cardModal">Пополнить</button>

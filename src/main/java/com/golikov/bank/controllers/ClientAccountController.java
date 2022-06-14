@@ -4,6 +4,7 @@ package com.golikov.bank.controllers;
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.ClientTransaction;
 import com.golikov.bank.entity.DepositAccount;
+import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.service.BankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 // Контроллер для личного кабинета клиента
@@ -22,9 +24,15 @@ public class ClientAccountController {
     @Autowired
     BankService bankService;
 
+    @Autowired
+    DepositAccountRepository depositAccountRepository;
+
+
     @RequestMapping("/account")
-    public String login(@AuthenticationPrincipal Client client, Model model) {
+    public String account(@AuthenticationPrincipal Client client, Model model) {
         model.addAttribute("client",client);
+        List<DepositAccount> depoAccList = depositAccountRepository.findDepositAccountByClientId(client.getId());
+        model.addAttribute("depoAccs", depoAccList);
         model.addAttribute("clientTransaction", new ClientTransaction());
         model.addAttribute("newDepoAcc", new DepositAccount());
         return "account";
