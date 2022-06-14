@@ -12,8 +12,10 @@
                     <p>Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
                     <form th:action="@{/#}" method="post" th:object="${newDepoAcc}">
                         <label for="depo" class="form-label">Выберите счёт: </label>
-                        <select id="depo" th:each="account : ${depoAccs}" class="form-select" required>
-                            <option th:value="${account.getId}" th:text="${account.getAccountNumber} +' ' + ${account.getCurrency}"></option>
+                        <select id="depo"  class="form-select" required>
+                            <div th:each="account : ${depoAccs}">
+                                <option th:value="${account.getId}" type="number" th:text="${account.getAccountNumber} +' ' + ${account.getCurrency}"></option>
+                            </div>
                         </select>
                         <br>
                         <input class="form-control" name="depositBalance" placeholder="сумма" required type="number" min="0" th:max="${client.getBalance}" /> <br>
