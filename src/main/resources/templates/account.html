@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+>
 <head>
     <title>EGAR Technology</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -25,11 +25,14 @@
             </p>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cardModal">Пополнить</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createDepoAccModal">Открыть инвестиционный счёт</button>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#upDepositBalanceModal">Перевести деньги на счёт</button>
 
             <!-- модальное окно пополнения баланса с карты -->
             <div th:insert="blocks/card_to_balance_modal :: card"></div>
             <!-- модальное окно для открытия счёта -->
             <div th:insert="blocks/create_depo_acc_modal :: createAccDepo"></div>
+            <!-- модальное окно для педа денег на счета -->
+            <div th:insert="blocks/up_depo_balance_modal :: upDepositBalance"></div>
 
         </div>
     </div>
@@ -37,23 +40,23 @@
 
 
 
-<section class="py-5 text-center mt-5 container"><h1>Инвестиционные продукты</h1></section>
+<section class="py-5 text-center mt-5 container"><h1>Инвестиционные счета</h1></section>
 
 <div class="container album py-5 bg-light">
 
-    <div th:each="invProduct : ${invProducts}" class="container mt-5">
-        <div th:if="${invProduct.isActive}" class="card">
-            <h5 class="card-header" style="background: #afecda;">Тип продукта</h5>
+    <div th:each="account : ${depoAccs}" class="container mt-5">
+        <div class="card">
+            <p th:text="'Счёт №: ' + ${account.getAccountNumber} + ', валюта счёта ' + ${account.getCurrency}" class="card-header"></p>
             <div class="card-body">
-                <h5 th:text="${invProduct.getName}" class="card-title"></h5>
-                <p th:text="${invProduct.getDescription}" class="card-text"></p>
+                <h5 th:text="'Баланс счёта: '+ ${account.getDepositBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Вывести</button>
+                <p class="card-text" th:text="${account.getDescription}"></p>
                 <div class="card-footer">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Инвестировать</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Редактировать</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
-                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">An item</li>
+                        <li class="list-group-item">A second item</li>
+                        <li class="list-group-item">A third item</li>
+                    </ul>
                 </div>
             </div>
         </div>
