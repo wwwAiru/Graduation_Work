@@ -35,6 +35,7 @@ public class ClientAccountController {
                             @ModelAttribute("clientTransaction") ClientTransaction clientTransaction){
         clientTransaction.setDate(LocalDateTime.now());
         clientTransaction.setClientId(client.getId());
+        clientTransaction.setTransactionType("Пополнение баланса");
         bankService.cardToBaLance(clientTransaction, client);
         return "redirect:/account";
     }
