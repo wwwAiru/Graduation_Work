@@ -6,6 +6,7 @@ import com.golikov.bank.entity.ClientTransaction;
 import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.service.BankService;
+import com.golikov.bank.utils.ProxyDepositAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,7 @@ public class ClientAccountController {
         model.addAttribute("depoAccs", depoAccList);
         model.addAttribute("clientTransaction", new ClientTransaction());
         model.addAttribute("newDepoAcc", new DepositAccount());
+        model.addAttribute("proxyDepositAccount", new ProxyDepositAccount());
         return "account";
     }
 
@@ -52,6 +54,12 @@ public class ClientAccountController {
     public String createDepoAcc(@AuthenticationPrincipal Client client, @ModelAttribute("newDepoAcc") DepositAccount depositAccount) {
         bankService.createDepositAccount(client, depositAccount);
         return "redirect:/account";
+    }
+
+    @PostMapping("/up-account-balance")
+    public String upDepositAccBalance(@AuthenticationPrincipal Client client, @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount) {
+        System.out.println(proxyDepositAccount.getDepositAccount().getAccountNumber());
+    return "redirect:/account";
     }
 
 
