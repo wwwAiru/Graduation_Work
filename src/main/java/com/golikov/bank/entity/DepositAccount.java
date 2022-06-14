@@ -1,18 +1,17 @@
 package com.golikov.bank.entity;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "deposit_accounts")
+@Getter
+@Setter
 public class DepositAccount {
 
     @Id
@@ -20,8 +19,8 @@ public class DepositAccount {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "client_description")
+    private String description;
 
     @Column(name = "account_number")
     private String accountNumber;
@@ -36,60 +35,23 @@ public class DepositAccount {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @OneToMany(mappedBy = "depositAccount", fetch = FetchType.EAGER)
+    private Set<ClientInvestProd> clientInvestProds;
+
     public DepositAccount() {
     }
 
-    public DepositAccount(String name, String currency, Client client) {
-        this.name = name;
+    public DepositAccount(String description, String currency, Client client) {
+        this.description = description;
         this.currency = currency;
         this.client = client;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public BigDecimal getDepositBalance() {
-        return depositBalance;
-    }
-
-    public void setDepositBalance(BigDecimal depositBalance) {
-        this.depositBalance = depositBalance;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void AddClientInvestProd(ClientInvestProd clientInvestProd) {
+        if (clientInvestProds == null) {
+            clientInvestProds = new HashSet<>();
+        }
+        clientInvestProd.setDepositAccount(this);
+        clientInvestProds.add(clientInvestProd);
     }
 }

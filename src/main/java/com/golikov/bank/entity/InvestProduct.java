@@ -1,11 +1,16 @@
 package com.golikov.bank.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "invest_products")
+@Getter
+@Setter
 public class InvestProduct {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
