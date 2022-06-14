@@ -58,8 +58,8 @@ public class ClientAccountController {
 
     @PostMapping("/up-account-balance")
     public String upDepositAccBalance(@AuthenticationPrincipal Client client, @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount) {
-        System.out.println(proxyDepositAccount.getDepositAccount().getAccountNumber());
-    return "redirect:/account";
+        bankService.upDepositAccounBalance(client, proxyDepositAccount);
+        return "redirect:/account";
     }
 
 

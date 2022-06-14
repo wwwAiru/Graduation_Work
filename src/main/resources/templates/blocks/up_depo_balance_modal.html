@@ -18,7 +18,7 @@
                             </div>
                         </select>
                         <br>
-                        <input class="form-control" th:field="*{depositBalance}" placeholder="сумма" required type="number" min="0" th:max="${client.getBalance}" /> <br>
+                        <input class="form-control" th:field="*{amount}" placeholder="сумма" required type="number" min="0" th:max="${client.getBalance}" /> <br>
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Перевод</button>

@@ -3,10 +3,11 @@ package com.golikov.bank.service;
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.ClientTransaction;
 import com.golikov.bank.entity.DepositAccount;
-import com.golikov.bank.repository.ClientTransactionRepository;
 import com.golikov.bank.repository.ClientRepository;
+import com.golikov.bank.repository.ClientTransactionRepository;
 import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.utils.AccountNumGenerator;
+import com.golikov.bank.utils.ProxyDepositAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +43,22 @@ public class BankService {
         depositAccount.setClient(client);
         depositAccount.setAccountNumber(AccountNumGenerator.generate(client.getId()));
         depositAccountRepository.save(depositAccount);
+    }
+
+    public String upDepositAccounBalance(Client client, ProxyDepositAccount proxyDepositAccount){
+        BigDecimal clientBalance = client.getBalance();
+        BigDecimal amount = proxyDepositAccount.getAmount();
+        if (clientBalance.compareTo(amount) < 0) {
+            return "Некорректное значение. Перевод отменён.";
+        }
+        DepositAccount depositAccount = proxyDepositAccount.getDepositAccount();
+        BigDecimal currentDepoBalance = depositAccount.getDepositBalance();
+
+        client.setBalance(clientBalance.subtract(amount));
+        depositAccount.setDepositBalance(currentDepoBalance.add(amount));
+        System.out.println(depositAccount.getDepositBalance());
+        depositAccountRepository.save(depositAccount);
+        return "Баланс инвестиционного счёта успешно пополнен.";
     }
 
 

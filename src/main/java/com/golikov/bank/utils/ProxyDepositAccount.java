@@ -4,7 +4,6 @@ import com.golikov.bank.entity.DepositAccount;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -12,6 +11,9 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class ProxyDepositAccount {
+
     private DepositAccount depositAccount;
-    private BigDecimal depositBalance;
+
+    private BigDecimal amount;
+
 }
