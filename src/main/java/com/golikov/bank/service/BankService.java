@@ -45,18 +45,15 @@ public class BankService {
         depositAccountRepository.save(depositAccount);
     }
 
+    @Transactional
     public String upDepositAccounBalance(Client client, ProxyDepositAccount proxyDepositAccount){
         BigDecimal clientBalance = client.getBalance();
         BigDecimal amount = proxyDepositAccount.getAmount();
-        if (clientBalance.compareTo(amount) < 0) {
-            return "Некорректное значение. Перевод отменён.";
-        }
         DepositAccount depositAccount = proxyDepositAccount.getDepositAccount();
         BigDecimal currentDepoBalance = depositAccount.getDepositBalance();
-
         client.setBalance(clientBalance.subtract(amount));
         depositAccount.setDepositBalance(currentDepoBalance.add(amount));
-        System.out.println(depositAccount.getDepositBalance());
+        clientRepository.save(client);
         depositAccountRepository.save(depositAccount);
         return "Баланс инвестиционного счёта успешно пополнен.";
     }
