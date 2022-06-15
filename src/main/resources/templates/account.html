@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<div class="contaner text-center" th:text="${message}">
+<div th:if="${amountErrror}" class="container alert alert-danger text-center" th:text="${amountErrror}">
 
 </div>
 
