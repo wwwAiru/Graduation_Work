@@ -32,6 +32,9 @@ public class ClientAccountController {
     @Autowired
     DepositAccountRepository depositAccountRepository;
 
+    @Autowired
+    ClienBalanceValidator clienBalanceValidator;
+
     @RequestMapping("/account")
     public String account(@AuthenticationPrincipal Client client, Model model) {
         model.addAttribute("client",client);
@@ -60,15 +63,13 @@ public class ClientAccountController {
     }
 
     @PostMapping("/up-account-balance")
-    public String upDepositAccBalance(@AuthenticationPrincipal Client client, @Valid @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount, BindingResult result, RedirectAttributes redirectAttributes) {
-        ClienBalanceValidator clienBalanceValidator = new ClienBalanceValidator(client);
+    public String upDepositAccBalance(@AuthenticationPrincipal Client client, @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount, BindingResult result, RedirectAttributes redirectAttributes) {
+        clienBalanceValidator.setClient(client);
         clienBalanceValidator.validate(proxyDepositAccount.getAmount(), result);
         if (result.hasErrors()){
             redirectAttributes.getFlashAttributes().clear();
-            redirectAttributes.addFlashAttribute("message", result);
-        } else {
-            bankService.upDepositAccounBalance(client, proxyDepositAccount);
-        }
+            redirectAttributes.addFlashAttribute("amountErrror", "Некорректное значение, транзакция отменена");
+        } else bankService.upDepositAccounBalance(client, proxyDepositAccount);
         return "redirect:/account";
     }
 
