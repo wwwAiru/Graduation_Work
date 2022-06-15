@@ -16,8 +16,6 @@ public class ProxyDepositAccount {
 
     private DepositAccount depositAccount;
 
-    @NotNull(message = "Поле не может быть пустым")
-    @Min(value = 0, message = "Значение не может быть меньше 0")
     private BigDecimal amount;
 
 }
