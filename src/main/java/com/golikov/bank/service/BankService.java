@@ -53,6 +53,7 @@ public class BankService {
         BigDecimal currentDepoBalance = depositAccount.getDepositBalance();
         client.setBalance(clientBalance.subtract(amount));
         depositAccount.setDepositBalance(currentDepoBalance.add(amount));
+        clientRepository.save(client);
         depositAccountRepository.save(depositAccount);
     }
 

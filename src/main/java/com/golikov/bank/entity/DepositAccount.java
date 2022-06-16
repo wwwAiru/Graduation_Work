@@ -31,7 +31,7 @@ public class DepositAccount {
     @Column(name = "deposit_balance")
     private BigDecimal depositBalance = new BigDecimal(0);
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
+    @ManyToOne()
     @JoinColumn(name = "client_id")
     private Client client;
 

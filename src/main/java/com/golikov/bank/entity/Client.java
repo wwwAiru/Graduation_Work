@@ -39,8 +39,7 @@ public class Client implements UserDetails {
     @Column(name = "balance", nullable = false)
     private BigDecimal balance = new BigDecimal(0);
 
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<DepositAccount> depositAccounts;
 
     @Column(name = "active")

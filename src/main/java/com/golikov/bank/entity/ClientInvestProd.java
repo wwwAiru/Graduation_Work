@@ -26,8 +26,7 @@ public class ClientInvestProd {
     @JoinColumn(name = "deposit_acc_id")
     private DepositAccount depositAccount;
 
-    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "invest_prod_id")
     private InvestProduct investProduct;
 
