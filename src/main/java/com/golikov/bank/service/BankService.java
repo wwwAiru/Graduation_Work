@@ -33,6 +33,7 @@ public class BankService {
         BigDecimal amount = clientTransaction.getAmount();
         client.setBalance(currentBalance.add(amount));
         clientRepository.save(client);
+        System.out.println(clientTransaction.getCardNumber());
         clientTransactionRepository.save(clientTransaction);
     }
 
