@@ -23,6 +23,9 @@ public class InvestProduct {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "currency")
+    private String currency;
+
     @Column(name = "min_deposit")
     private BigDecimal minDeposit;
 
@@ -35,8 +38,7 @@ public class InvestProduct {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(mappedBy = "investProduct", cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH})
+    @OneToMany(mappedBy = "investProduct")
     private List<ClientInvestProd> clientInvestProd;
 
     @Column(name = "deposit_term")
@@ -45,8 +47,9 @@ public class InvestProduct {
     public InvestProduct() {
     }
 
-    public InvestProduct(String name, String description, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, Long depositTerm, boolean isActive ) {
+    public InvestProduct(String name, String description, String currency, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, Long depositTerm, boolean isActive ) {
         this.name = name;
+        this.currency = currency;
         this.description = description;
         this.minDeposit = minDeposit;
         this.maxDeposit = maxDeposit;

@@ -38,12 +38,13 @@ public class MainController {
     @PostMapping("/add_inv_product")
     public String addinvProduct(@RequestParam String name,
                                 @RequestParam String description,
+                                @RequestParam String currency,
                                 @RequestParam BigDecimal minDeposit,
                                 @RequestParam BigDecimal maxDeposit,
                                 @RequestParam BigDecimal interestRate,
                                 @RequestParam Long depositTerm,
                                 @RequestParam boolean isActive){
-        InvestProduct invProduct = new InvestProduct(name, description, minDeposit, maxDeposit, interestRate, depositTerm, isActive);
+        InvestProduct invProduct = new InvestProduct(name, description, currency, minDeposit, maxDeposit, interestRate, depositTerm, isActive);
         investProdRepository.save(invProduct);
         return "redirect:/deposits";
     }

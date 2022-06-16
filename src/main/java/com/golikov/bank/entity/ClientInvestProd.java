@@ -22,11 +22,14 @@ public class ClientInvestProd {
     @Column(name = "product_balance")
     private BigDecimal productBalance;
 
+    @Column(name = "currency")
+    private String currency;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "deposit_acc_id")
     private DepositAccount depositAccount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "invest_prod_id")
     private InvestProduct investProduct;
 
@@ -39,7 +42,8 @@ public class ClientInvestProd {
     public ClientInvestProd() {
     }
 
-    public ClientInvestProd(BigDecimal productBalance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
+    public ClientInvestProd(String currency, BigDecimal productBalance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
+        this.currency = currency;
         this.productBalance = productBalance;
         this.depositAccount = depositAccount;
         this.investProduct = investProduct;
