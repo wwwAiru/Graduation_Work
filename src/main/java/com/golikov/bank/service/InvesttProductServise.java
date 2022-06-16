@@ -15,5 +15,12 @@ public class InvesttProductServise {
         investProdRepository.save(investProduct);
     }
 
+    public void delete(InvestProduct investProduct){
+        investProduct.setActive(false);
+        investProdRepository.save(investProduct);
+    }
+
+
+
 
 }

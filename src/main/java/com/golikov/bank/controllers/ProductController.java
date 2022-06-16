@@ -41,15 +41,24 @@ public class ProductController {
         return "redirect:/deposits";
     }
 
+    // форма редактирование инвест продукта
     @GetMapping("/product/edit/{investProduct}")
     public String editProduct(Model model, @PathVariable InvestProduct investProduct){
         model.addAttribute("investProduct", investProduct);
         return "deposit-edit";
     }
 
+    //сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
     public String saveEditedProduct(@ModelAttribute InvestProduct investProduct){
         investtProductServise.save(investProduct);
+        return "redirect:/deposits";
+    }
+
+    //удаление инвест продукта(сделать неактивным)
+    @GetMapping("/product/delete/{investProduct}")
+    public String deleteProduct(Model model, @PathVariable InvestProduct investProduct){
+        investtProductServise.delete(investProduct);
         return "redirect:/deposits";
     }
 

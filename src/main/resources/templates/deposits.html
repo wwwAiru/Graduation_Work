@@ -54,7 +54,7 @@
                         <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
                         <button type="button" class="btn btn-sm btn-outline-secondary">Инвестировать</button>
                         <a th:href="@{/product/edit/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Удалить</button>
+                        <a th:href="@{/product/delete/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Удалить</a>
                     </div>
                 </div>
             </div>
