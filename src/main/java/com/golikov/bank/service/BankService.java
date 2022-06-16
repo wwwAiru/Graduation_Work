@@ -45,6 +45,7 @@ public class BankService {
         depositAccountRepository.save(depositAccount);
     }
 
+    //переревод денег с баланса на банкововский счёт
     @Transactional
     public void upDepositAccounBalance(Client client, ProxyDepositAccount proxyDepositAccount){
         BigDecimal clientBalance = client.getBalance();
