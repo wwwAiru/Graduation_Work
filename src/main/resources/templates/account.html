@@ -37,10 +37,11 @@
         </div>
     </div>
 </div>
+<!-- сообщения валидации из ClienBalanceValidator -->
+<div th:each="error : ${validationError}" class="container alert alert-danger text-center" ></div>
+<p th:text="${error.getDefaultMessage()}"  class="container alert alert-danger text-center">
+<div th:if="${unaccesableClientId}" class="container alert alert-danger text-center" th:text="${unaccesableClientId}"></div>
 
-<div th:if="${amountErrror}" class="container alert alert-danger text-center" th:text="${amountErrror}">
-
-</div>
 
 
 <section class="py-5 text-center mt-5 container"><h1>Инвестиционные счета</h1></section>

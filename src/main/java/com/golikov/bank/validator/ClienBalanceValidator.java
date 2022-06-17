@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 
 import java.math.BigDecimal;
@@ -30,13 +31,14 @@ public class ClienBalanceValidator implements Validator {
     public void validate(Object target, Errors errors) {
         BigDecimal inputAmount = (BigDecimal) target;
         if (inputAmount == null){
-            errors.rejectValue("amount", "error.amount");
+            errors.rejectValue("amount", "Поле не может быть пустым.");
             return;
         } else if (client.getBalance().compareTo(inputAmount) < 0) {
-            errors.rejectValue("amount", "error.amount");
+            errors.reject("amount", "Вы не можете перевести больше чем "+inputAmount+".");
         } else if (inputAmount.compareTo(BigDecimal.valueOf(0)) < 0) {
-            errors.rejectValue("amount", "error.amount");
+            errors.reject("amount", "Значение не может быть отрицательным.");
             }
         }
+
 
 }

@@ -10,6 +10,8 @@ import com.golikov.bank.service.ClientService;
 import com.golikov.bank.utils.ProxyDepositAccount;
 import com.golikov.bank.validator.ClienBalanceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -38,6 +39,10 @@ public class ClientAccountController {
     @Autowired
     ClientService clientService;
 
+    MessageSource messageSource;
+
+    MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource);
+
     @RequestMapping("/account")
     public String account(@AuthenticationPrincipal Client client, Model model) {
         model.addAttribute("client",client);
@@ -52,9 +57,6 @@ public class ClientAccountController {
     @PostMapping("/up-balance")
     public String upBalance(@AuthenticationPrincipal Client client,
                             @ModelAttribute("clientTransaction") ClientTransaction clientTransaction){
-        clientTransaction.setDate(LocalDateTime.now());
-        clientTransaction.setClientId(client.getId());
-        clientTransaction.setTransactionType("Пополнение баланса");
         bankService.cardToBaLance(clientTransaction, client);
         return "redirect:/account";
     }
@@ -66,12 +68,19 @@ public class ClientAccountController {
     }
 
     @PostMapping("/up-account-balance")
-    public String upDepositAccBalance(@AuthenticationPrincipal Client client, @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String upDepositAccBalance(@AuthenticationPrincipal Client client,
+                                      @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount,
+                                      BindingResult result,
+                                      RedirectAttributes redirectAttributes) {
+        //валидация переводимой сумыы денег
         clienBalanceValidator.setClient(client);
         clienBalanceValidator.validate(proxyDepositAccount.getAmount(), result);
         if (result.hasErrors()){
             redirectAttributes.getFlashAttributes().clear();
-            redirectAttributes.addFlashAttribute("amountErrror", "Некорректное значение, транзакция отменена");
+            redirectAttributes.addAttribute("validationError", result.getFieldErrors());
+        // защита от подмены id счёта для зачисления
+        } else if (proxyDepositAccount.getDepositAccount().getClient().getId()!=client.getId()){
+            redirectAttributes.addFlashAttribute("unaccesableClientId", "Попытка подмены id счёта отклонена.");
         } else bankService.upDepositAccounBalance(client, proxyDepositAccount);
         return "redirect:/account";
     }

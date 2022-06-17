@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -30,6 +31,9 @@ public class BankService {
     // метод для пополнения баланса клиента и запись истории транзакции
     @Transactional
     public void cardToBaLance(ClientTransaction clientTransaction, Client client){
+        clientTransaction.setDate(LocalDateTime.now());
+        clientTransaction.setClientId(client.getId());
+        clientTransaction.setTransactionType("Пополнение баланса");
         BigDecimal currentBalance = client.getBalance();
         BigDecimal amount = clientTransaction.getAmount();
         client.setBalance(currentBalance.add(amount));
