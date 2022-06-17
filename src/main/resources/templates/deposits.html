@@ -51,8 +51,7 @@
                 <p th:text="${invProduct.getDescription}" class="card-text"></p>
                 <div class="card-footer">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Инвестировать</button>
+                        <a th:href="@{/product/invest/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Инвестировать</a>
                         <a th:href="@{/product/edit/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
                         <a th:href="@{/product/delete/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Удалить</a>
                     </div>

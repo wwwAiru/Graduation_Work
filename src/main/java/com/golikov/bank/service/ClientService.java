@@ -25,7 +25,7 @@ public class ClientService implements UserDetailsService {
         return clientRepository.findByEmail(email);
     }
 
-    public List<DepositAccount> findAllClientDepoAccounts(Long id){
-        return depositAccountRepository.findDepositAccountByClientId(id);
+    public List<DepositAccount> findClientAccounts(Long id){
+        return depositAccountRepository.findByClientIdOrderById(id);
     }
 }

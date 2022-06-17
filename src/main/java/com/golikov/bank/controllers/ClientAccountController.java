@@ -6,9 +6,9 @@ import com.golikov.bank.entity.ClientTransaction;
 import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.service.BankService;
+import com.golikov.bank.service.ClientService;
 import com.golikov.bank.utils.ProxyDepositAccount;
 import com.golikov.bank.validator.ClienBalanceValidator;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,10 +35,13 @@ public class ClientAccountController {
     @Autowired
     ClienBalanceValidator clienBalanceValidator;
 
+    @Autowired
+    ClientService clientService;
+
     @RequestMapping("/account")
     public String account(@AuthenticationPrincipal Client client, Model model) {
         model.addAttribute("client",client);
-        List<DepositAccount> depoAccList = depositAccountRepository.findDepositAccountByClientId(client.getId());
+        List<DepositAccount> depoAccList = clientService.findClientAccounts(client.getId());
         model.addAttribute("depoAccs", depoAccList);
         model.addAttribute("clientTransaction", new ClientTransaction());
         model.addAttribute("newDepoAcc", new DepositAccount());
