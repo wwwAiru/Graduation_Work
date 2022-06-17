@@ -38,8 +38,7 @@
     </div>
 </div>
 <!-- сообщения валидации из ClienBalanceValidator -->
-<div th:each="error : ${validationError}" class="container alert alert-danger text-center" ></div>
-<p th:text="${error.getDefaultMessage()}"  class="container alert alert-danger text-center">
+<div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
 <div th:if="${unaccesableClientId}" class="container alert alert-danger text-center" th:text="${unaccesableClientId}"></div>
 
 

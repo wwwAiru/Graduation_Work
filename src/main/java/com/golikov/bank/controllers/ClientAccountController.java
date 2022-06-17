@@ -74,12 +74,14 @@ public class ClientAccountController {
                                       RedirectAttributes redirectAttributes) {
         //валидация переводимой сумыы денег
         clienBalanceValidator.setClient(client);
+        clienBalanceValidator.setRedirectAttributes(redirectAttributes);
         clienBalanceValidator.validate(proxyDepositAccount.getAmount(), result);
+        // если есть ошибки валидации то редирект с флэш сообщениями из ClienBalanceValidator
         if (result.hasErrors()){
-            redirectAttributes.getFlashAttributes().clear();
-            redirectAttributes.addAttribute("validationError", result.getFieldErrors());
+           return  "redirect:/account";
+        }
         // защита от подмены id счёта для зачисления
-        } else if (proxyDepositAccount.getDepositAccount().getClient().getId()!=client.getId()){
+        else if (proxyDepositAccount.getDepositAccount()==null || proxyDepositAccount.getDepositAccount().getClient().getId()!=client.getId()){
             redirectAttributes.addFlashAttribute("unaccesableClientId", "Попытка подмены id счёта отклонена.");
         } else bankService.upDepositAccounBalance(client, proxyDepositAccount);
         return "redirect:/account";
