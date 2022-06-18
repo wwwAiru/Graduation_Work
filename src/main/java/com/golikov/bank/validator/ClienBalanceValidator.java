@@ -4,6 +4,7 @@ import com.golikov.bank.entity.Client;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
@@ -37,8 +38,8 @@ public class ClienBalanceValidator implements Validator {
             redirectAttributes.addFlashAttribute("amount", "Поле не может быть пустым.");
             return;
         } else if (client.getBalance().compareTo(inputAmount) < 0) {
-            errors.reject("amount", "Вы не можете перевести больше чем "+client.getBalance()+".");
-            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+inputAmount+".");
+            errors.reject("amount", "Вы не можете перевести больше чем "+ client.getBalance() + ".");
+            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+ client.getBalance() + ".");
         } else if (inputAmount.compareTo(BigDecimal.valueOf(0)) < 0) {
             errors.reject("amount", "Значение не может быть отрицательным.");
             redirectAttributes.addFlashAttribute("amount", "Значение не может быть отрицательным.");
