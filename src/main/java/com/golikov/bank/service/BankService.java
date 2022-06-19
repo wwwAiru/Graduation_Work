@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +28,9 @@ public class BankService {
 
     @Autowired
     ClientTransactionRepository clientTransactionRepository;
+
+    @Autowired
+    CurrencyService currencyService;
 
     // метод для пополнения баланса клиента и запись истории транзакции
     @Transactional
@@ -55,10 +59,13 @@ public class BankService {
     @Transactional
     public void upDepositAccounBalance(Client client, ProxyDepositAccount proxyDepositAccount){
         BigDecimal clientBalance = client.getBalance();
-        BigDecimal amount = proxyDepositAccount.getAmount();
         DepositAccount depositAccount = proxyDepositAccount.getDepositAccount();
-        BigDecimal currentDepoBalance = depositAccount.getDepositBalance();
+        BigDecimal amount = proxyDepositAccount.getAmount();
         client.setBalance(clientBalance.subtract(amount));
+        if (!depositAccount.getCurrency().equals("RUB")){
+            amount = amount.divide(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
+        }
+        BigDecimal currentDepoBalance = depositAccount.getDepositBalance();
         depositAccount.setDepositBalance(currentDepoBalance.add(amount));
         clientRepository.save(client);
         depositAccountRepository.save(depositAccount);

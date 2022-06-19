@@ -18,4 +18,6 @@ public class Currency {
 
     private BigDecimal Value;
 
+    private Integer Nominal;
+
 }

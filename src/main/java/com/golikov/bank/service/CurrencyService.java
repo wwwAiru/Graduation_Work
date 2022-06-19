@@ -10,7 +10,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,11 +29,24 @@ public class CurrencyService {
 
     private Map<String, Currency> currencies;
 
-    private Currency usd = currencies.get("USD");
-
-    private Currency eur = currencies.get("EUR");
-
     public CurrencyService() {
+    }
+
+    // Устанавливаются дефолтные значения Евро и Доллара на случай если не получилось получить список валют с сайта ЦБ
+    @PostConstruct
+    private void defaultCurrencies(){
+        if (currencies==null) currencies = new HashMap<>();
+        currency.setCharCode("USD");
+        currency.setName("Доллар США");
+        currency.setNominal(1);
+        currency.setValue(BigDecimal.valueOf(57.8021));
+        this.currencies.put("USD", currency);
+        currency.setCharCode("EUR");
+        currency.setName("Евро");
+        currency.setNominal(1);
+        currency.setValue(BigDecimal.valueOf(61.3718));
+        this.currencies.put("EUR", currency);
+        System.out.println("Defaul values");
     }
 
     //установил выполнение этого метода 1 раз в 4 часа
@@ -52,7 +68,7 @@ public class CurrencyService {
                     .getJSONObject("Valute");
 
             // Получает коды валют из полученных данных.
-            this.currencies = currenciesData.keySet()
+            currencies = currenciesData.keySet()
                     // Преобразовывает Set в Stream.
                     .stream()
                     // При помощи GSON переводит JSON строчку валюты к классу Currency.
@@ -60,7 +76,7 @@ public class CurrencyService {
                     // Преобразовывает Stream в Map с ключом - названием валюты(CharCode), значением - объект валюты (Currency).
                     .collect(Collectors.toMap(c-> c.getCharCode(), c -> c));
 
-            System.out.println("updated");
+            System.out.println("Currencies updated");
 
         } catch (Exception ignored) { }
     }
