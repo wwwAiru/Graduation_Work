@@ -8,24 +8,22 @@ import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.ClientService;
 import com.golikov.bank.utils.ProxyDepositAccount;
-import com.golikov.bank.validator.ClienBalanceValidator;
+import com.golikov.bank.validator.ClientBalanceValidator;
+import com.golikov.bank.validator.WithdrawBalanceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 
 // Контроллер для личного кабинета клиента
-@Controller
+@Controller()
 public class ClientAccountController {
     @Autowired
     BankService bankService;
@@ -34,16 +32,16 @@ public class ClientAccountController {
     DepositAccountRepository depositAccountRepository;
 
     @Autowired
-    ClienBalanceValidator clienBalanceValidator;
+    ClientBalanceValidator clientBalanceValidator;
+
+    @Autowired
+    WithdrawBalanceValidator withdrawBalanceValidator;
 
     @Autowired
     ClientService clientService;
 
-    MessageSource messageSource;
 
-    MessageSourceAccessor messageSourceAccessor = new MessageSourceAccessor(messageSource);
-
-    @RequestMapping("/account")
+    @GetMapping("/account")
     public String account(@AuthenticationPrincipal Client client, Model model) {
         model.addAttribute("client",client);
         List<DepositAccount> depoAccList = clientService.findClientAccounts(client.getId());
@@ -54,28 +52,31 @@ public class ClientAccountController {
         return "account";
     }
 
-    @PostMapping("/up-balance")
+    // пополнения баланса с карты
+    @PostMapping("/account/up-balance")
     public String upBalance(@AuthenticationPrincipal Client client,
                             @ModelAttribute("clientTransaction") ClientTransaction clientTransaction){
         bankService.cardToBaLance(clientTransaction, client);
         return "redirect:/account";
     }
 
-    @PostMapping("/create-deposit-account")
+    // открытие ивест счёта
+    @PostMapping("/account/create-deposit-account")
     public String createDepoAcc(@AuthenticationPrincipal Client client, @ModelAttribute("newDepoAcc") DepositAccount depositAccount) {
         bankService.createDepositAccount(client, depositAccount);
         return "redirect:/account";
     }
 
-    @PostMapping("/up-account-balance")
+    // перевод средств на аккаунт
+    @PostMapping("/account/up-deposit-balance")
     public String upDepositAccBalance(@AuthenticationPrincipal Client client,
                                       @ModelAttribute("proxyDepositAccount") ProxyDepositAccount proxyDepositAccount,
                                       BindingResult result,
                                       RedirectAttributes redirectAttributes) {
-        //валидация переводимой сумыы денег
-        clienBalanceValidator.setClient(client);
-        clienBalanceValidator.setRedirectAttributes(redirectAttributes);
-        clienBalanceValidator.validate(proxyDepositAccount.getAmount(), result);
+        //валидация переводимой суммы денег
+        clientBalanceValidator.setClient(client);
+        clientBalanceValidator.setRedirectAttributes(redirectAttributes);
+        clientBalanceValidator.validate(proxyDepositAccount.getAmount(), result);
         // если есть ошибки валидации то редирект с флэш сообщениями из ClienBalanceValidator
         if (result.hasErrors()){
            return  "redirect:/account";
@@ -87,5 +88,29 @@ public class ClientAccountController {
         return "redirect:/account";
     }
 
+    // вывод денег с акаунта на общий счёт с пересчётом в рубли
+    @PostMapping("/account/withdraw/{depositAccount}")
+    public String withdraw(@AuthenticationPrincipal Client client,
+                           @PathVariable(required = false) DepositAccount depositAccount,
+                           @RequestParam(required = false) BigDecimal amount,
+                           RedirectAttributes redirectAttributes) {
+
+        // защита от подмены id счёта вывода денег
+        if (depositAccount == null || depositAccount.getClient().getId() != client.getId()){
+            redirectAttributes.addFlashAttribute("unaccesableClientId", "Попытка подмены id счёта отклонена.");
+            return  "redirect:/account";
+        } else {
+        // валидация выводимой суммы денег
+        withdrawBalanceValidator.setDepositAccount(depositAccount);
+        withdrawBalanceValidator.setRedirectAttributes(redirectAttributes);
+        withdrawBalanceValidator.validate(amount);
+        }
+
+        // если есть ошибки валидации то редирект с флэш сообщениями из WithdrawBalanceValidator
+        if (withdrawBalanceValidator.isHasErrors()){
+        } else {
+        }
+        return "redirect:/account";
+    }
 
 }

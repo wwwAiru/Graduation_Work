@@ -10,7 +10,7 @@
 
                 <div class="container px-5">
 
-                    <form th:action="@{/create-deposit-account}" method="post" th:object="${newDepoAcc}">
+                    <form th:action="@{/account/create-deposit-account}" method="post" th:object="${newDepoAcc}">
 
                         <textarea class="form-control" style="height: 60px" th:field="*{description}" placeholder="Введите ваше описание/памятку/примечание(не обязательно)" type="text"></textarea> <br>
 

@@ -46,7 +46,7 @@ public class CurrencyService {
         currency.setNominal(1);
         currency.setValue(BigDecimal.valueOf(61.3718));
         this.currencies.put("EUR", currency);
-        System.out.println("Defaul values");
+        System.out.println("Set defaul values to currencies");
     }
 
     //установил выполнение этого метода 1 раз в 4 часа

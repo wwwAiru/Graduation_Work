@@ -18,7 +18,7 @@
     <div class="card">
         <div class="card-header" th:text="${client.getFullName}"></div>
         <div class="card-body">
-            <h5 class="card-title" th:text="'Ваш баланс: '+${client.getBalance}"></h5>
+            <h5 class="card-title" th:text="'Ваш баланс: '+ ${client.getBalance} + ' RUB'"></h5>
             <p class="card-text">В любое время вы можете пополнить ваш баланс банковской картой.</p>
             <p class="card-text" th:if="${depoAccs.isEmpty()}">
                 У вас ещё нет инвестиционного счёта, для того чтобы начать пользоваться инвест-продуктами, откройте свой первый инвестиционный счёт и пополните его.
@@ -31,7 +31,7 @@
             <div th:insert="blocks/card_to_balance_modal :: card"></div>
             <!-- модальное окно для открытия счёта -->
             <div th:insert="blocks/create_depo_acc_modal :: createAccDepo"></div>
-            <!-- модальное окно для педа денег на счета -->
+            <!-- модальное окно для перевода денег на счета -->
             <div th:insert="blocks/up_depo_balance_modal :: upDepositBalance"></div>
 
         </div>
@@ -52,7 +52,12 @@
             <p th:text="'Счёт №: ' + ${account.getAccountNumber} + ', валюта счёта ' + ${account.getCurrency}" class="card-header"></p>
             <div class="card-body">
                 <h5 th:text="'Баланс счёта: '+ ${account.getDepositBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Вывести</button>
+
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#withdrawModal">Вывести</button>
+
+                <!-- модальное окно для вывода денег со счёта -->
+                <div th:insert="blocks/withdraw_depo_acc_modal :: withdrawDepositBalance"></div>
+
                 <p class="card-text" th:text="${account.getDescription}"></p>
                 <div class="card-footer">
                     <ul class="list-group list-group-flush">

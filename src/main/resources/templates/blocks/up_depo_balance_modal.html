@@ -10,7 +10,7 @@
 
                 <div class="container px-5">
                     <p>Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
-                    <form th:action="@{/up-account-balance}"  th:object="${proxyDepositAccount}" method="post">
+                    <form th:action="@{/account/up-deposit-balance}"  th:object="${proxyDepositAccount}" method="post">
                         <label for="depo" class="form-label">Выберите счёт: </label>
                         <select  id="depo"  class="form-select" th:field="*{depositAccount}" required>
                             <div th:each="account : ${depoAccs}">

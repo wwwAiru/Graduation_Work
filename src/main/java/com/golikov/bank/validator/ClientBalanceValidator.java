@@ -4,10 +4,8 @@ import com.golikov.bank.entity.Client;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,7 +18,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ClienBalanceValidator implements Validator {
+public class ClientBalanceValidator implements Validator {
 
     private Client client;
     private RedirectAttributes redirectAttributes;

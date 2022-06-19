@@ -9,7 +9,7 @@
                 <h1 class="text-center">Пополнение баланса</h1>
 
                 <div class="container px-5">
-                        <form th:action="@{/up-balance}" method="post" th:object="${clientTransaction}">
+                        <form th:action="@{/account/up-balance}" method="post" th:object="${clientTransaction}">
                             <div class="form-group  col-7">
                                 <label>Сумма пополнения</label>
                                 <input th:field="*{amount}" required type="number" min="0" class="form-control">
