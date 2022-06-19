@@ -84,7 +84,7 @@ public class ClientAccountController {
         // защита от подмены id счёта для зачисления
         else if (proxyDepositAccount.getDepositAccount()==null || proxyDepositAccount.getDepositAccount().getClient().getId()!=client.getId()){
             redirectAttributes.addFlashAttribute("unaccesableClientId", "Попытка подмены id счёта отклонена.");
-        } else bankService.upDepositAccounBalance(client, proxyDepositAccount);
+        } else bankService.upDepositAccountBalance(client, proxyDepositAccount);
         return "redirect:/account";
     }
 
@@ -109,6 +109,8 @@ public class ClientAccountController {
         // если есть ошибки валидации то редирект с флэш сообщениями из WithdrawBalanceValidator
         if (withdrawBalanceValidator.isHasErrors()){
         } else {
+            bankService.withdrawMoney(client, depositAccount, amount);
+            redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
         }
         return "redirect:/account";
     }

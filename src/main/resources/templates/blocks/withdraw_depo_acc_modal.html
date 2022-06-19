@@ -1,6 +1,6 @@
 <div th:fragment="withdrawDepositBalance">
     <!-- Modal -->
-    <div class="modal fade" id="withdrawModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" th:id="'withdrawModal' + ${account.getId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -11,9 +11,8 @@
                 <div class="container px-5">
                     <p class="alert alert-primary d-flex align-items-center" >Внимание! При выводе валюты на баланс, произойдёт автоматическая конвертация в рубль по текущим курсам.</p>
                     <form th:action="@{/account/withdraw/{id}(id=${account.getId})}"  method="post">
-                        <label> Вывести денежные средства </label>
-                        <input class="form-control" name="amount" type="number" placeholder="сумма"/> <br>
-
+                        <h5 th:text="'Вывести денежные средства ' + ${account.getDepositBalance} + ' ' + ${account.getCurrency}">  </h5><br>
+                        <input class="form-control" name="amount" type="number" placeholder="сумма" step="0.01"/> <br>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Вывести</button>
                             <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>

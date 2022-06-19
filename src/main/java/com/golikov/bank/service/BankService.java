@@ -57,16 +57,17 @@ public class BankService {
 
     //переревод денег с баланса на банкововский счёт
     @Transactional
-    public void upDepositAccounBalance(Client client, ProxyDepositAccount proxyDepositAccount){
-        BigDecimal clientBalance = client.getBalance();
+    public void upDepositAccountBalance(Client client, ProxyDepositAccount proxyDepositAccount){
         DepositAccount depositAccount = proxyDepositAccount.getDepositAccount();
         BigDecimal amount = proxyDepositAccount.getAmount();
-        client.setBalance(clientBalance.subtract(amount));
+        // вычитается сумма с баланса клиента
+        client.setBalance(client.getBalance().subtract(amount));
+        // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
         if (!depositAccount.getCurrency().equals("RUB")){
             amount = amount.divide(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
         }
-        BigDecimal currentDepoBalance = depositAccount.getDepositBalance();
-        depositAccount.setDepositBalance(currentDepoBalance.add(amount));
+        // сохранение изменений в базу
+        depositAccount.setDepositBalance(depositAccount.getDepositBalance().add(amount));
         clientRepository.save(client);
         depositAccountRepository.save(depositAccount);
     }
@@ -74,6 +75,20 @@ public class BankService {
     @Transactional
     public List<DepositAccount> findValidDepoAccounts(Long id, String currency, BigDecimal balance){
         return depositAccountRepository.findByClientIdAndCurrencyLikeAndDepositBalanceGreaterThan(id, currency, balance);
+    }
+
+    @Transactional
+    public void withdrawMoney(Client client, DepositAccount depositAccount, BigDecimal amount){
+        // вычитается сумма с баланса аккаунта
+        depositAccount.setDepositBalance(depositAccount.getDepositBalance().subtract(amount));
+        // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
+        if (!depositAccount.getCurrency().equals("RUB")){
+            amount = amount.multiply(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue());
+        }
+        client.setBalance(client.getBalance().add(amount));
+        // сохранение изменений в базу
+        clientRepository.save(client);
+        depositAccountRepository.save(depositAccount);
     }
 
 }

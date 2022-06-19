@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org"
->
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <title>EGAR Technology</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -18,7 +18,8 @@
     <div class="card">
         <div class="card-header" th:text="${client.getFullName}"></div>
         <div class="card-body">
-            <h5 class="card-title" th:text="'Ваш баланс: '+ ${client.getBalance} + ' RUB'"></h5>
+
+            <h5 class="card-title" th:text="'Ваш баланс: ' + ${#numbers.formatDecimal(client.getBalance, 0, 2)} + ' RUB'"></h5>
             <p class="card-text">В любое время вы можете пополнить ваш баланс банковской картой.</p>
             <p class="card-text" th:if="${depoAccs.isEmpty()}">
                 У вас ещё нет инвестиционного счёта, для того чтобы начать пользоваться инвест-продуктами, откройте свой первый инвестиционный счёт и пополните его.
@@ -37,9 +38,13 @@
         </div>
     </div>
 </div>
+
 <!-- сообщения валидации из ClienBalanceValidator -->
 <div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
 <div th:if="${unaccesableClientId}" class="container alert alert-danger text-center" th:text="${unaccesableClientId}"></div>
+<!-- сообщения от успешных транзакциях -->
+<div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
+
 
 
 
@@ -53,7 +58,7 @@
             <div class="card-body">
                 <h5 th:text="'Баланс счёта: '+ ${account.getDepositBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
 
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#withdrawModal">Вывести</button>
+                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
 
                 <!-- модальное окно для вывода денег со счёта -->
                 <div th:insert="blocks/withdraw_depo_acc_modal :: withdrawDepositBalance"></div>
