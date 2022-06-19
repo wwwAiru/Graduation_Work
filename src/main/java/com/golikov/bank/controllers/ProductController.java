@@ -77,7 +77,6 @@ public class ProductController {
         List<DepositAccount> accounts = bankService.findValidDepoAccounts(client.getId(),
                                                                           investProduct.getCurrency(),
                                                                           investProduct.getMinDeposit());
-        accounts.forEach(System.out::println);
         if (accounts.isEmpty()){
             model.addAttribute("NoValidAccountsError","У вас нет инвестиционных счетов для данного продукта.\n" +
                                                                              "Откройте и пополните счёт не менее чем на " +

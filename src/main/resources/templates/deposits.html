@@ -45,7 +45,7 @@
 
     <div th:each="invProduct : ${invProducts}" class="container mt-5">
         <div th:if="${invProduct.isActive}" class="card">
-            <h5 class="card-header" style="background: #afecda;"></h5>
+            <h5 class="card-header" style="background: #afecda;" th:text="${invProduct.getCurrency}"></h5>
             <div class="card-body">
                 <h5 th:text="${invProduct.getName}" class="card-title"></h5>
                 <p th:text="${invProduct.getDescription}" class="card-text"></p>
