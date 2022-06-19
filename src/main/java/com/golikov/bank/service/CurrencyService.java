@@ -24,9 +24,6 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class CurrencyService {
 
-    @Autowired
-    Currency currency;
-
     private Map<String, Currency> currencies;
 
     public CurrencyService() {
@@ -36,16 +33,10 @@ public class CurrencyService {
     @PostConstruct
     private void defaultCurrencies(){
         if (currencies==null) currencies = new HashMap<>();
-        currency.setCharCode("USD");
-        currency.setName("Доллар США");
-        currency.setNominal(1);
-        currency.setValue(BigDecimal.valueOf(57.8021));
-        this.currencies.put("USD", currency);
-        currency.setCharCode("EUR");
-        currency.setName("Евро");
-        currency.setNominal(1);
-        currency.setValue(BigDecimal.valueOf(61.3718));
-        this.currencies.put("EUR", currency);
+        Currency currencyUSD = new Currency("USD", "Доллар США", BigDecimal.valueOf(57.8021), Integer.valueOf(1));
+        this.currencies.put("USD", currencyUSD);
+        Currency currencyEUR = new Currency("EUR", "Евро", BigDecimal.valueOf(61.3718), Integer.valueOf(1));
+        this.currencies.put("EUR", currencyEUR);
         System.out.println("Set default values to currencies");
     }
 

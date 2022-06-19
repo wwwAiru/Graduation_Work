@@ -8,11 +8,34 @@
 </head>
 <body>
 <header th:insert="blocks/navbar :: navbar"></header>
-<main>
+<h1 class="text-center lh-base p-4 mt-5">Инвест-Банк Агатион</h1>
+
+<div class="container lead text-left lh-base p-4">18 мая 2022 года АО «Агатион» стал участником государственной системы страхования вкладов —
+    государственная корпорация «Агентство по страхованию вкладов» включила АО «Агатион» в реестр банков —
+    участников системы обязательного страхования вкладов под номером 1391. Инвест-Банк Агатион входит в ТОП-20 банков России по размеру портфеля вкладов физических лиц.
+    Входит в список системно значимых банков России по версии ЦБ РФ на 2022 год.
+    <p>Ознакомтесь с нашими инвестиционными продуктами, у нас самые выгодные предложения на рынке.</p>
+</div>
+
+<h3 class="text-center lh-base p-4 mt-5" th:text="'Актуальные курсы валют на ' + ${date}"></h3>
 
 
-</main>
-
+<div class="container">
+    <table class="table">
+        <tr>
+            <th class="text-center">Номинал</th>
+            <th>Название валюты</th>
+            <th class="text-center">Стоимость(рублей)</th>
+            <th class="text-center">Код валюты</th>
+        </tr>
+        <tr th:each="currency : ${currencies}">
+            <td class="col-1 text-center" th:text="${currency.getNominal}"></td>
+            <td class="col-1" th:text="${currency.getName}"></td>
+            <td class="col-1 text-center" th:text="${currency.getValue}"></td>
+            <td class="col-1 text-center" th:text="${currency.getCharCode}"></td>
+        </tr>
+    </table>
+</div>
 <div th:insert="/blocks/footer :: footer"></div>
 </body>
 </html>
