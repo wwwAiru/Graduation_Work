@@ -35,97 +35,32 @@ public class InvestProduct {
     @Column(name = "iterest_rate")
     private BigDecimal interestRate;
 
-    @Column(name = "is_active")
-    private boolean isActive;
-
     @OneToMany(mappedBy = "investProduct")
     private List<ClientInvestProd> clientInvestProd;
 
-    @Column(name = "deposit_term")
-    private Long depositTerm;
+    @Column(name = "min_deposit_term")
+    private Long minDepositTerm;
+
+    @Column(name = "max_deposit_term")
+    private Long maxDepositTerm;
+
+    @Column(name = "is_active")
+    private boolean isActive;
+
 
     public InvestProduct() {
     }
 
-    public InvestProduct(String name, String description, String currency, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, Long depositTerm, boolean isActive ) {
+    public InvestProduct(String name, String description, String currency, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, boolean isActive, List<ClientInvestProd> clientInvestProd, Long minDepositTerm, Long maxDepositTerm) {
         this.name = name;
-        this.currency = currency;
         this.description = description;
+        this.currency = currency;
         this.minDeposit = minDeposit;
         this.maxDeposit = maxDeposit;
         this.interestRate = interestRate;
         this.isActive = isActive;
-        this.depositTerm = depositTerm;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public BigDecimal getMinDeposit() {
-        return minDeposit;
-    }
-
-    public void setMinDeposit(BigDecimal minDeposit) {
-        this.minDeposit = minDeposit;
-    }
-
-    public BigDecimal getMaxDeposit() {
-        return maxDeposit;
-    }
-
-    public void setMaxDeposit(BigDecimal maxDeposit) {
-        this.maxDeposit = maxDeposit;
-    }
-
-    public BigDecimal getInterestRate() {
-        return interestRate;
-    }
-
-    public void setInterestRate(BigDecimal interestRate) {
-        this.interestRate = interestRate;
-    }
-
-    public List<ClientInvestProd> getClientInvestProd() {
-        return clientInvestProd;
-    }
-
-    public void setClientInvestProd(List<ClientInvestProd> clientInvestProd) {
         this.clientInvestProd = clientInvestProd;
-    }
-    public Long getDepositTerm() {
-        return depositTerm;
-    }
-
-    public void setDepositTerm(Long depositTerm) {
-        this.depositTerm = depositTerm;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
+        this.minDepositTerm = minDepositTerm;
+        this.maxDepositTerm = maxDepositTerm;
     }
 }

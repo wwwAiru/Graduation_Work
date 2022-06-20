@@ -14,20 +14,21 @@
     </h2>
     <br>
     <div class="conteiner col-6 mx-auto">
-        <form method="post" th:action="@{add_inv_product}">
-            <input class="form-control" name="name" placeholder="Название инвестиционного продукта" required type="text" /> <br>
-            <textarea class="form-control" style="height: 100px" name="description" placeholder="Описание инвестиционного продукта" required type="text"></textarea> <br>
-            <select class="form-select" name="currency" required="required">
+        <form method="post" th:action="@{/add-inv-product}" th:object="${investProduct}">
+            <input class="form-control" th:field="*{name}" placeholder="Название инвестиционного продукта" type="text" /> <br>
+            <textarea class="form-control" style="height: 100px" th:field="*{description}" placeholder="Описание инвестиционного продукта" type="text"></textarea> <br>
+            <select class="form-select" th:field="*{currency}" required="required">
                 <option value="RUB">Установите валюту продукта</option>
                 <option value="RUB">Российский рубль</option>
                 <option value="USD">Доллар США</option>
                 <option value="EUR">Евро</option>
             </select> <br>
-            <input class="form-control" name="minDeposit" placeholder="минимальная сумма" required type="number" min="0" /> <br>
-            <input class="form-control" name="maxDeposit" placeholder="максимальная сумма" required type="number" min="0" /> <br>
-            <input class="form-control" name="interestRate" placeholder="ставка/доходность" required type="number" min="0" step="0.01" /> <br>
-            <input class="form-control" name="depositTerm" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
-            <select class="form-select" name="isActive" required="required">
+            <input class="form-control" th:field="*{minDeposit}" placeholder="минимальная сумма" type="number" min="0" /> <br>
+            <input class="form-control" th:field="*{maxDeposit}" placeholder="максимальная сумма" type="number" min="0" /> <br>
+            <input class="form-control" th:field="*{interestRate}" placeholder="ставка/доходность" type="number" min="0" step="0.01" /> <br>
+            <input class="form-control" th:field="*{minDepositTerm}" placeholder="минимальный срок вклада(дней)"  type="number" min="0" /> <br>
+            <input class="form-control" th:field="*{maxDepositTerm}" placeholder="максимальный срок вклада(дней)" type="number" min="0" /> <br>
+            <select class="form-select" th:field="*{active}">
                 <option value="true">Выберите актуальность продукта</option>
                 <option value="true">Действующий</option>
                 <option value="false">Архивный/удалённый</option>

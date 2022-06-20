@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InvesttProductServise {
+public class InvestProductServise {
 
     @Autowired
     InvestProdRepository investProdRepository;
@@ -21,6 +21,9 @@ public class InvesttProductServise {
     }
 
 
+    public InvestProduct findById(InvestProduct investProduct){
+        return investProdRepository.findById(investProduct.getId()).get();
+    }
 
 
 }

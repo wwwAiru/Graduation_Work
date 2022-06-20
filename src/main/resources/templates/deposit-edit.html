@@ -26,13 +26,14 @@
             <input class="form-control" name="minDeposit" th:field="*{minDeposit}" placeholder="минимальная сумма" required type="number" min="0" /> <br>
             <input class="form-control" name="maxDeposit" th:field="*{maxDeposit}" placeholder="максимальная сумма" required type="number" min="0" /> <br>
             <input class="form-control" name="interestRate" th:field="*{interestRate}" placeholder="ставка/доходность" required type="number" min="0" step="0.01" /> <br>
-            <input class="form-control" name="depositTerm" th:field="*{depositTerm}" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
+            <input class="form-control" name="minDepositTerm" th:field="*{minDepositTerm}" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
+            <input class="form-control" name="maxDepositTerm" th:field="*{maxDepositTerm}" placeholder="минимальный срок вклада(дней)" required type="number" min="0" /> <br>
             <select class="form-select" name="isActive" th:field="*{active}" required="required">
                 <option value="true">Выберите актуальность продукта</option>
                 <option value="true">Действующий</option>
                 <option value="false">Архивный/удалённый</option>
             </select> <br>
-            <input class="btn btn-outline-success" type="submit" value="Редактировать">
+            <input class="btn btn-outline-success" type="submit" value="Сохранить изменения">
         </form>
     </div>
 </div>

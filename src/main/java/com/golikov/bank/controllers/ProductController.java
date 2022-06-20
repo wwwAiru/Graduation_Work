@@ -5,14 +5,14 @@ import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.entity.InvestProduct;
 import com.golikov.bank.repository.InvestProdRepository;
 import com.golikov.bank.service.BankService;
-import com.golikov.bank.service.InvesttProductServise;
+import com.golikov.bank.service.InvestProductServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -21,7 +21,7 @@ public class ProductController {
     private InvestProdRepository investProdRepository;
 
     @Autowired
-    InvesttProductServise investtProductServise;
+    InvestProductServise investProductServise;
 
     @Autowired
     BankService bankService;
@@ -32,41 +32,35 @@ public class ProductController {
         Iterable<InvestProduct> invProducts = investProdRepository.findAll();
         model.addAttribute("invProducts", invProducts);
         model.addAttribute("currentPage", "deposits");
-        return "deposits";
+        model.addAttribute("investProduct", new InvestProduct());
+        return "/deposits";
     }
 
-    @PostMapping("/add_inv_product")
-    public String addinvProduct(@RequestParam String name,
-                                @RequestParam String description,
-                                @RequestParam String currency,
-                                @RequestParam BigDecimal minDeposit,
-                                @RequestParam BigDecimal maxDeposit,
-                                @RequestParam BigDecimal interestRate,
-                                @RequestParam Long depositTerm,
-                                @RequestParam boolean isActive){
-        InvestProduct invProduct = new InvestProduct(name, description, currency, minDeposit, maxDeposit, interestRate, depositTerm, isActive);
-        investtProductServise.save(invProduct);
+    @PostMapping("/add-inv-product")
+    public String addInvProduct(@ModelAttribute InvestProduct investProduct){
+        investProductServise.save(investProduct);
         return "redirect:/deposits";
     }
 
     // форма редактирование инвест продукта
     @GetMapping("/product/edit/{investProduct}")
-    public String editProduct(Model model, @PathVariable InvestProduct investProduct){
-        model.addAttribute("investProduct", investProduct);
+    public String editProduct(@PathVariable InvestProduct investProduct){
         return "deposit-edit";
     }
 
+
     //сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
-    public String saveEditedProduct(@ModelAttribute InvestProduct investProduct){
-        investtProductServise.save(investProduct);
-        return "redirect:/deposits";
+    public String saveEditedProduct(@ModelAttribute InvestProduct investProduct,
+                                    RedirectAttributes redirectAttributes){
+       investProductServise.save(investProduct);
+       return "redirect:/deposits";
     }
 
     //удаление инвест продукта(сделать неактивным)
     @GetMapping("/product/delete/{investProduct}")
     public String deleteProduct(@PathVariable InvestProduct investProduct){
-        investtProductServise.delete(investProduct);
+        investProductServise.delete(investProduct);
         return "redirect:/deposits";
     }
 
@@ -82,7 +76,9 @@ public class ProductController {
                                                                              "Откройте и пополните счёт не менее чем на " +
                                                                              investProduct.getMinDeposit() + " " + investProduct.getCurrency());
             return "invest";
-        } else {}
+        } else {
+
+        }
         return "invest";
     }
 
