@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -44,7 +45,8 @@ public class ProductController {
 
     // форма редактирование инвест продукта
     @GetMapping("/product/edit/{investProduct}")
-    public String editProduct(@PathVariable InvestProduct investProduct){
+    public String editProduct(@PathVariable InvestProduct investProduct, HttpSession session){
+        session.setAttribute("securedId", investProduct.getId());
         return "deposit-edit";
     }
 
@@ -52,9 +54,16 @@ public class ProductController {
     //сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
     public String saveEditedProduct(@ModelAttribute InvestProduct investProduct,
+                                    HttpSession session,
                                     RedirectAttributes redirectAttributes){
-       investProductServise.save(investProduct);
-       return "redirect:/deposits";
+        Long securedId = (Long) session.getAttribute("securedId");
+        if (securedId!=investProduct.getId()){
+            redirectAttributes.addFlashAttribute("error", "Попытка подмены id отклонена");
+
+        } else {
+        investProductServise.save(investProduct);
+        session.removeAttribute("securedId");}
+        return "redirect:/deposits";
     }
 
     //удаление инвест продукта(сделать неактивным)
