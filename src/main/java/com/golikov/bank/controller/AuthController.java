@@ -1,4 +1,4 @@
-package com.golikov.bank.controllers;
+package com.golikov.bank.controller;
 
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.Role;
@@ -23,7 +23,7 @@ public class AuthController {
     ClientRepository clientRepository;
 
     @RequestMapping("/login")
-    public String login(Model model) {
+    public String login() {
         return "login";
     }
 

@@ -10,15 +10,13 @@
 
                 <div class="container px-5">
                     <p>Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
-                    <form th:action="@{/account/up-deposit-balance}"  th:object="${proxyDepositAccount}" method="post">
+                    <form th:action="@{/account/up-deposit-balance}" th:object="${depositAccount}"  method="post">
                         <label for="depo" class="form-label">Выберите счёт: </label>
-                        <select  id="depo"  class="form-select" th:field="*{depositAccount}" required>
-                            <div th:each="account : ${depoAccs}">
-                                <option th:value="${account.getId}" th:text="${account.getAccountNumber} + ' ' + ${account.getCurrency}"></option>
-                            </div>
+                        <select  id="depo"  class="form-select" th:field="*{id}" required>
+                                <option th:each="account : ${depoAccs}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' ' + ${account.getCurrency}"></option>
                         </select>
                         <br>
-                        <input class="form-control" th:field="*{amount}" placeholder="сумма в рублях" type="number" /> <br>
+                        <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" /> <br>
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Перевод</button>

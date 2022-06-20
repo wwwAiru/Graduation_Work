@@ -1,4 +1,4 @@
-package com.golikov.bank.controllers;
+package com.golikov.bank.controller;
 
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.DepositAccount;

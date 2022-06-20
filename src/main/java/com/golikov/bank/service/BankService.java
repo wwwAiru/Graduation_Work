@@ -7,7 +7,6 @@ import com.golikov.bank.repository.ClientRepository;
 import com.golikov.bank.repository.ClientTransactionRepository;
 import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.utils.AccountNumGenerator;
-import com.golikov.bank.utils.ProxyDepositAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,9 +56,8 @@ public class BankService {
 
     //переревод денег с баланса на банкововский счёт
     @Transactional
-    public void upDepositAccountBalance(Client client, ProxyDepositAccount proxyDepositAccount){
-        DepositAccount depositAccount = proxyDepositAccount.getDepositAccount();
-        BigDecimal amount = proxyDepositAccount.getAmount();
+    public void upDepositAccountBalance(Client client, Long id, BigDecimal amount){
+        DepositAccount depositAccount = depositAccountRepository.findById(id).get();
         // вычитается сумма с баланса клиента
         client.setBalance(client.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты

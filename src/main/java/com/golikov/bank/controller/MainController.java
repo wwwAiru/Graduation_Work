@@ -1,4 +1,4 @@
-package com.golikov.bank.controllers;
+package com.golikov.bank.controller;
 
 import com.golikov.bank.entity.Currency;
 import com.golikov.bank.service.CurrencyService;
