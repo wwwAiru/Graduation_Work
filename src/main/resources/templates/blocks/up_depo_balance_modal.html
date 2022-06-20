@@ -1,0 +1,31 @@
+<div th:fragment="upDepositBalance">
+    <!-- Modal -->
+    <div class="modal fade" id="upDepositBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <h1 class="text-center">Перевод средств</h1>
+
+                <div class="container px-5">
+                    <p>Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
+                    <form th:action="@{/account/up-deposit-balance}" th:object="${depositAccount}"  method="post">
+                        <label for="depo" class="form-label">Выберите счёт: </label>
+                        <select  id="depo"  class="form-select" th:field="*{id}" required>
+                                <option th:each="account : ${depoAccs}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' ' + ${account.getCurrency}"></option>
+                        </select>
+                        <br>
+                        <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" /> <br>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-outline-success">Перевод</button>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

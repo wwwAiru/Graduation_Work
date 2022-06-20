@@ -9,11 +9,16 @@
                 <h1 class="text-center">Инвестиционный счёт</h1>
 
                 <div class="container px-5">
-                    Выберите валюту счёта:
-                    <form th:action="@{/create-deposit-account}" method="post" th:object="${newDepoAcc}">
+
+                    <form th:action="@{/account/create-deposit-account}" method="post" th:object="${newDepoAcc}">
+
+                        <textarea class="form-control" style="height: 60px" th:field="*{description}" placeholder="Введите ваше описание/памятку/примечание(не обязательно)" type="text"></textarea> <br>
+
+                        <p>Выберите валюту счёта: </p>
+
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="currency" value="RUR" itemtype="text" id="btnradio1" autocomplete="off" checked/>
-                            <label class="btn btn-outline-info" for="btnradio1">RUR</label>
+                            <input type="radio" class="btn-check" name="currency" value="RUB" itemtype="text" id="btnradio1" autocomplete="off" checked/>
+                            <label class="btn btn-outline-info" for="btnradio1">RUB</label>
 
                             <input type="radio" class="btn-check" name="currency" value="USD" itemtype="text" id="btnradio2" autocomplete="off" />
                             <label class="btn btn-outline-info" for="btnradio2">USD</label>

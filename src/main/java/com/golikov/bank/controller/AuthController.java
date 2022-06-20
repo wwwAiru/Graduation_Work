@@ -1,22 +1,31 @@
-package com.golikov.bank.controllers;
+package com.golikov.bank.controller;
 
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.Role;
 import com.golikov.bank.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Collections;
 
 
 @Controller
-public class RegistrationController {
+public class AuthController {
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     ClientRepository clientRepository;
+
+    @RequestMapping("/login")
+    public String login() {
+        return "login";
+    }
 
     @GetMapping("/registration")
     public String registration(){
@@ -43,7 +52,7 @@ public class RegistrationController {
         client.setLastName(lastName);
         client.setMiddleName(middleName);
         client.setEmail(email);
-        client.setPassword(password);
+        client.setPassword(passwordEncoder.encode(password));
         clientRepository.save(client);
         return "redirect:/login";
     }

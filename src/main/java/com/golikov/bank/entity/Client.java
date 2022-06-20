@@ -1,17 +1,20 @@
 package com.golikov.bank.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "clients")
+@Getter
+@Setter
 public class Client implements UserDetails {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -36,13 +39,7 @@ public class Client implements UserDetails {
     @Column(name = "balance", nullable = false)
     private BigDecimal balance = new BigDecimal(0);
 
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.PERSIST,
-            CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    private Set<ClientInvestProd> clientInvestProds;
-
-    @OneToMany(mappedBy = "client", cascade = {CascadeType.DETACH, CascadeType.MERGE,
-            CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
     private List<DepositAccount> depositAccounts;
 
     @Column(name = "active")
@@ -64,53 +61,9 @@ public class Client implements UserDetails {
         this.password = password;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     @Override
@@ -138,50 +91,11 @@ public class Client implements UserDetails {
         return isActive();
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public Set<ClientInvestProd> getClientInvestProds() {
-        return clientInvestProds;
-    }
-
-    public List<DepositAccount> getDepositAccounts() {
-        return depositAccounts;
-    }
-
     public boolean isActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public void AddClientInvestProd(ClientInvestProd clientInvestProd) {
-        if (clientInvestProds == null) {
-            clientInvestProds = new HashSet<>();
-        }
-        clientInvestProds.add(clientInvestProd);
-        clientInvestProd.setClient(this);
-    }
-
+    //для html шаблона
     public String getFullName(){
         return lastName + " " + firstName + " " + middleName ;
     }

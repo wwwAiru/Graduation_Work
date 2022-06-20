@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- блок head с ресурсами JS и bootstrap -->
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+<header th:insert="blocks/navbar :: navbar"></header>
+<div class="text-center lh-base p-4 mt-5">
+    <h2>
+        Инвестиционный продукт
+    </h2>
+    <br>
+    <div th:if="${NoValidAccountsError}" class="container alert alert-danger text-center" th:text="${NoValidAccountsError}"></div>
+
+</div>
+<div th:insert="/blocks/footer :: footer"></div>
+</body>
+</html>
