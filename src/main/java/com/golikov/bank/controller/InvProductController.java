@@ -1,6 +1,7 @@
 package com.golikov.bank.controller;
 
 import com.golikov.bank.entity.Client;
+import com.golikov.bank.entity.ClientInvestProd;
 import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.entity.InvestProduct;
 import com.golikov.bank.service.BankService;
@@ -34,13 +35,14 @@ public class InvProductController {
         return "invest-product/deposits";
     }
 
-
+    // создание нового инвестиционного продукта
     @GetMapping("/product/create-inv-product")
     public String createInvProduct(Model model){
         model.addAttribute("investProduct", new InvestProduct());
         return "invest-product/create-inv-product";
     }
 
+    // сохранение нового инвестиционного продукта
     @PostMapping("/add-inv-product")
     public String addInvProduct(@ModelAttribute InvestProduct investProduct,
                                 RedirectAttributes redirectAttributes){
@@ -58,7 +60,7 @@ public class InvProductController {
     }
 
 
-    //сохранение изменений инвест продукта
+    // сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
     public String saveEditedProduct(@ModelAttribute InvestProduct investProduct,
                                     HttpSession session,
@@ -74,29 +76,33 @@ public class InvProductController {
         return "redirect:/deposits";
     }
 
-    //удаление инвест продукта(сделать неактивным)
+    // удаление инвест продукта(сделать неактивным)
     @GetMapping("/product/delete/{investProduct}")
     public String deleteProduct(@PathVariable InvestProduct investProduct){
         investProductServise.delete(investProduct);
         return "redirect:/deposits";
     }
 
+    // инвестиция в продукт(открытие вклада)
     @GetMapping("/product/invest/{investProduct}")
     public String invest(Model model,
                          @PathVariable InvestProduct investProduct,
                          @AuthenticationPrincipal Client client,
-                         RedirectAttributes redirectAttributes){
+                         HttpSession session){
         List<DepositAccount> accounts = bankService.findValidDepoAccounts(client.getId(),
                                                                           investProduct.getCurrency(),
                                                                           investProduct.getMinDeposit());
         if (accounts.isEmpty()){
-            model.addAttribute("error","У вас нет инвестиционных счетов для данного продукта.\n" +
+            model.addAttribute("error","У вас нет инвестиционных счетов для данного продукта. " +
                                                                              "Откройте и/или пополните счёт не менее чем на " +
                                                                              investProduct.getMinDeposit() + " " + investProduct.getCurrency());
-            return "invest-product/invest";
-        } else {
-
         }
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("investProduct", investProduct);
+        model.addAttribute("investment", new ClientInvestProd());
+        session.setAttribute("accounts", accounts);
+        session.setAttribute("investProduct", investProduct);
+
         return "invest-product/invest";
     }
 

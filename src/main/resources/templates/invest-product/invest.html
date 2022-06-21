@@ -8,14 +8,68 @@
 <body>
 <header th:insert="blocks/navbar :: navbar"></header>
 <div class="text-center lh-base p-4 mt-5">
-    <h2>
-        Инвестиционный продукт
-    </h2>
-    <br>
-    <!--/*@thymesVar id="error" type="org.springframework.web.servlet.mvc.support.RedirectAttributes"*/-->
+    <h2> Инвестиционный продукт </h2> <br>
+    <!--/*@thymesVar id="error" type="java.lang.String"*/-->
     <div th:if="${error}" class="container alert alert-danger text-center" th:text="${error}"></div>
-
 </div>
+
+<div class="container mt-5">
+    <div class="card">
+        <h5 class="card-header" style="background: #afecda;" th:text="${investProduct.getName}"></h5>
+        <div class="card-body">
+            <p th:text="${investProduct.getDescription}" class="card-text"></p>
+
+            <div class="container">
+                <table class="table">
+                    <tr>
+                        <th class="text-center">Ставка</th>
+                        <th>Минимальный срок вклада (дней)</th>
+                        <th>Максимальный срок вклада (дней)</th>
+                        <th>Минимальная сумма вклада</th>
+                        <th>Максимальная сумма вклада</th>
+                        <th class="text-center">Валюта</th>
+                    </tr>
+                    <tr>
+                        <td class="col-1 text-center" th:text="${investProduct.getInterestRate} + ' %'"></td>
+                        <td class="col-1 text-center" th:text="${investProduct.getMinDepositTerm}"></td>
+                        <td class="col-1 text-center" th:text="${investProduct.getMaxDepositTerm}"></td>
+                        <td class="col-1 text-center" th:text="${investProduct.getMaxDeposit}"></td>
+                        <td class="col-1 text-center" th:text="${investProduct.getMinDeposit}"></td>
+                        <td class="col-1 text-center" th:text="${investProduct.getCurrency}"></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-footer">
+
+                <form th:action="@{/#}" th:object="${investment}"  method="post" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="depo" class="form-label">Выберите счёт: </label>
+                        <select  id="depo"  class="form-select" th:field="*{id}" required>
+                            <option th:each="account : ${accounts}" th:value="${account.getId}" th:text="${account.getAccountNumber} + '  Баланс: ' + ${account.getBalance} ' ' + ${account.getCurrency}"></option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Введите сумму: </label>
+                        <input class="form-control" name="amount" placeholder="сумма инвестиции" type="number" /> <br>
+                    </div>
+
+                    <div class="col-md-1">
+                        <label class="form-label">Срок вклада (дней) </label>
+                        <input class="form-control" name="amount" placeholder="срок вклада" type="number" /> <br>
+                    </div>
+
+                    <div class="container right">
+                        <button type="submit" class="btn btn-outline-success">Принять</button>
+                        <button type="button" class="btn btn-outline-danger">Отменить</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div th:insert="/blocks/footer :: footer"></div>
 </body>
 </html>

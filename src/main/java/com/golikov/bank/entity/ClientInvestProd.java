@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 
-
 @Entity
 @Table(name = "client_invest_products")
 @Getter
@@ -19,8 +18,8 @@ public class ClientInvestProd {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "product_balance")
-    private BigDecimal productBalance;
+    @Column(name = "balance")
+    private BigDecimal balance;
 
     @Column(name = "currency")
     private String currency;
@@ -42,9 +41,9 @@ public class ClientInvestProd {
     public ClientInvestProd() {
     }
 
-    public ClientInvestProd(String currency, BigDecimal productBalance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
+    public ClientInvestProd(String currency, BigDecimal balance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
         this.currency = currency;
-        this.productBalance = productBalance;
+        this.balance = balance;
         this.depositAccount = depositAccount;
         this.investProduct = investProduct;
         this.beginDate = beginDate;

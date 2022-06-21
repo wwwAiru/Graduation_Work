@@ -10,5 +10,5 @@ public interface DepositAccountRepository extends JpaRepository<DepositAccount, 
 
     public List<DepositAccount> findByClientIdOrderById(Long id);
 
-    public List<DepositAccount> findByClientIdAndCurrencyLikeAndDepositBalanceGreaterThan(Long id, String currency, BigDecimal balance);
+    public List<DepositAccount> findByClientIdAndCurrencyLikeAndBalanceGreaterThan(Long id, String currency, BigDecimal balance);
 }

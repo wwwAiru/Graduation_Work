@@ -65,20 +65,20 @@ public class BankService {
             amount = amount.divide(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
         }
         // сохранение изменений в базу
-        depositAccount.setDepositBalance(depositAccount.getDepositBalance().add(amount));
+        depositAccount.setBalance(depositAccount.getBalance().add(amount));
         clientRepository.save(client);
         depositAccountRepository.save(depositAccount);
     }
 
     @Transactional
     public List<DepositAccount> findValidDepoAccounts(Long id, String currency, BigDecimal balance){
-        return depositAccountRepository.findByClientIdAndCurrencyLikeAndDepositBalanceGreaterThan(id, currency, balance);
+        return depositAccountRepository.findByClientIdAndCurrencyLikeAndBalanceGreaterThan(id, currency, balance);
     }
 
     @Transactional
     public void withdrawMoney(Client client, DepositAccount depositAccount, BigDecimal amount){
         // вычитается сумма с баланса аккаунта
-        depositAccount.setDepositBalance(depositAccount.getDepositBalance().subtract(amount));
+        depositAccount.setBalance(depositAccount.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
         if (!depositAccount.getCurrency().equals("RUB")){
             amount = amount.multiply(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue());

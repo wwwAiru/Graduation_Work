@@ -28,8 +28,8 @@ public class WithdrawBalanceValidator {
             redirectAttributes.addFlashAttribute("amount", "Поле не может быть пустым.");
             this.hasErrors = true;
             return;
-        } else if (depositAccount.getDepositBalance().compareTo(inputAmount) < 0) {
-            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+ depositAccount.getDepositBalance() + ".");
+        } else if (depositAccount.getBalance().compareTo(inputAmount) < 0) {
+            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+ depositAccount.getBalance() + ".");
             this.hasErrors = true;
         } else if (inputAmount.compareTo(BigDecimal.valueOf(0)) < 0) {
             redirectAttributes.addFlashAttribute("amount", "Значение не может быть отрицательным.");
