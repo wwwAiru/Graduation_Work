@@ -1,4 +1,4 @@
-package com.golikov.bank.entity;
+package com.golikov.bank.utils;
 
 
 import lombok.AllArgsConstructor;

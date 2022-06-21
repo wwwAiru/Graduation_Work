@@ -20,7 +20,7 @@ public class InvestProduct {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
 
     @Column(name = "currency")
@@ -32,7 +32,7 @@ public class InvestProduct {
     @Column(name = "max_deposit")
     private BigDecimal maxDeposit;
 
-    @Column(name = "iterest_rate")
+    @Column(name = "interest_rate")
     private BigDecimal interestRate;
 
     @OneToMany(mappedBy = "investProduct")

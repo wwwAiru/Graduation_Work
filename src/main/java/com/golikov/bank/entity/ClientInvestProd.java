@@ -25,7 +25,7 @@ public class ClientInvestProd {
     @Column(name = "currency")
     private String currency;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "deposit_acc_id")
     private DepositAccount depositAccount;
 

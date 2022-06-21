@@ -1,11 +1,10 @@
 package com.golikov.bank.service;
 
-import com.golikov.bank.entity.Currency;
+import com.golikov.bank.utils.Currency;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,9 +32,9 @@ public class CurrencyService {
     @PostConstruct
     private void defaultCurrencies(){
         if (currencies==null) currencies = new HashMap<>();
-        Currency currencyUSD = new Currency("USD", "Доллар США", BigDecimal.valueOf(57.8021), Integer.valueOf(1));
+        Currency currencyUSD = new Currency("USD", "Доллар США", BigDecimal.valueOf(57.8021), 1);
         this.currencies.put("USD", currencyUSD);
-        Currency currencyEUR = new Currency("EUR", "Евро", BigDecimal.valueOf(61.3718), Integer.valueOf(1));
+        Currency currencyEUR = new Currency("EUR", "Евро", BigDecimal.valueOf(61.3718), 1);
         this.currencies.put("EUR", currencyEUR);
         System.out.println("Set default values to currencies");
     }

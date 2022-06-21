@@ -57,12 +57,13 @@ public class ProductController {
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes){
         Long securedId = (Long) session.getAttribute("securedId");
+        session.removeAttribute("securedId");
         if (securedId!=investProduct.getId()){
             redirectAttributes.addFlashAttribute("error", "Попытка подмены id отклонена");
 
         } else {
         investProductServise.save(investProduct);
-        session.removeAttribute("securedId");}
+        }
         return "redirect:/deposits";
     }
 
@@ -76,12 +77,13 @@ public class ProductController {
     @GetMapping("/product/invest/{investProduct}")
     public String invest(Model model,
                          @PathVariable InvestProduct investProduct,
-                         @AuthenticationPrincipal Client client){
+                         @AuthenticationPrincipal Client client,
+                         RedirectAttributes redirectAttributes){
         List<DepositAccount> accounts = bankService.findValidDepoAccounts(client.getId(),
                                                                           investProduct.getCurrency(),
                                                                           investProduct.getMinDeposit());
         if (accounts.isEmpty()){
-            model.addAttribute("NoValidAccountsError","У вас нет инвестиционных счетов для данного продукта.\n" +
+            model.addAttribute("error","У вас нет инвестиционных счетов для данного продукта.\n" +
                                                                              "Откройте и пополните счёт не менее чем на " +
                                                                              investProduct.getMinDeposit() + " " + investProduct.getCurrency());
             return "invest";

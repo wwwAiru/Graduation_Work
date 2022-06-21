@@ -12,7 +12,8 @@
         Инвестиционный продукт
     </h2>
     <br>
-    <div th:if="${NoValidAccountsError}" class="container alert alert-danger text-center" th:text="${NoValidAccountsError}"></div>
+    <!--/*@thymesVar id="error" type="org.springframework.web.servlet.mvc.support.RedirectAttributes"*/-->
+    <div th:if="${error}" class="container alert alert-danger text-center" th:text="${error}"></div>
 
 </div>
 <div th:insert="/blocks/footer :: footer"></div>
