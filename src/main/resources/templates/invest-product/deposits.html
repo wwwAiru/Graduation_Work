@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- блок head с ресурсами JS и bootstrap -->
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+
+<header th:insert="blocks/navbar :: navbar"></header>
+
+
+<section class="py-5 text-center mt-5 container"><h1>Инвестиционные продукты</h1></section>
+
+
+<div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
+
+
+<!-- список инвест продуктов-->
+<div class="container album py-2 bg-light">
+    <!--  кнопка Добавить инвестиционный продукт -->
+    <div class="container mt-5">
+        <button type="button" class="btn btn-outline-success"  onclick="location.href = '/product/create-inv-product'">Добавить новый инвестиционный продукт</button>
+    </div>
+    <div th:each="invProduct : ${invProducts}" class="container mt-5">
+        <div th:if="${invProduct.isActive}" class="card">
+            <h5 class="card-header" style="background: #afecda;" th:text="${invProduct.getCurrency}"></h5>
+            <div class="card-body">
+                <h5 th:text="${invProduct.getName}" class="card-title"></h5>
+                <p th:text="${invProduct.getDescription}" class="card-text"></p>
+                <div class="card-footer">
+                    <div class="btn-group">
+                        <a th:href="@{/product/invest/{id}(id=${invProduct.getId})}"
+                           class="btn btn-sm btn-outline-secondary">Инвестировать</a>
+                        <a th:href="@{/product/edit/{id}(id=${invProduct.getId})}"
+                           class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        <a th:href="@{/product/delete/{id}(id=${invProduct.getId})}"
+                           class="btn btn-sm btn-outline-secondary">Удалить</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:insert="/blocks/footer :: footer"></div>
+</body>
+</html>

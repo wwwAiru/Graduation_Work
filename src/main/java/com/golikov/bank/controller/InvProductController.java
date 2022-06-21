@@ -3,43 +3,50 @@ package com.golikov.bank.controller;
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.entity.InvestProduct;
-import com.golikov.bank.repository.InvestProdRepository;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.InvestProductServise;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class ProductController {
-    @Autowired
-    private InvestProdRepository investProdRepository;
-
+public class InvProductController {
     @Autowired
     InvestProductServise investProductServise;
 
     @Autowired
     BankService bankService;
 
-
     @GetMapping("/deposits")
     public String deposits(Model model){
-        Iterable<InvestProduct> invProducts = investProdRepository.findAll();
+        Iterable<InvestProduct> invProducts = investProductServise.findAllByActive();
         model.addAttribute("invProducts", invProducts);
         model.addAttribute("currentPage", "deposits");
+        return "invest-product/deposits";
+    }
+
+
+    @GetMapping("/product/create-inv-product")
+    public String createInvProduct(Model model){
         model.addAttribute("investProduct", new InvestProduct());
-        return "/deposits";
+        return "invest-product/create-inv-product";
     }
 
     @PostMapping("/add-inv-product")
-    public String addInvProduct(@ModelAttribute InvestProduct investProduct){
+    public String addInvProduct(@ModelAttribute InvestProduct investProduct,
+                                RedirectAttributes redirectAttributes){
+        redirectAttributes.addFlashAttribute("success","Инвестиционный продукт успешно добавлен");
         investProductServise.save(investProduct);
+
         return "redirect:/deposits";
     }
 
@@ -47,7 +54,7 @@ public class ProductController {
     @GetMapping("/product/edit/{investProduct}")
     public String editProduct(@PathVariable InvestProduct investProduct, HttpSession session){
         session.setAttribute("securedId", investProduct.getId());
-        return "deposit-edit";
+        return "invest-product/deposit-edit";
     }
 
 
@@ -84,13 +91,13 @@ public class ProductController {
                                                                           investProduct.getMinDeposit());
         if (accounts.isEmpty()){
             model.addAttribute("error","У вас нет инвестиционных счетов для данного продукта.\n" +
-                                                                             "Откройте и пополните счёт не менее чем на " +
+                                                                             "Откройте и/или пополните счёт не менее чем на " +
                                                                              investProduct.getMinDeposit() + " " + investProduct.getCurrency());
-            return "invest";
+            return "invest-product/invest";
         } else {
 
         }
-        return "invest";
+        return "invest-product/invest";
     }
 
 

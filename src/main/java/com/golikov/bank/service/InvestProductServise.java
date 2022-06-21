@@ -5,6 +5,8 @@ import com.golikov.bank.repository.InvestProdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InvestProductServise {
 
@@ -13,6 +15,10 @@ public class InvestProductServise {
 
     public void save(InvestProduct investProduct){
         investProdRepository.save(investProduct);
+    }
+
+    public List<InvestProduct> findAllByActive () {
+        return investProdRepository.findAllByIsActiveIsTrueOrderByName();
     }
 
     public void delete(InvestProduct investProduct){
