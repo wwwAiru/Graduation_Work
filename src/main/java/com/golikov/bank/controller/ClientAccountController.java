@@ -8,7 +8,7 @@ import com.golikov.bank.repository.DepositAccountRepository;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.ClientService;
 import com.golikov.bank.validator.ClientBalanceValidator;
-import com.golikov.bank.validator.WithdrawBalanceValidator;
+import com.golikov.bank.validator.TransferBalanceValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -35,8 +35,6 @@ public class ClientAccountController {
     @Autowired
     ClientBalanceValidator clientBalanceValidator;
 
-    @Autowired
-    WithdrawBalanceValidator withdrawBalanceValidator;
 
     @Autowired
     ClientService clientService;
@@ -89,7 +87,7 @@ public class ClientAccountController {
         }
         // защита от подмены id счёта для зачисления, проверяется содержит ли Set id из формы
         if (depositAccount==null || !((Set<Long>)session.getAttribute("clientAccountIds")).contains(depositAccount.getId())){
-            redirectAttributes.addFlashAttribute("unaccesableClientId", "Попытка подмены id счёта отклонена.");
+            redirectAttributes.addFlashAttribute("validationErrror", "Попытка подмены id счёта отклонена.");
         } else bankService.upDepositAccountBalance(client, depositAccount.getId(), amount);
         session.removeAttribute("clientAccountIds");
         return "redirect:/account";
@@ -99,23 +97,28 @@ public class ClientAccountController {
     @PostMapping("/account/withdraw/{depositAccount}")
     public String withdraw(@AuthenticationPrincipal Client client,
                            @PathVariable(required = false) DepositAccount depositAccount,
-                           @RequestParam(required = false) BigDecimal amount,
+                           @RequestParam(required = false) String amount,
                            RedirectAttributes redirectAttributes) {
-
+        // защита от попадания строки в поле для цифр
+        BigDecimal amountDecimal = null;
+        if (amount.matches("\\d+")){
+            amountDecimal = new BigDecimal(amount);
+        } else {
+            redirectAttributes.addFlashAttribute("validationErrror", "Допускаются только числовые значения");
+            return "redirect:/account";
+        }
         // защита от подмены id счёта вывода денег
         if (depositAccount == null || depositAccount.getClient().getId() != client.getId()){
-            redirectAttributes.addFlashAttribute("unaccesableClientId", "Попытка подмены id счёта отклонена.");
+            redirectAttributes.addFlashAttribute("validationErrror", "Попытка подмены id счёта отклонена.");
             return  "redirect:/account";
-        } else {
-        // валидация выводимой суммы денег
-        withdrawBalanceValidator.setDepositAccount(depositAccount);
-        withdrawBalanceValidator.setRedirectAttributes(redirectAttributes);
-        withdrawBalanceValidator.validate(amount);
         }
+        // валидация выводимой суммы денег
+        TransferBalanceValidator balanceValidator = new TransferBalanceValidator(depositAccount, redirectAttributes);
+        balanceValidator.validate(amountDecimal);
         // если есть ошибки валидации то редирект с флэш сообщениями из WithdrawBalanceValidator
-        if (withdrawBalanceValidator.isHasErrors()){
+        if (balanceValidator.hasErrors()){
         } else {
-            bankService.withdrawMoney(client, depositAccount, amount);
+            bankService.withdrawMoney(client, depositAccount, amountDecimal);
             redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
         }
         return "redirect:/account";

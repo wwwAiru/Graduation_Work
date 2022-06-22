@@ -1,29 +1,24 @@
 package com.golikov.bank.validator;
 
 import com.golikov.bank.entity.DepositAccount;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 
 
 // кастомный валидатор проверяет на null, отрицательное значение и значение превышающее баланс fr
-@Component
-@Getter
-@Setter
-@NoArgsConstructor
-public class WithdrawBalanceValidator {
+public class TransferBalanceValidator {
 
     private RedirectAttributes redirectAttributes;
     private DepositAccount depositAccount;
     private boolean hasErrors;
 
+    public TransferBalanceValidator(DepositAccount depositAccount, RedirectAttributes redirectAttributes) {
+        this.redirectAttributes = redirectAttributes;
+        this.depositAccount = depositAccount;
+    }
 
     public void validate(BigDecimal inputAmount) {
-        this.hasErrors = false;
         if (inputAmount == null){
             redirectAttributes.addFlashAttribute("amount", "Поле не может быть пустым.");
             this.hasErrors = true;
@@ -37,4 +32,7 @@ public class WithdrawBalanceValidator {
         }
     }
 
+    public boolean hasErrors() {
+        return hasErrors;
+    }
 }

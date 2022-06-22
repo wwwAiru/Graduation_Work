@@ -6,10 +6,12 @@ import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.entity.InvestProduct;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.InvestProductServise;
+import com.golikov.bank.validator.DepositDaysValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 public class InvProductController {
@@ -26,6 +31,7 @@ public class InvProductController {
 
     @Autowired
     BankService bankService;
+
 
     @GetMapping("/deposits")
     public String deposits(Model model){
@@ -97,23 +103,37 @@ public class InvProductController {
                                                                              "Откройте и/или пополните счёт не менее чем на " +
                                                                              investProduct.getMinDeposit() + " " + investProduct.getCurrency());
         }
+        Set<Long> clientAccountIds = accounts.stream().map(acc -> acc.getId()).collect(Collectors.toSet());
         model.addAttribute("accounts", accounts);
         model.addAttribute("investProduct", investProduct);
+        if (!model.containsAttribute("investment")) {
         model.addAttribute("investment", new ClientInvestProd());
-        session.setAttribute("accounts", accounts);
+        }
+        session.setAttribute("accounts", clientAccountIds);
         session.setAttribute("investProduct", investProduct);
-
         return "invest-product/invest";
     }
 
+    @PostMapping("/product/invest/save")
+    public String saveInvest(@ModelAttribute("account") DepositAccount account,
+                             @Valid @ModelAttribute("investment")  ClientInvestProd clientInvest,
+                             BindingResult result,
+                             HttpSession session,
+                             RedirectAttributes redirectAttributes){
+        Set<Long> clientAccountIds = (Set<Long>) session.getAttribute("accounts");
+        InvestProduct investProduct = (InvestProduct) session.getAttribute("investProduct");
+//         валидация дней, зачение не должно выходить за рамки утановленными инвест продуктом
+        DepositDaysValidator depositDaysValidator = new DepositDaysValidator();
+        depositDaysValidator.validate(clientInvest.getDays(), investProduct, redirectAttributes);
+        if (result.hasErrors() | depositDaysValidator.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.investment", result);
+            redirectAttributes.addFlashAttribute("investment", clientInvest);
+            redirectAttributes.addFlashAttribute("account", account);
+            return "redirect:/product/invest/"+investProduct.getId();
+        }
+        return "redirect:/deposits";
+    }
 
-
-//    @GetMapping("/deposit_by_rate")
-//    public String depositsByRate(Model model){
-//        Iterable<InvestProduct> invProducts = investProdRepository.findAllByOrderByInterestRateDesc();
-//        model.addAttribute("invProducts", invProducts);
-//        return "deposits";
-//    }
 
 
 }

@@ -37,7 +37,7 @@
 
 <!-- сообщения валидации из ClienBalanceValidator -->
 <div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
-<div th:if="${unaccesableClientId}" class="container alert alert-danger text-center" th:text="${unaccesableClientId}"></div>
+<div th:if="${validationErrror}" class="container alert alert-danger text-center" th:text="${validationErrror}"></div>
 <!-- сообщения от успешных транзакциях -->
 <div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
 

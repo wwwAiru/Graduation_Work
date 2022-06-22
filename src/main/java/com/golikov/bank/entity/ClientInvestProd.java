@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -19,10 +20,19 @@ public class ClientInvestProd {
     private Long id;
 
     @Column(name = "balance")
+    @NotNull(message = "Поле не может быть пустым")
+    @DecimalMin(value = "1", message = "Значение неможет быть меньше 1")
+    @DecimalMax(value = "1000000000000", message = "Превышено максимальное значение")
     private BigDecimal balance;
 
     @Column(name = "currency")
     private String currency;
+
+
+    @Min(value = 0, message = "Поле не может содержать отрицательное число")
+    @Max(value = 3640, message = "Вы превысили допустимое значение")
+    @NotNull(message = "Поле не может быть пустым")
+    private Integer days;
 
     @ManyToOne()
     @JoinColumn(name = "deposit_acc_id")
