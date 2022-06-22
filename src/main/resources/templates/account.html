@@ -52,7 +52,7 @@
         <div class="card">
             <p th:text="'Счёт №: ' + ${account.getAccountNumber} + ', валюта счёта ' + ${account.getCurrency}" class="card-header"></p>
             <div class="card-body">
-                <h5 th:text="'Баланс счёта: '+ ${account.getDepositBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
+                <h5 th:text="'Баланс счёта: '+ ${account.getBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
 
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
 
