@@ -43,7 +43,6 @@ public class BankService {
         BigDecimal amount = clientTransaction.getAmount();
         client.setBalance(currentBalance.add(amount));
         clientRepository.save(client);
-        System.out.println(clientTransaction.getCardNumber());
         clientTransactionRepository.save(clientTransaction);
     }
 
@@ -110,7 +109,6 @@ public class BankService {
         investment.setProfit(profit);
         depositAccountRepository.save(depositAccount);
         clientInvestProdRepository.save(investment);
-        depositAccount.getClientInvestProds().forEach(System.out::println);
     }
 
 }
