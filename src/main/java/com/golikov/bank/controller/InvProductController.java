@@ -6,6 +6,7 @@ import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.entity.InvestProduct;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.InvestProductServise;
+import com.golikov.bank.validator.AccountValidator;
 import com.golikov.bank.validator.DepositDaysValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -103,33 +104,37 @@ public class InvProductController {
                                                                              "Откройте и/или пополните счёт не менее чем на " +
                                                                              investProduct.getMinDeposit() + " " + investProduct.getCurrency());
         }
-        Set<Long> clientAccountIds = accounts.stream().map(acc -> acc.getId()).collect(Collectors.toSet());
         model.addAttribute("accounts", accounts);
         model.addAttribute("investProduct", investProduct);
         if (!model.containsAttribute("investment")) {
         model.addAttribute("investment", new ClientInvestProd());
         }
-        session.setAttribute("accounts", clientAccountIds);
+        session.setAttribute("accounts", accounts);
         session.setAttribute("investProduct", investProduct);
         return "invest-product/invest";
     }
 
     @PostMapping("/product/invest/save")
-    public String saveInvest(@ModelAttribute("account") DepositAccount account,
-                             @Valid @ModelAttribute("investment")  ClientInvestProd clientInvest,
+    public String saveInvest(@Valid @ModelAttribute("investment")  ClientInvestProd clientInvest,
                              BindingResult result,
                              HttpSession session,
                              RedirectAttributes redirectAttributes){
-        Set<Long> clientAccountIds = (Set<Long>) session.getAttribute("accounts");
+        List<DepositAccount> accounts = (List<DepositAccount>) session.getAttribute("accounts");
         InvestProduct investProduct = (InvestProduct) session.getAttribute("investProduct");
 //         валидация дней, зачение не должно выходить за рамки утановленными инвест продуктом
         DepositDaysValidator depositDaysValidator = new DepositDaysValidator();
         depositDaysValidator.validate(clientInvest.getDays(), investProduct, redirectAttributes);
-        if (result.hasErrors() | depositDaysValidator.hasErrors()){
+//         валидация выбранного аккаунта из select option списка формы
+        AccountValidator accountValidator = new AccountValidator();
+        accountValidator.validate(accounts, clientInvest.getDepositAccount(), redirectAttributes);
+        if (result.hasErrors() | depositDaysValidator.hasErrors() | accountValidator.hasErrors()){
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.investment", result);
             redirectAttributes.addFlashAttribute("investment", clientInvest);
-            redirectAttributes.addFlashAttribute("account", account);
+            redirectAttributes.addFlashAttribute("account", clientInvest.getDepositAccount());
             return "redirect:/product/invest/"+investProduct.getId();
+        } else {
+            bankService.makeInvest(clientInvest, clientInvest.getDepositAccount(), investProduct);
+            redirectAttributes.addFlashAttribute("success", "Вы инвестировали в наш продукт " + investProduct.getName());
         }
         return "redirect:/deposits";
     }

@@ -47,7 +47,7 @@ public class DepositAccount {
         this.client = client;
     }
 
-    public void AddClientInvestProd(ClientInvestProd clientInvestProd) {
+    public void addClientInvestProd(ClientInvestProd clientInvestProd) {
         if (clientInvestProds == null) {
             clientInvestProds = new HashSet<>();
         }

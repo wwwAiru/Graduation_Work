@@ -1,8 +1,7 @@
 package com.golikov.bank.service;
 
-import com.golikov.bank.entity.Client;
-import com.golikov.bank.entity.ClientTransaction;
-import com.golikov.bank.entity.DepositAccount;
+import com.golikov.bank.entity.*;
+import com.golikov.bank.repository.ClientInvestProdRepository;
 import com.golikov.bank.repository.ClientRepository;
 import com.golikov.bank.repository.ClientTransactionRepository;
 import com.golikov.bank.repository.DepositAccountRepository;
@@ -27,6 +26,9 @@ public class BankService {
 
     @Autowired
     ClientTransactionRepository clientTransactionRepository;
+
+    @Autowired
+    ClientInvestProdRepository clientInvestProdRepository;
 
     @Autowired
     CurrencyService currencyService;
@@ -88,5 +90,15 @@ public class BankService {
         clientRepository.save(client);
         depositAccountRepository.save(depositAccount);
     }
-
+    @Transactional
+    public void makeInvest(ClientInvestProd investment, DepositAccount depositAccount, InvestProduct investProduct) {
+        depositAccount.setBalance(depositAccount.getBalance().subtract(investment.getBalance()));
+        depositAccount.addClientInvestProd(investment);
+        investment.setInvestProduct(investProduct);
+        investment.setBeginDate(LocalDateTime.now());
+        investment.setExpireDate(investment.getBeginDate().plusDays(investment.getDays()));
+        depositAccountRepository.save(depositAccount);
+        clientInvestProdRepository.save(investment);
+        depositAccount.getClientInvestProds().forEach(System.out::println);
+    }
 }
