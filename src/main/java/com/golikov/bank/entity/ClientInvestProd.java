@@ -25,8 +25,9 @@ public class ClientInvestProd {
     @DecimalMax(value = "1000000000000", message = "Превышено максимальное значение")
     private BigDecimal balance;
 
-    @Column(name = "currency")
-    private String currency;
+
+    @Column(name = "profit")
+    private BigDecimal profit;
 
 
     @Min(value = 0, message = "Поле не может содержать отрицательное число")
@@ -51,8 +52,7 @@ public class ClientInvestProd {
     public ClientInvestProd() {
     }
 
-    public ClientInvestProd(String currency, BigDecimal balance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
-        this.currency = currency;
+    public ClientInvestProd(BigDecimal balance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
         this.balance = balance;
         this.depositAccount = depositAccount;
         this.investProduct = investProduct;

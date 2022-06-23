@@ -92,13 +92,25 @@ public class BankService {
     }
     @Transactional
     public void makeInvest(ClientInvestProd investment, DepositAccount depositAccount, InvestProduct investProduct) {
+        BigDecimal hundred = BigDecimal.valueOf(100);
+        BigDecimal year = BigDecimal.valueOf(365);
+        //    расчёт процентов вклада
+        BigDecimal profit = investProduct.getInterestRate()
+                                .divide(hundred, 2, RoundingMode.HALF_UP)
+                                    .divide(year, 16, RoundingMode.HALF_UP)
+                                        .multiply(BigDecimal.valueOf(investment.getDays()))
+                                            .add(BigDecimal.valueOf(1))
+                                                .multiply(investment.getBalance())
+                                                    .subtract(investment.getBalance());
         depositAccount.setBalance(depositAccount.getBalance().subtract(investment.getBalance()));
         depositAccount.addClientInvestProd(investment);
         investment.setInvestProduct(investProduct);
         investment.setBeginDate(LocalDateTime.now());
         investment.setExpireDate(investment.getBeginDate().plusDays(investment.getDays()));
+        investment.setProfit(profit);
         depositAccountRepository.save(depositAccount);
         clientInvestProdRepository.save(investment);
         depositAccount.getClientInvestProds().forEach(System.out::println);
     }
+
 }

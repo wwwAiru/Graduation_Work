@@ -59,13 +59,30 @@
                 <!-- модальное окно для вывода денег со счёта -->
                 <div th:insert="blocks/withdraw_depo_acc_modal :: withdrawDepositBalance"></div>
 
+                <!-- карточки открытых счетов -->
                 <p class="card-text" th:text="${account.getDescription}"></p>
-                <div class="card-footer">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">An item</li>
-                        <li class="list-group-item">A second item</li>
-                        <li class="list-group-item">A third item</li>
-                    </ul>
+                <div th:if="${!account.getClientInvestProds.isEmpty()}" class="card-footer">
+<!--                    <ul class="list-group list-group-flush" >-->
+                        <table class="table table-bordered">
+                            <tr>
+                                <th class="text-center">Инвест продукт</th>
+                                <th class="text-center">Процентная ставка</th>
+                                <th class="text-center">Сумма вклада</th>
+                                <th class="text-center">Дата окончания вклада</th>
+                                <th class="text-center">Вы заработаете</th>
+                                <th class="text-center">#</th>
+                            </tr>
+                            <tr th:each="clientInvestment : ${account.getClientInvestProds}">
+                                <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getName}"></td>
+                                <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getInterestRate} + ' %'"></td>
+                                <td class="col-1 text-center" th:text="${clientInvestment.getBalance} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
+                                <td class="col-1 text-center" th:text="${#temporals.format(clientInvestment.getExpireDate, 'dd-MM-yyyy  HH:mm')}"></td>
+                                <td class="col-1 text-center" th:text="${clientInvestment.getProfit} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
+                                <td class="col-1 text-center">Закрыть</td>
+                            </tr>
+                        </table>
+                        <li class="list-group-item" >
+
                 </div>
             </div>
         </div>
