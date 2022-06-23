@@ -29,7 +29,7 @@ public class ClientInvestProd {
     @Column(name = "profit")
     private BigDecimal profit;
 
-
+    @Column(name = "days")
     @Min(value = 0, message = "Поле не может содержать отрицательное число")
     @Max(value = 3640, message = "Вы превысили допустимое значение")
     @NotNull(message = "Поле не может быть пустым")

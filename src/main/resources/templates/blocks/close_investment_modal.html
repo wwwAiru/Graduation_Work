@@ -1,0 +1,22 @@
+<div th:fragment="closeInvestment">
+    <!-- Modal -->
+    <div class="modal fade" th:id="'closeInvestment' + ${clientInvestment.getId}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="container px-5">
+                    <p class="alert alert-primary d-flex align-items-center" >Внимание! Если вы закроете вклад раньше срока, проценты зачислены не будут.</p>
+                    <form th:action="@{/account/investment/close/{id}(id=${clientInvestment.getId})}"  method="post">
+                        <h5> Вы уверены что хотетие закрыть вклад и вывести денежные средства? </h5><br>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-outline-success">Закрыть вклад</button>
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

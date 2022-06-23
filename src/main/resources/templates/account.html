@@ -62,27 +62,31 @@
                 <!-- карточки открытых счетов -->
                 <p class="card-text" th:text="${account.getDescription}"></p>
                 <div th:if="${!account.getClientInvestProds.isEmpty()}" class="card-footer">
-<!--                    <ul class="list-group list-group-flush" >-->
-                        <table class="table table-bordered">
-                            <tr>
-                                <th class="text-center">Инвест продукт</th>
-                                <th class="text-center">Процентная ставка</th>
-                                <th class="text-center">Сумма вклада</th>
-                                <th class="text-center">Дата окончания вклада</th>
-                                <th class="text-center">Вы заработаете</th>
-                                <th class="text-center">#</th>
-                            </tr>
-                            <tr th:each="clientInvestment : ${account.getClientInvestProds}">
-                                <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getName}"></td>
-                                <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getInterestRate} + ' %'"></td>
-                                <td class="col-1 text-center" th:text="${clientInvestment.getBalance} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
-                                <td class="col-1 text-center" th:text="${#temporals.format(clientInvestment.getExpireDate, 'dd-MM-yyyy  HH:mm')}"></td>
-                                <td class="col-1 text-center" th:text="${clientInvestment.getProfit} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
-                                <td class="col-1 text-center">Закрыть</td>
-                            </tr>
-                        </table>
-                        <li class="list-group-item" >
-
+                    <!--                    <ul class="list-group list-group-flush" >-->
+                    <table class="table table-bordered">
+                        <tr>
+                            <th class="text-center">Инвест продукт</th>
+                            <th class="text-center">Процентная ставка</th>
+                            <th class="text-center">Сумма вклада</th>
+                            <th class="text-center">Дата окончания вклада</th>
+                            <th class="text-center">Срок вклада (дней)</th>
+                            <th class="text-center">Вы заработаете</th>
+                            <th class="text-center">#</th>
+                        </tr>
+                        <tr th:each="clientInvestment : ${account.getClientInvestProds}">
+                            <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getName}"></td>
+                            <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getInterestRate} + ' %'"></td>
+                            <td class="col-1 text-center" th:text="${clientInvestment.getBalance} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
+                            <td class="col-1 text-center" th:text="${#temporals.format(clientInvestment.getExpireDate, 'dd-MM-yyyy  HH:mm')}"></td>
+                            <td class="col-1 text-center" th:text="${clientInvestment.getDays}"></td>
+                            <td class="col-1 text-center" th:text="${clientInvestment.getProfit} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
+                            <td class="col-1 text-center">
+                                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" th:attr="data-bs-target='#closeInvestment' + ${clientInvestment.getId}">Закрыть</button>
+                            </td>
+                                            <!--Модальное окно для закрытия вклада-->
+                            <div th:insert="blocks/close_investment_modal :: closeInvestment"></div>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
