@@ -101,6 +101,7 @@ public class BankService {
                                             .add(BigDecimal.valueOf(1))
                                                 .multiply(investment.getBalance())
                                                     .subtract(investment.getBalance());
+        //    операции по перемещению денег
         depositAccount.setBalance(depositAccount.getBalance().subtract(investment.getBalance()));
         depositAccount.addClientInvestProd(investment);
         investment.setInvestProduct(investProduct);
