@@ -9,10 +9,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "deposit_accounts")
+@Table(name = "accounts")
 @Getter
 @Setter
-public class DepositAccount {
+public class Account {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,13 +35,13 @@ public class DepositAccount {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "depositAccount", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private Set<ClientInvestProd> clientInvestProds;
 
-    public DepositAccount() {
+    public Account() {
     }
 
-    public DepositAccount(String description, String currency, Client client) {
+    public Account(String description, String currency, Client client) {
         this.description = description;
         this.currency = currency;
         this.client = client;
@@ -51,7 +51,7 @@ public class DepositAccount {
         if (clientInvestProds == null) {
             clientInvestProds = new HashSet<>();
         }
-        clientInvestProd.setDepositAccount(this);
+        clientInvestProd.setAccount(this);
         clientInvestProds.add(clientInvestProd);
     }
 }

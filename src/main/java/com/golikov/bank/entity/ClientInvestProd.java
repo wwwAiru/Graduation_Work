@@ -36,8 +36,8 @@ public class ClientInvestProd {
     private Integer days;
 
     @ManyToOne()
-    @JoinColumn(name = "deposit_acc_id")
-    private DepositAccount depositAccount;
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @ManyToOne()
     @JoinColumn(name = "invest_prod_id")
@@ -52,9 +52,9 @@ public class ClientInvestProd {
     public ClientInvestProd() {
     }
 
-    public ClientInvestProd(BigDecimal balance, DepositAccount depositAccount, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
+    public ClientInvestProd(BigDecimal balance, Account account, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
         this.balance = balance;
-        this.depositAccount = depositAccount;
+        this.account = account;
         this.investProduct = investProduct;
         this.beginDate = beginDate;
         this.expireDate = expireDate;

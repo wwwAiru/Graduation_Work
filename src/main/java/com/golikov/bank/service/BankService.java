@@ -4,7 +4,7 @@ import com.golikov.bank.entity.*;
 import com.golikov.bank.repository.ClientInvestProdRepository;
 import com.golikov.bank.repository.ClientRepository;
 import com.golikov.bank.repository.ClientTransactionRepository;
-import com.golikov.bank.repository.DepositAccountRepository;
+import com.golikov.bank.repository.AccountRepository;
 import com.golikov.bank.utils.AccountNumGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class BankService {
     ClientRepository clientRepository;
 
     @Autowired
-    DepositAccountRepository depositAccountRepository;
+    AccountRepository accountRepository;
 
     @Autowired
     ClientTransactionRepository clientTransactionRepository;
@@ -49,48 +49,48 @@ public class BankService {
     // метод для создания инвестиционных счетов, в этом методе дополняется сущность депозит акаунта
     // генерируется номер счёта, и устанавливается клиент владелец
     @Transactional
-    public void createDepositAccount(Client client, DepositAccount depositAccount){
-        depositAccount.setClient(client);
-        depositAccount.setAccountNumber(AccountNumGenerator.generate(client.getId()));
-        depositAccountRepository.save(depositAccount);
+    public void createAccount(Client client, Account account){
+        account.setClient(client);
+        account.setAccountNumber(AccountNumGenerator.generate(client.getId()));
+        accountRepository.save(account);
     }
 
     //переревод денег с баланса на банкововский счёт
     @Transactional
-    public void upDepositAccountBalance(Client client, Long id, BigDecimal amount){
-        DepositAccount depositAccount = depositAccountRepository.findById(id).get();
+    public void upAccountBalance(Client client, Long id, BigDecimal amount){
+        Account account = accountRepository.findById(id).get();
         // вычитается сумма с баланса клиента
         client.setBalance(client.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
-        if (!depositAccount.getCurrency().equals("RUB")){
-            amount = amount.divide(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
+        if (!account.getCurrency().equals("RUB")){
+            amount = amount.divide(currencyService.getCurrencies().get(account.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
         }
         // сохранение изменений в базу
-        depositAccount.setBalance(depositAccount.getBalance().add(amount));
+        account.setBalance(account.getBalance().add(amount));
         clientRepository.save(client);
-        depositAccountRepository.save(depositAccount);
+        accountRepository.save(account);
     }
 
     @Transactional
-    public List<DepositAccount> findValidDepoAccounts(Long id, String currency, BigDecimal balance){
-        return depositAccountRepository.findByClientIdAndCurrencyLikeAndBalanceGreaterThan(id, currency, balance);
+    public List<Account> findValidDepoAccounts(Long id, String currency, BigDecimal balance){
+        return accountRepository.findByClientIdAndCurrencyLikeAndBalanceGreaterThan(id, currency, balance);
     }
 
     @Transactional
-    public void withdrawMoney(Client client, DepositAccount depositAccount, BigDecimal amount){
+    public void withdrawMoney(Client client, Account account, BigDecimal amount){
         // вычитается сумма с баланса аккаунта
-        depositAccount.setBalance(depositAccount.getBalance().subtract(amount));
+        account.setBalance(account.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
-        if (!depositAccount.getCurrency().equals("RUB")){
-            amount = amount.multiply(currencyService.getCurrencies().get(depositAccount.getCurrency()).getValue());
+        if (!account.getCurrency().equals("RUB")){
+            amount = amount.multiply(currencyService.getCurrencies().get(account.getCurrency()).getValue());
         }
         client.setBalance(client.getBalance().add(amount));
         // сохранение изменений в базу
         clientRepository.save(client);
-        depositAccountRepository.save(depositAccount);
+        accountRepository.save(account);
     }
     @Transactional
-    public void makeInvest(ClientInvestProd investment, DepositAccount depositAccount, InvestProduct investProduct) {
+    public void makeInvest(ClientInvestProd investment, Account account, InvestProduct investProduct) {
         BigDecimal hundred = BigDecimal.valueOf(100);
         BigDecimal year = BigDecimal.valueOf(365);
         //    расчёт процентов вклада
@@ -102,13 +102,13 @@ public class BankService {
                                                 .multiply(investment.getBalance())
                                                     .subtract(investment.getBalance());
         //    операции по перемещению денег
-        depositAccount.setBalance(depositAccount.getBalance().subtract(investment.getBalance()));
-        depositAccount.addClientInvestProd(investment);
+        account.setBalance(account.getBalance().subtract(investment.getBalance()));
+        account.addClientInvestProd(investment);
         investment.setInvestProduct(investProduct);
         investment.setBeginDate(LocalDateTime.now());
         investment.setExpireDate(investment.getBeginDate().plusDays(investment.getDays()));
         investment.setProfit(profit);
-        depositAccountRepository.save(depositAccount);
+        accountRepository.save(account);
         clientInvestProdRepository.save(investment);
     }
 

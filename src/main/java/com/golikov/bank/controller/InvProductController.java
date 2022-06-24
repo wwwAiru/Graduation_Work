@@ -1,8 +1,8 @@
 package com.golikov.bank.controller;
 
+import com.golikov.bank.entity.Account;
 import com.golikov.bank.entity.Client;
 import com.golikov.bank.entity.ClientInvestProd;
-import com.golikov.bank.entity.DepositAccount;
 import com.golikov.bank.entity.InvestProduct;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.InvestProductServise;
@@ -22,8 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 public class InvProductController {
@@ -96,7 +94,7 @@ public class InvProductController {
                          @PathVariable InvestProduct investProduct,
                          @AuthenticationPrincipal Client client,
                          HttpSession session){
-        List<DepositAccount> accounts = bankService.findValidDepoAccounts(client.getId(),
+        List<Account> accounts = bankService.findValidDepoAccounts(client.getId(),
                                                                           investProduct.getCurrency(),
                                                                           investProduct.getMinDeposit());
         if (accounts.isEmpty()){
@@ -119,21 +117,21 @@ public class InvProductController {
                              BindingResult result,
                              HttpSession session,
                              RedirectAttributes redirectAttributes){
-        List<DepositAccount> accounts = (List<DepositAccount>) session.getAttribute("accounts");
+        List<Account> accounts = (List<Account>) session.getAttribute("accounts");
         InvestProduct investProduct = (InvestProduct) session.getAttribute("investProduct");
 //         валидация дней, зачение не должно выходить за рамки утановленными инвест продуктом
         DepositDaysValidator depositDaysValidator = new DepositDaysValidator();
         depositDaysValidator.validate(clientInvest.getDays(), investProduct, redirectAttributes);
 //         валидация выбранного аккаунта из select option списка формы
         AccountValidator accountValidator = new AccountValidator();
-        accountValidator.validate(accounts, clientInvest.getDepositAccount(), redirectAttributes);
+        accountValidator.validate(accounts, clientInvest.getAccount(), redirectAttributes);
         if (result.hasErrors() | depositDaysValidator.hasErrors() | accountValidator.hasErrors()){
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.investment", result);
             redirectAttributes.addFlashAttribute("investment", clientInvest);
-            redirectAttributes.addFlashAttribute("account", clientInvest.getDepositAccount());
+            redirectAttributes.addFlashAttribute("account", clientInvest.getAccount());
             return "redirect:/product/invest/"+investProduct.getId();
         } else {
-            bankService.makeInvest(clientInvest, clientInvest.getDepositAccount(), investProduct);
+            bankService.makeInvest(clientInvest, clientInvest.getAccount(), investProduct);
             redirectAttributes.addFlashAttribute("success", "Вы инвестировали в наш продукт " + investProduct.getName());
         }
         return "redirect:/deposits";

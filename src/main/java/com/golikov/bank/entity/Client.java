@@ -40,7 +40,7 @@ public class Client implements UserDetails {
     private BigDecimal balance = new BigDecimal(0);
 
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private List<DepositAccount> depositAccounts;
+    private List<Account> accounts;
 
     @Column(name = "active")
     private boolean active;

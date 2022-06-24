@@ -22,14 +22,14 @@
             </p>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cardModal">Пополнить</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createDepoAccModal">Открыть инвестиционный счёт</button>
-            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#upDepositBalanceModal">Перевести деньги на счёт</button>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#upAccountBalanceModal">Перевести деньги на счёт</button>
 
             <!-- модальное окно пополнения баланса с карты -->
             <div th:insert="blocks/card_to_balance_modal :: card"></div>
             <!-- модальное окно для открытия счёта -->
             <div th:insert="blocks/create_depo_acc_modal :: createAccDepo"></div>
             <!-- модальное окно для перевода денег на счета -->
-            <div th:insert="blocks/up_depo_balance_modal :: upDepositBalance"></div>
+            <div th:insert="blocks/up_account_balance_modal :: upAccountBalance"></div>
 
         </div>
     </div>

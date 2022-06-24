@@ -1,8 +1,8 @@
 package com.golikov.bank.service;
 
-import com.golikov.bank.entity.DepositAccount;
+import com.golikov.bank.entity.Account;
 import com.golikov.bank.repository.ClientRepository;
-import com.golikov.bank.repository.DepositAccountRepository;
+import com.golikov.bank.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,14 +18,14 @@ public class ClientService implements UserDetailsService {
     ClientRepository clientRepository;
 
     @Autowired
-    DepositAccountRepository depositAccountRepository;
+    AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return clientRepository.findByEmail(email);
     }
 
-    public List<DepositAccount> findClientAccounts(Long id){
-        return depositAccountRepository.findByClientIdOrderById(id);
+    public List<Account> findClientAccounts(Long id){
+        return accountRepository.findByClientIdOrderById(id);
     }
 }

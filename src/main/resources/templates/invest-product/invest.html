@@ -44,7 +44,7 @@
                 <form th:action="@{/product/invest/save}" th:object="${investment}"  method="post" class="row g-3">
                     <div class="col-md-5">
                         <label for="account" class="form-label">Выберите счёт: </label>
-                        <select  id="account"  class="form-select" th:field="*{depositAccount}">
+                        <select  id="account"  class="form-select" th:field="*{account}">
                             <option th:each="account : ${accounts}" th:value="${account.getId}" th:text="${account.getAccountNumber}  + ' __Баланс: ' + ${account.getBalance} + ' ' + ${account.getCurrency}"></option>
                         </select> <br>
                         <div th:if="${accountError}" class="container alert alert-danger text-center" th:text="${accountError}"></div>

@@ -1,6 +1,6 @@
-<div th:fragment="upDepositBalance">
+<div th:fragment="upAccountBalance">
     <!-- Modal -->
-    <div class="modal fade" id="upDepositBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="upAccountBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -9,14 +9,14 @@
                 <h1 class="text-center">Перевод средств</h1>
 
                 <div class="container px-5">
-                    <p>Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
-                    <form th:action="@{/account/up-deposit-balance}" th:object="${depositAccount}"  method="post">
+                    <p class="alert alert-primary d-flex align-items-center">Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
+                    <form th:action="@{/account/up-balance}" th:object="${account}"  method="post">
                         <label for="depo" class="form-label">Выберите счёт: </label>
                         <select  id="depo"  class="form-select" th:field="*{id}" required>
                                 <option th:each="account : ${depoAccs}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' ' + ${account.getCurrency}"></option>
                         </select>
                         <br>
-                        <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" /> <br>
+                        <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" step="0.01"/> <br>
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Перевод</button>

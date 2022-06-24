@@ -1,7 +1,7 @@
 package com.golikov.bank.validator;
 
 
-import com.golikov.bank.entity.DepositAccount;
+import com.golikov.bank.entity.Account;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -19,8 +19,8 @@ public class AccountValidator {
         return hasErrors;
     }
 
-    public void validate(List<DepositAccount> accounts, DepositAccount account, RedirectAttributes redirectAttributes){
-        Set<Long> accountsId= accounts.stream().map(DepositAccount::getId).collect(Collectors.toSet());
+    public void validate(List<Account> accounts, Account account, RedirectAttributes redirectAttributes){
+        Set<Long> accountsId= accounts.stream().map(Account::getId).collect(Collectors.toSet());
         if (account==null || !accountsId.contains(account.getId())){
             redirectAttributes.addFlashAttribute("accountError", "Выберите действительный счёт");
             this.hasErrors = true;

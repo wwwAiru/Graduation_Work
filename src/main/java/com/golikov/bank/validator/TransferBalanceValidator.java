@@ -1,6 +1,6 @@
 package com.golikov.bank.validator;
 
-import com.golikov.bank.entity.DepositAccount;
+import com.golikov.bank.entity.Account;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
@@ -10,12 +10,12 @@ import java.math.BigDecimal;
 public class TransferBalanceValidator {
 
     private RedirectAttributes redirectAttributes;
-    private DepositAccount depositAccount;
+    private Account account;
     private boolean hasErrors;
 
-    public TransferBalanceValidator(DepositAccount depositAccount, RedirectAttributes redirectAttributes) {
+    public TransferBalanceValidator(Account account, RedirectAttributes redirectAttributes) {
         this.redirectAttributes = redirectAttributes;
-        this.depositAccount = depositAccount;
+        this.account = account;
     }
 
     public void validate(BigDecimal inputAmount) {
@@ -23,8 +23,8 @@ public class TransferBalanceValidator {
             redirectAttributes.addFlashAttribute("amount", "Поле не может быть пустым.");
             this.hasErrors = true;
             return;
-        } else if (depositAccount.getBalance().compareTo(inputAmount) < 0) {
-            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+ depositAccount.getBalance() + ".");
+        } else if (account.getBalance().compareTo(inputAmount) < 0) {
+            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+ account.getBalance() + ".");
             this.hasErrors = true;
         } else if (inputAmount.compareTo(BigDecimal.valueOf(0)) < 0) {
             redirectAttributes.addFlashAttribute("amount", "Значение не может быть отрицательным.");
