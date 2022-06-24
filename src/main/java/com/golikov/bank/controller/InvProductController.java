@@ -8,6 +8,7 @@ import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.InvestProductServise;
 import com.golikov.bank.validator.AccountValidator;
 import com.golikov.bank.validator.DepositDaysValidator;
+import com.golikov.bank.validator.InvestmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -125,7 +126,12 @@ public class InvProductController {
 //         валидация выбранного аккаунта из select option списка формы
         AccountValidator accountValidator = new AccountValidator();
         accountValidator.validate(accounts, clientInvest.getAccount(), redirectAttributes);
-        if (result.hasErrors() | depositDaysValidator.hasErrors() | accountValidator.hasErrors()){
+        InvestmentValidator investmentValidator = new InvestmentValidator();
+        investmentValidator.validate(clientInvest.getBalance(), investProduct, redirectAttributes);
+        if (result.hasErrors() |
+                depositDaysValidator.hasErrors() |
+                                accountValidator.hasErrors() |
+                                                investmentValidator.hasErrors()){
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.investment", result);
             redirectAttributes.addFlashAttribute("investment", clientInvest);
             redirectAttributes.addFlashAttribute("account", clientInvest.getAccount());

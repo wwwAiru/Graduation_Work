@@ -4,6 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -27,6 +31,9 @@ public class ClientTransaction {
     private String cardNumber;
 
     @Column(name = "amount")
+    @NotNull(message = "Поле не может быть пустым")
+    @DecimalMin(value = "1", message = "Значение неможет быть меньше 1")
+    @DecimalMax(value = "1000000000000", message = "Превышено максимальное значение")
     private BigDecimal amount;
 
     @Column(name = "date")

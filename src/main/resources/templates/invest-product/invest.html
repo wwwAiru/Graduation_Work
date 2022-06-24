@@ -53,18 +53,18 @@
                         <label class="form-label">Введите сумму: </label>
                         <input class="form-control" th:field="*{balance}" placeholder="сумма инвестиции" type="number" /> <br>
                         <p th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}" class="alert alert-danger"></p>
+                        <!-- сообщение об ошибке баланса -->
+                        <div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
                     </div>
-                    <!-- сообщение об ошибке баланса -->
-                    <div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
 
                     <div class="col-md-2">
                         <label for="days" class="form-label">Срок вклада (дней)</label>
                         <input id="days" class="form-control" th:field="*{days}" placeholder="срок вклада" type="number" /> <br>
-                        <p th:if="${#fields.hasErrors('days')}" th:errors="*{days}" class="alert alert-danger">123</p>
+                        <div th:if="${#fields.hasErrors('days')}" th:errors="*{days}" class="alert alert-danger">123</div>
+                        <!-- сообщение об ошибке валидации дней -->
+                        <div th:if="${daysError}" class="container alert alert-danger text-center" th:text="${daysError}"></div>
                     </div>
 
-                    <!-- сообщение об ошибке валидации дней -->
-                    <div th:if="${daysError}" class="container alert alert-danger text-center" th:text="${daysError}"></div>
 
                     <div class="container text-center">
                         <button type="submit" class="btn btn-outline-success">Принять</button>
