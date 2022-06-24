@@ -37,7 +37,7 @@
 
 <!-- сообщения валидации из ClienBalanceValidator -->
 <div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
-<div th:if="${validationErrror}" class="container alert alert-danger text-center" th:text="${validationErrror}"></div>
+<div th:if="${validationError}" class="container alert alert-danger text-center" th:text="${validationError}"></div>
 <!-- сообщения от успешных транзакциях -->
 <div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
 
@@ -57,7 +57,7 @@
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
 
                 <!-- модальное окно для вывода денег со счёта -->
-                <div th:insert="blocks/withdraw_account_modal :: withdrawDepositBalance"></div>
+                <div th:insert="blocks/withdraw_account_modal :: withdrawAccountBalance"></div>
 
                 <!-- карточки открытых счетов -->
                 <p class="card-text" th:text="${account.getDescription}"></p>

@@ -1,9 +1,10 @@
 package com.golikov.bank.controller;
 
 
-import com.golikov.bank.entity.Client;
-import com.golikov.bank.entity.ClientTransaction;
 import com.golikov.bank.entity.Account;
+import com.golikov.bank.entity.Client;
+import com.golikov.bank.entity.ClientInvestProd;
+import com.golikov.bank.entity.ClientTransaction;
 import com.golikov.bank.repository.AccountRepository;
 import com.golikov.bank.service.BankService;
 import com.golikov.bank.service.ClientService;
@@ -87,7 +88,7 @@ public class AccountController {
         }
         // защита от подмены id счёта для зачисления, проверяется содержит ли Set id из формы
         if (account==null || !((Set<Long>)session.getAttribute("clientAccountIds")).contains(account.getId())){
-            redirectAttributes.addFlashAttribute("validationErrror", "Попытка подмены id счёта отклонена.");
+            redirectAttributes.addFlashAttribute("validationError", "Попытка подмены id счёта отклонена.");
         } else bankService.upAccountBalance(client, account.getId(), amount);
         session.removeAttribute("clientAccountIds");
         return "redirect:/account";
@@ -104,12 +105,12 @@ public class AccountController {
         if (amount.matches("\\d+\\.\\d+")){
             amountDecimal = new BigDecimal(amount);
         } else {
-            redirectAttributes.addFlashAttribute("validationErrror", "Допускаются только числовые положительные значения");
+            redirectAttributes.addFlashAttribute("validationError", "Допускаются только числовые положительные значения");
             return "redirect:/account";
         }
         // защита от подмены id счёта вывода денег
         if (account == null || account.getClient().getId() != client.getId()){
-            redirectAttributes.addFlashAttribute("validationErrror", "Попытка подмены id счёта отклонена.");
+            redirectAttributes.addFlashAttribute("validationError", "Попытка подмены id счёта отклонена.");
             return  "redirect:/account";
         }
         // валидация выводимой суммы денег
@@ -120,6 +121,21 @@ public class AccountController {
         } else {
             bankService.withdrawMoney(client, account, amountDecimal);
             redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
+        }
+        return "redirect:/account";
+    }
+
+    @PostMapping("/account/investment/close/{investment}")
+    public String closeInvestment(@AuthenticationPrincipal Client client,
+                                  @PathVariable(required = false) ClientInvestProd investment,
+                                  RedirectAttributes redirectAttributes) {
+        // защита от подмены id вклада
+        List<Long> clientAccounts = client.getAccounts().stream().map(Account::getId).toList();
+        if (investment == null || !clientAccounts.contains(investment.getAccount().getId())){
+            redirectAttributes.addFlashAttribute("validationError", "Некоррекный идентификатор");
+        } else {
+            bankService.closeInvestment(investment);
+            redirectAttributes.addFlashAttribute("success", "Вклад " + investment.getInvestProduct().getName() + " закрыт");
         }
         return "redirect:/account";
     }

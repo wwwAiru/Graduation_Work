@@ -65,7 +65,6 @@ public class BankService {
         if (!account.getCurrency().equals("RUB")){
             amount = amount.divide(currencyService.getCurrencies().get(account.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
         }
-        // сохранение изменений в базу
         account.setBalance(account.getBalance().add(amount));
         clientRepository.save(client);
         accountRepository.save(account);
@@ -85,7 +84,6 @@ public class BankService {
             amount = amount.multiply(currencyService.getCurrencies().get(account.getCurrency()).getValue());
         }
         client.setBalance(client.getBalance().add(amount));
-        // сохранение изменений в базу
         clientRepository.save(client);
         accountRepository.save(account);
     }
@@ -110,6 +108,23 @@ public class BankService {
         investment.setProfit(profit);
         accountRepository.save(account);
         clientInvestProdRepository.save(investment);
+    }
+
+    // закрытие вклада
+    @Transactional
+    public void closeInvestment(ClientInvestProd investment){
+        Account account = investment.getAccount();
+        BigDecimal accountBalance = account.getBalance();
+        BigDecimal investmentProfit = investment.getProfit();
+        LocalDateTime expireDateTime = investment.getExpireDate();
+        // проверка истёк ли срок вклада
+        if (LocalDateTime.now().isAfter(expireDateTime)){
+            account.setBalance(accountBalance.add(investmentProfit).add(investment.getBalance()));
+        } else {
+            account.setBalance(accountBalance.add(investment.getBalance()));
+        }
+        accountRepository.save(account);
+        clientInvestProdRepository.delete(investment);
     }
 
 }

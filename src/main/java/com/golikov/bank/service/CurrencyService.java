@@ -16,11 +16,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
+@EnableScheduling
 @Service
 @Getter
 @Setter
-@EnableScheduling
 public class CurrencyService {
 
     private Map<String, Currency> currencies;
