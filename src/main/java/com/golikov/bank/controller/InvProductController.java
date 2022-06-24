@@ -43,10 +43,10 @@ public class InvProductController {
     }
 
     // создание нового инвестиционного продукта
-    @GetMapping("/product/create-inv-product")
+    @GetMapping("/product/add-inv-product")
     public String createInvProduct(Model model){
         model.addAttribute("investProduct", new InvestProduct());
-        return "invest-product/create-inv-product";
+        return "invest-product/add-inv-product";
     }
 
     // сохранение нового инвестиционного продукта

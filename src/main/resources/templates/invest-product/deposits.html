@@ -20,7 +20,7 @@
 <div class="container album py-2 bg-light">
     <!--  кнопка Добавить инвестиционный продукт -->
     <div class="container mt-5">
-        <button type="button" class="btn btn-outline-success"  onclick="location.href = '/product/create-inv-product'">Добавить новый инвестиционный продукт</button>
+        <a type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Добавить новый инвестиционный продукт</a>
     </div>
     <div th:each="invProduct : ${invProducts}" class="container mt-5">
         <div th:if="${invProduct.isActive}" class="card">
