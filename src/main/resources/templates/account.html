@@ -27,7 +27,7 @@
             <!-- модальное окно пополнения баланса с карты -->
             <div th:insert="blocks/card_to_balance_modal :: card"></div>
             <!-- модальное окно для открытия счёта -->
-            <div th:insert="blocks/create_depo_acc_modal :: createAccDepo"></div>
+            <div th:insert="blocks/create_account_modal :: createAccDepo"></div>
             <!-- модальное окно для перевода денег на счета -->
             <div th:insert="blocks/up_account_balance_modal :: upAccountBalance"></div>
 
@@ -57,7 +57,7 @@
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
 
                 <!-- модальное окно для вывода денег со счёта -->
-                <div th:insert="blocks/withdraw_depo_acc_modal :: withdrawDepositBalance"></div>
+                <div th:insert="blocks/withdraw_account_modal :: withdrawDepositBalance"></div>
 
                 <!-- карточки открытых счетов -->
                 <p class="card-text" th:text="${account.getDescription}"></p>
@@ -71,7 +71,7 @@
                             <th class="text-center">Дата окончания вклада</th>
                             <th class="text-center">Срок вклада (дней)</th>
                             <th class="text-center">Вы заработаете</th>
-                            <th class="text-center">#</th>
+                            <th class="text-center"></th>
                         </tr>
                         <tr th:each="clientInvestment : ${account.getClientInvestProds}">
                             <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getName}"></td>

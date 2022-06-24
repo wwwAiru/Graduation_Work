@@ -49,7 +49,7 @@ public class AccountController {
         session.setAttribute("clientAccountIds", clientAccountIds);
         model.addAttribute("depoAccs", depoAccList);
         model.addAttribute("clientTransaction", new ClientTransaction());
-        model.addAttribute("newDepoAcc", new Account());
+        model.addAttribute("newAccount", new Account());
         model.addAttribute("account", new Account());
         return "account";
     }
@@ -65,7 +65,7 @@ public class AccountController {
     // открытие ивест счёта
     @PostMapping("/account/create-account")
     public String createDepoAcc(@AuthenticationPrincipal Client client,
-                                @ModelAttribute("newDepoAcc") Account account) {
+                                @ModelAttribute("newAccount") Account account) {
         bankService.createAccount(client, account);
         return "redirect:/account";
     }
@@ -115,7 +115,7 @@ public class AccountController {
         // валидация выводимой суммы денег
         TransferBalanceValidator balanceValidator = new TransferBalanceValidator(account, redirectAttributes);
         balanceValidator.validate(amountDecimal);
-        // если есть ошибки валидации то редирект с флэш сообщениями из WithdrawBalanceValidator
+        // если есть ошибки валидации то редирект с флэш сообщениями из TransferBalanceValidator
         if (balanceValidator.hasErrors()){
         } else {
             bankService.withdrawMoney(client, account, amountDecimal);
