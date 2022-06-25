@@ -19,10 +19,12 @@
 
 <div class="container album py-5 bg-light">
     <div class="conteiner col-4 mx-auto">
-        <div th:if="${param.error}">
+            <!--   сообщения об ошибках/успешно     -->
+        <div th:if="${param.error}" class="alert alert-danger">
             Неверная связка почта-пароль
         </div>
-        <div th:if="${param.logout}">
+        <div th:if="${success}" class="alert alert-success">        </div>
+        <div th:if="${param.logout}" class="alert alert-info">
             Вы вышли из системы.
         </div>
     </div>
@@ -34,9 +36,9 @@
             <div class="form-check form-check-inline">
                 <label>Показать пароль<input class="form-check-input" id="show_pass" type="checkbox"></label>
             </div>
-            <div class="form-check form-check-inline">
-                <p><label for="remember">Запомнить меня</label> <input class="form-check-input" id="remember" name="remember" type="checkbox" value="y"></p>
-            </div>
+<!--            <div class="form-check form-check-inline">-->
+<!--                <p><label for="remember">Запомнить меня</label> <input class="form-check-input" id="remember" name="remember" type="checkbox" value="y"></p>-->
+<!--            </div>-->
             <p><input id="next" name="next" type="hidden" value=""></p>
 
             <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">

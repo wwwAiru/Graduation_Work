@@ -15,7 +15,7 @@
         <div class="card-header" th:text="${client.getFullName}"></div>
         <div class="card-body">
 
-            <h5 class="card-title" th:text="'Ваш баланс: ' + ${#numbers.formatDecimal(client.getBalance, 0, 2)} + ' RUB'"></h5>
+            <h5 class="card-title" th:text="'Ваш баланс: ' + ${#numbers.formatDecimal(client.getBalance, 1, 2)} + ' RUB'"></h5>
             <p class="card-text">В любое время вы можете пополнить ваш баланс банковской картой.</p>
             <p class="card-text" th:if="${depoAccs.isEmpty()}">
                 У вас ещё нет инвестиционного счёта, для того чтобы начать пользоваться инвест-продуктами, откройте свой первый инвестиционный счёт и пополните его.

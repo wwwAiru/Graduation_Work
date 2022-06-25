@@ -1,26 +1,25 @@
 package com.golikov.bank.controller;
 
 import com.golikov.bank.entity.Client;
-import com.golikov.bank.entity.Role;
-import com.golikov.bank.repository.ClientRepository;
+import com.golikov.bank.entity.ClientDTO;
+import com.golikov.bank.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import java.util.Collections;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 
 @Controller
 public class AuthController {
-    @Autowired
-    PasswordEncoder passwordEncoder;
 
     @Autowired
-    ClientRepository clientRepository;
+    ClientService clientService;
 
     @RequestMapping("/login")
     public String login() {
@@ -28,32 +27,23 @@ public class AuthController {
     }
 
     @GetMapping("/registration")
-    public String registration(){
+    public String registration(Model model){
+        model.addAttribute("client", new ClientDTO());
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addClient(Client client,
-                            @RequestParam String firstName,
-                            @RequestParam String lastName,
-                            @RequestParam String middleName,
-                            @RequestParam String email,
-                            @RequestParam String password,
+    public String addClient(@ModelAttribute @Valid ClientDTO client,
+                            BindingResult result,
+                            RedirectAttributes redirectAttributes,
                             Model model){
-        Client clientFromDb = clientRepository.findByEmail(client.getEmail());
-        if (clientFromDb != null) {
-            model.addAttribute("message", "Пользователь с почтой "+client.getEmail()+" уже существует");
+        Client clientFromDb = clientService.findByEmail(client.getEmail());
+        if (result.hasErrors() | clientFromDb != null) {
+            model.addAttribute("emailError", "Пользователь с почтой "+client.getEmail()+" уже существует");
             return "registration";
         }
-        client.setActive(true);
-        client.setRoles(Collections.singleton(Role.USER));
-        client.setEmail(email);
-        client.setFirstName(firstName);
-        client.setLastName(lastName);
-        client.setMiddleName(middleName);
-        client.setEmail(email);
-        client.setPassword(passwordEncoder.encode(password));
-        clientRepository.save(client);
+        clientService.createClient(client);
+        redirectAttributes.addFlashAttribute("success", "Вы успешно зарегестрировались! Войдите в свою учётную запись");
         return "redirect:/login";
     }
 

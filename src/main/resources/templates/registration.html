@@ -11,16 +11,16 @@
 <div class="container album py-5 bg-light">
 
     <h1 class="text-center lh-base p-4 mt-5">Регистрация</h1>
-    <!-- если есть сообщения из контроллера то показать сообщение(клиент существует) -->
-    <div class="container text-center" th:if="${message}" th:text="${message}"></div>
     <div class="conteiner col-4 mx-auto">
+        <!-- если есть сообщения из контроллера то показать сообщение(клиент существует) -->
+        <div class="alert alert-danger" th:if="${emailError}" th:text="${emailError}"></div>
         <!-- Форма регистрации клиента -->
-        <form th:action="@{/registration}" method="post">
-            <p><label> Фамилия : </label><input class="form-control col-6" type="text" name="lastName"/> </p>
-            <p><label> Имя : </label><input class="form-control col-6" type="text" name="firstName"/> </p>
-            <p><label> Отчество : </label><input class="form-control col-6" type="text" name="middleName"/> </p>
-            <p><label> Электронная почта : </label><input class="form-control col-6" type="email" name="email"/> </p>
-            <p><label> пароль: </label><input class="form-control col-6" type="password" id="password" name="password"/> </p>
+        <form th:action="@{/registration}" th:object="${client}" method="post">
+            <p><label> Фамилия : </label><input class="form-control col-6" type="text" th:field="*{lastName}"/> </p>
+            <p><label> Имя : </label><input class="form-control col-6" type="text" th:field="*{firstName}"/> </p>
+            <p><label> Отчество : </label><input class="form-control col-6" type="text" th:field="*{middleName}"/> </p>
+            <p><label> Электронная почта : </label><input class="form-control col-6" type="email" th:field="*{email}"/> </p>
+            <p><label> пароль: </label><input class="form-control col-6" type="password" id="password" th:field="*{password}"/> </p>
             <div class="form-check form-check-inline">
                 <label>Показать пароль<input class="form-check-input" id="show_pass" type="checkbox"></label>
             </div>

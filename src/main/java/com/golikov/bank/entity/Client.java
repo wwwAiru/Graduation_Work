@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
@@ -21,13 +22,13 @@ public class Client implements UserDetails {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "first_name")
+    @NotBlank(message = "Обязательное поле")
     private String firstName;
 
-    @Column(name = "lastName")
+    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "middleName")
+    @Column(name = "middle_name")
     private String middleName;
 
     @Column(name = "email")
