@@ -14,14 +14,14 @@ public class InvestmentValidator {
 
     public void validate(BigDecimal inputAmount, InvestProduct investProduct, RedirectAttributes redirectAttributes){
         if (inputAmount == null){
-            redirectAttributes.addFlashAttribute("amount", "Поле не может быть пустым.");
+            redirectAttributes.addFlashAttribute("amountError", "Поле не может быть пустым.");
             this.hasErrors = true;
             return;
         } else if (inputAmount.compareTo(investProduct.getMinDeposit()) < 0) {
-            redirectAttributes.addFlashAttribute("amount", "Вы не можете инвестировать меньше чем "+ investProduct.getMinDeposit() + " " + investProduct.getCurrency());
+            redirectAttributes.addFlashAttribute("amountError", "Вы не можете инвестировать меньше чем "+ investProduct.getMinDeposit() + " " + investProduct.getCurrency());
             this.hasErrors = true;
         } else if (inputAmount.compareTo(investProduct.getMaxDeposit()) > 0) {
-            redirectAttributes.addFlashAttribute("amount", "Вы не можете инвестировать больше чем "+ investProduct.getMaxDeposit() + " " + investProduct.getCurrency());
+            redirectAttributes.addFlashAttribute("amountError", "Вы не можете инвестировать больше чем "+ investProduct.getMaxDeposit() + " " + investProduct.getCurrency());
             this.hasErrors = true;
         }
     }
