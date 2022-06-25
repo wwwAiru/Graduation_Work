@@ -50,11 +50,15 @@ public class InvProductController {
 
     // сохранение нового инвестиционного продукта
     @PostMapping("/add-inv-product")
-    public String addInvProduct(@ModelAttribute InvestProduct investProduct,
+    public String addInvProduct(@ModelAttribute("investProduct") @Valid InvestProduct investProduct,
+                                BindingResult result,
                                 RedirectAttributes redirectAttributes){
-        redirectAttributes.addFlashAttribute("success","Инвестиционный продукт успешно добавлен");
-        investProductServise.save(investProduct);
-
+        if (result.hasErrors()){
+            return "invest-product/add-inv-product";
+        } else {
+            redirectAttributes.addFlashAttribute("success", "Инвестиционный продукт успешно добавлен");
+            investProductServise.save(investProduct);
+        }
         return "redirect:/deposits";
     }
 
@@ -75,7 +79,6 @@ public class InvProductController {
         session.removeAttribute("securedId");
         if (securedId!=investProduct.getId()){
             redirectAttributes.addFlashAttribute("error", "Попытка подмены id отклонена");
-
         } else {
         investProductServise.save(investProduct);
         }
@@ -114,18 +117,19 @@ public class InvProductController {
     }
 
     @PostMapping("/product/invest/save")
-    public String saveInvest(@Valid @ModelAttribute("investment")  ClientInvestProd clientInvest,
+    public String saveInvest(@ModelAttribute("investment") @Valid ClientInvestProd clientInvest,
                              BindingResult result,
                              HttpSession session,
-                             RedirectAttributes redirectAttributes){
+                             RedirectAttributes redirectAttributes) {
         List<Account> accounts = (List<Account>) session.getAttribute("accounts");
         InvestProduct investProduct = (InvestProduct) session.getAttribute("investProduct");
-//         валидация дней, зачение не должно выходить за рамки утановленными инвест продуктом
+//         валидация дней, значение не должно выходить за рамки утановленными инвест продуктом
         DepositDaysValidator depositDaysValidator = new DepositDaysValidator();
         depositDaysValidator.validate(clientInvest.getDays(), investProduct, redirectAttributes);
 //         валидация выбранного аккаунта из select option списка формы
         AccountValidator accountValidator = new AccountValidator();
         accountValidator.validate(accounts, clientInvest.getAccount(), redirectAttributes);
+//         валидация суммы, значение не должно выходить за рамки утановленными инвест продуктом
         InvestmentValidator investmentValidator = new InvestmentValidator();
         investmentValidator.validate(clientInvest.getBalance(), investProduct, redirectAttributes);
         if (result.hasErrors() |

@@ -17,30 +17,43 @@
     <div class="conteiner col-6 mx-auto">
         <form method="post" th:action="@{/add-inv-product}" th:object="${investProduct}">
             <input class="form-control" th:field="*{name}" placeholder="Название инвестиционного продукта" type="text"/>
+            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger"></div>
             <br>
             <textarea class="form-control" style="height: 100px" th:field="*{description}"
-                      placeholder="Описание инвестиционного продукта" type="text"></textarea> <br>
+                      placeholder="Описание инвестиционного продукта" type="text">
+            </textarea>
+            <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="alert alert-danger"></div>
+            <br>
             <select class="form-select" th:field="*{currency}" required="required">
                 <option value="RUB">Установите валюту продукта</option>
                 <option value="RUB">Российский рубль</option>
                 <option value="USD">Доллар США</option>
                 <option value="EUR">Евро</option>
-            </select> <br>
-            <input class="form-control" th:field="*{minDeposit}" placeholder="минимальная сумма" type="number" min="0"/>
+            </select>
+            <div th:if="${#fields.hasErrors('currency')}" th:errors="*{currency}" class="alert alert-danger"></div>
             <br>
-            <input class="form-control" th:field="*{maxDeposit}" placeholder="максимальная сумма" type="number"
-                   min="0"/> <br>
-            <input class="form-control" th:field="*{interestRate}" placeholder="ставка/доходность" type="number" min="0"
-                   step="0.01"/> <br>
-            <input class="form-control" th:field="*{minDepositTerm}" placeholder="минимальный срок вклада(дней)"
-                   type="number" min="0"/> <br>
-            <input class="form-control" th:field="*{maxDepositTerm}" placeholder="максимальный срок вклада(дней)"
-                   type="number" min="0"/> <br>
+            <input class="form-control" th:field="*{minDeposit}" placeholder="минимальная сумма" type="number" />
+            <div th:if="${#fields.hasErrors('minDeposit')}" th:errors="*{minDeposit}" class="alert alert-danger"></div>
+            <br>
+            <input class="form-control" th:field="*{maxDeposit}" placeholder="максимальная сумма" type="number"/>
+            <div th:if="${#fields.hasErrors('maxDeposit')}" th:errors="*{maxDeposit}" class="alert alert-danger"></div>
+            <br>
+            <input class="form-control" th:field="*{interestRate}" placeholder="ставка/доходность" type="number" step="0.01"/>
+            <div th:if="${#fields.hasErrors('interestRate')}" th:errors="*{interestRate}" class="alert alert-danger"></div>
+            <br>
+            <input class="form-control" th:field="*{minDepositTerm}" placeholder="минимальный срок вклада(дней)" type="number"/>
+            <div th:if="${#fields.hasErrors('minDepositTerm')}" th:errors="*{minDepositTerm}" class="alert alert-danger"></div>
+            <br>
+            <input class="form-control" th:field="*{maxDepositTerm}" placeholder="максимальный срок вклада(дней)" type="number"/>
+            <div th:if="${#fields.hasErrors('maxDepositTerm')}" th:errors="*{maxDepositTerm}" class="alert alert-danger"></div>
+            <br>
             <select class="form-select" th:field="*{active}">
                 <option value="true">Выберите актуальность продукта</option>
                 <option value="true">Действующий</option>
                 <option value="false">Архивный/удалённый</option>
-            </select> <br>
+            </select>
+            <div th:if="${#fields.hasErrors('active')}" th:errors="*{active}" class="alert alert-danger"></div>
+            <br>
             <input class="btn btn-outline-success" type="submit" value="Добавить">
         </form>
     </div>

@@ -42,29 +42,30 @@
             <div class="card-footer">
 
                 <form th:action="@{/product/invest/save}" th:object="${investment}"  method="post" class="row g-3">
+
                     <div class="col-md-5">
                         <label for="account" class="form-label">Выберите счёт: </label>
                         <select  id="account"  class="form-select" th:field="*{account}">
                             <option th:each="account : ${accounts}" th:value="${account.getId}" th:text="${account.getAccountNumber}  + ' __Баланс: ' + ${account.getBalance} + ' ' + ${account.getCurrency}"></option>
                         </select> <br>
-                        <div th:if="${accountError}" class="container alert alert-danger text-center" th:text="${accountError}"></div>
+                        <div th:if="${accountError}" class="alert alert-danger text-center" th:text="${accountError}"></div>
                     </div>
+
                     <div class="col-md-4">
                         <label class="form-label">Введите сумму: </label>
                         <input class="form-control" th:field="*{balance}" placeholder="сумма инвестиции" type="number" /> <br>
-                        <p th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}" class="alert alert-danger"></p>
+                        <div th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}" class="alert alert-danger"></div>
                         <!-- сообщение об ошибке баланса -->
-                        <div th:if="${amountError}" class="container alert alert-danger text-center" th:text="${amountError}"></div>
+                        <div th:if="${amountError}" class="alert alert-danger text-center" th:text="${amountError}"></div>
                     </div>
 
                     <div class="col-md-2">
                         <label for="days" class="form-label">Срок вклада (дней)</label>
                         <input id="days" class="form-control" th:field="*{days}" placeholder="срок вклада" type="number" /> <br>
-                        <div th:if="${#fields.hasErrors('days')}" th:errors="*{days}" class="alert alert-danger">123</div>
+                        <div th:if="${#fields.hasErrors('days')}" th:errors="*{days}" class="alert alert-danger"></div>
                         <!-- сообщение об ошибке валидации дней -->
-                        <div th:if="${daysError}" class="container alert alert-danger text-center" th:text="${daysError}"></div>
+                        <div th:if="${daysError}" class="alert alert-danger text-center" th:text="${daysError}"></div>
                     </div>
-
 
                     <div class="container text-center">
                         <button type="submit" class="btn btn-outline-success">Принять</button>
