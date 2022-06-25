@@ -9,20 +9,23 @@
                 <h1 class="text-center">Пополнение баланса</h1>
 
                 <div class="container px-5">
-                        <form th:action="@{/up-balance}" method="post" th:object="${clientTransaction}">
+                        <form th:action="@{/up-balance}" method="post" th:object="${transaction}">
                             <div class="form-group  col-7">
                                 <label>Сумма пополнения</label>
-                                <input th:field="*{amount}" required type="number" min="0" class="form-control">
+                                <input th:field="*{amount}" type="number" min="0" class="form-control">
+                                <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
                             </div>
 
                             <div class="form-group col-7">
                                 <label>Фамилия Имя владельца</label>
-                                <input th:field="*{ownerName}" required type="text" class="form-control">
+                                <input th:field="*{ownerName}" type="text" class="form-control">
+                                <div th:if="${#fields.hasErrors('ownerName')}" th:errors="*{ownerName}" class="alert alert-danger"></div>
                             </div>
 
                             <div class="form-group col-7">
                                 <label>Номер карты</label>
-                                <input th:field="*{cardNumber}" required type="text" class="form-control">
+                                <input th:field="*{cardNumber}" type="text" class="form-control">
+                                <div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" class="alert alert-danger"></div>
                             </div>
 
                             <div class="form-group col-3">

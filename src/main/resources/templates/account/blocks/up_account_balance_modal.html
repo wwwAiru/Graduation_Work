@@ -13,7 +13,7 @@
                     <form th:action="@{/account/up-balance}" th:object="${account}"  method="post">
                         <label for="depo" class="form-label">Выберите счёт: </label>
                         <select  id="depo"  class="form-select" th:field="*{id}" required>
-                                <option th:each="account : ${depoAccs}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' ' + ${account.getCurrency}"></option>
+                                <option th:each="account : ${clientAccounts}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' ' + ${account.getCurrency}"></option>
                         </select>
                         <br>
                         <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" step="0.01"/> <br>

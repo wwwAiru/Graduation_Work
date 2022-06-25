@@ -17,19 +17,19 @@
 
             <h5 class="card-title" th:text="'Ваш баланс: ' + ${#numbers.formatDecimal(client.getBalance, 1, 2)} + ' RUB'"></h5>
             <p class="card-text">В любое время вы можете пополнить ваш баланс банковской картой.</p>
-            <p class="card-text" th:if="${depoAccs.isEmpty()}">
+            <p class="card-text" th:if="${clientAccounts.isEmpty()}">
                 У вас ещё нет инвестиционного счёта, для того чтобы начать пользоваться инвест-продуктами, откройте свой первый инвестиционный счёт и пополните его.
             </p>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cardModal">Пополнить</button>
-            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createDepoAccModal">Открыть инвестиционный счёт</button>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createAccountModal">Открыть инвестиционный счёт</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#upAccountBalanceModal">Перевести деньги на счёт</button>
 
             <!-- модальное окно пополнения баланса с карты -->
-            <div th:insert="blocks/card_to_balance_modal :: card"></div>
+            <div th:insert="account/blocks/card_to_balance_modal :: card"></div>
             <!-- модальное окно для открытия счёта -->
-            <div th:insert="blocks/create_account_modal :: createAccDepo"></div>
+            <div th:insert="account/blocks/create_account_modal :: createAccount"></div>
             <!-- модальное окно для перевода денег на счета -->
-            <div th:insert="blocks/up_account_balance_modal :: upAccountBalance"></div>
+            <div th:insert="account/blocks/up_account_balance_modal :: upAccountBalance"></div>
 
         </div>
     </div>
@@ -38,7 +38,7 @@
 <!-- сообщения валидации из ClienBalanceValidator -->
 <div th:if="${amount}" class="container alert alert-danger text-center" th:text="${amount}"></div>
 <div th:if="${validationError}" class="container alert alert-danger text-center" th:text="${validationError}"></div>
-<!-- сообщения от успешных транзакциях -->
+<!-- сообщения об успешных транзакциях -->
 <div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
 
 
@@ -48,7 +48,7 @@
 
 <div class="container album py-5 bg-light">
 
-    <div th:each="account : ${depoAccs}" class="container mt-5">
+    <div th:each="account : ${clientAccounts}" class="container mt-5">
         <div class="card">
             <p th:text="'Счёт №: ' + ${account.getAccountNumber} + ', валюта счёта ' + ${account.getCurrency}" class="card-header"></p>
             <div class="card-body">
@@ -57,7 +57,7 @@
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
 
                 <!-- модальное окно для вывода денег со счёта -->
-                <div th:insert="blocks/withdraw_account_modal :: withdrawAccountBalance"></div>
+                <div th:insert="account/blocks/withdraw_account_modal :: withdrawAccountBalance"></div>
 
                 <!-- карточки открытых счетов -->
                 <p class="card-text" th:text="${account.getDescription}"></p>
@@ -84,7 +84,7 @@
                                 <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" th:attr="data-bs-target='#closeInvestment' + ${clientInvestment.getId}">Закрыть</button>
                             </td>
                                             <!--Модальное окно для закрытия вклада-->
-                            <div th:insert="blocks/close_investment_modal :: closeInvestment"></div>
+                            <div th:insert="account/blocks/close_investment_modal :: closeInvestment"></div>
                         </tr>
                     </table>
                 </div>
@@ -94,6 +94,13 @@
 </div>
 <div th:insert="/blocks/footer :: footer"></div>
 
+<!---->
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+<script th:if="${upBalanceError}">
+    $(document).ready(function(){
+        $("#cardModal").modal("show")
+    })
+</script>
 
 </body>
 </html>
