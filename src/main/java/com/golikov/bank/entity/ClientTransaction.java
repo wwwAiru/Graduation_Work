@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -24,9 +21,11 @@ public class ClientTransaction {
     @Column(name = "transaction_type")
     private String transactionType;
 
+    @NotBlank(message = "Обязательное поле")
     @Column(name = "owner_name")
     private String ownerName;
 
+    @NotBlank(message = "Обязательное поле")
     @Column(name = "card_number")
     private String cardNumber;
 

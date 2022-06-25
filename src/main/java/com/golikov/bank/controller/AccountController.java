@@ -14,10 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -36,36 +38,49 @@ public class AccountController {
     @Autowired
     ClientBalanceValidator clientBalanceValidator;
 
-
     @Autowired
     ClientService clientService;
 
 
     @GetMapping("/account")
-    public String account(@AuthenticationPrincipal Client client, Model model, HttpSession session) {
-        model.addAttribute("client",client);
-        List<Account> depoAccList = clientService.findClientAccounts(client.getId());
+    public String account(@AuthenticationPrincipal Client client,
+                          ClientTransaction clientTransaction,
+                          Model model,
+                          HttpSession session) {
+        model.addAttribute("client", client);
+        List<Account> clientAccounts = clientService.findClientAccounts(client.getId());
         // добавил в сессию id всех аккаунтов пользователя для последующих проверок
-        Set<Long> clientAccountIds = depoAccList.stream().map(acc -> acc.getId()).collect(Collectors.toSet());
+        Set<Long> clientAccountIds = clientAccounts.stream().map(Account::getId).collect(Collectors.toSet());
         session.setAttribute("clientAccountIds", clientAccountIds);
-        model.addAttribute("depoAccs", depoAccList);
-        model.addAttribute("clientTransaction", new ClientTransaction());
+        model.addAttribute("clientAccounts", clientAccounts);
+        if (!model.containsAttribute("transaction")) {
+            model.addAttribute("transaction", new ClientTransaction());
+        }
         model.addAttribute("newAccount", new Account());
         model.addAttribute("account", new Account());
-        return "account";
+        return "account/index";
     }
 
     // пополнения баланса с карты
     @PostMapping("/up-balance")
     public String upBalance(@AuthenticationPrincipal Client client,
-                            @ModelAttribute("clientTransaction") ClientTransaction clientTransaction){
+                            @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
+                            BindingResult result,
+                            @ModelAttribute Account account,
+                            RedirectAttributes redirectAttributes){
+        if (result.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
+            redirectAttributes.addFlashAttribute("transaction", clientTransaction);
+            redirectAttributes.addFlashAttribute("upBalanceError", "upBalanceError");
+            return "redirect:/account";
+        }
         bankService.cardToBaLance(clientTransaction, client);
         return "redirect:/account";
     }
 
     // открытие ивест счёта
     @PostMapping("/account/create-account")
-    public String createDepoAcc(@AuthenticationPrincipal Client client,
+    public String createAccount(@AuthenticationPrincipal Client client,
                                 @ModelAttribute("newAccount") Account account) {
         bankService.createAccount(client, account);
         return "redirect:/account";
@@ -87,7 +102,7 @@ public class AccountController {
            return  "redirect:/account";
         }
         // защита от подмены id счёта для зачисления, проверяется содержит ли Set id из формы
-        if (account==null || !((Set<Long>)session.getAttribute("clientAccountIds")).contains(account.getId())){
+        if (account == null || !((Set<Long>)session.getAttribute("clientAccountIds")).contains(account.getId())){
             redirectAttributes.addFlashAttribute("validationError", "Попытка подмены id счёта отклонена.");
         } else bankService.upAccountBalance(client, account.getId(), amount);
         session.removeAttribute("clientAccountIds");
@@ -102,7 +117,7 @@ public class AccountController {
                            RedirectAttributes redirectAttributes) {
         // защита от попадания строки в поле для цифр
         BigDecimal amountDecimal = null;
-        if (amount.matches("\\d+\\.\\d+")){
+        if (amount.matches("\\d+|\\d+\\.\\d+")){
             amountDecimal = new BigDecimal(amount);
         } else {
             redirectAttributes.addFlashAttribute("validationError", "Допускаются только числовые положительные значения");
@@ -111,17 +126,17 @@ public class AccountController {
         // защита от подмены id счёта вывода денег
         if (account == null || account.getClient().getId() != client.getId()){
             redirectAttributes.addFlashAttribute("validationError", "Попытка подмены id счёта отклонена.");
-            return  "redirect:/account";
+            return "redirect:/account";
         }
         // валидация выводимой суммы денег
         TransferBalanceValidator balanceValidator = new TransferBalanceValidator(account, redirectAttributes);
         balanceValidator.validate(amountDecimal);
         // если есть ошибки валидации то редирект с флэш сообщениями из TransferBalanceValidator
         if (balanceValidator.hasErrors()){
-        } else {
-            bankService.withdrawMoney(client, account, amountDecimal);
-            redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
+            return "redirect:/account";
         }
+        bankService.withdrawMoney(client, account, amountDecimal);
+        redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
         return "redirect:/account";
     }
 
