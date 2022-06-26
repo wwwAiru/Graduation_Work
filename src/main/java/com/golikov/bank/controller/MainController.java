@@ -1,7 +1,7 @@
 package com.golikov.bank.controller;
 
-import com.golikov.bank.utils.Currency;
-import com.golikov.bank.service.CurrencyService;
+import com.golikov.bank.domain.currency.Currency;
+import com.golikov.bank.domain.currency.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
