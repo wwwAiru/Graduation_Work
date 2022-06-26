@@ -45,7 +45,7 @@ public class Client implements UserDetails {
     private List<Account> accounts;
 
     @Column(name = "active")
-    private boolean active;
+    private boolean isActive;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "clients_roles", joinColumns = @JoinColumn(name = "client_id"))
@@ -94,7 +94,7 @@ public class Client implements UserDetails {
     }
 
     public boolean isActive() {
-        return active;
+        return isActive;
     }
 
     //для html шаблона

@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- блок head с ресурсами JS и bootstrap -->
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+<header th:insert="blocks/navbar :: navbar"></header>
+<h1 class="text-center lh-base p-4 mt-5">Панель администратора</h1>
+<h3 class="text-center lh-base p-4 mt-5">Клиенты</h3>
+
+<div class="container">
+    <table class="table">
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Полное имя</th>
+            <th class="text-center">Почта</th>
+            <th class="text-center">Баланс</th>
+            <th class="text-center">Активный(true)/Заблокированный(false)</th>
+            <th class="text-center">Роли</th>
+            <th class="text-center">Действия</th>
+        </tr>
+        <tr th:each="client : ${clients}">
+            <td class="col-1 text-center" th:text="${client.getId}"></td>
+            <td class="col-1 text-center" th:text="${client.getFullName}"></td>
+            <td class="col-1 text-center" th:text="${client.getEmail}"></td>
+            <td class="col-1 text-center" th:text="${client.getBalance}"></td>
+            <td class="col-1 text-center" th:text="${client.active}"></td>
+            <td class="col-1 text-center" th:text="${client.getRoles}"></td>
+            <td class="col-1 text-center">
+                <div class="btn-group">
+                    <a th:href="@{/admin/client/edit/{id}(id=${client.getId})}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+<!--                    <a th:href="@{/product/delete/{id}(id=${invProduct.getId})}"-->
+<!--                       class="btn btn-sm btn-outline-secondary">Удалить</a>-->
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:insert="/blocks/footer :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- блок head с ресурсами JS и bootstrap -->
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+<header th:insert="blocks/navbar :: navbar"></header>
+<div class="text-center lh-base p-4 mt-5">
+    <h2>
+        Редактировать клиента.
+    </h2>
+    <br>
+    <div class="conteiner col-6 mx-auto">
+        <form method="post" th:action="@{/admin/client-save}" th:object="${client}">
+            <input name="id" th:field="*{id}" type="hidden" />
+            <input name="password" th:field="*{password}" type="hidden" />
+            <label>Фамилия</label>
+            <input class="form-control" name="lastName" th:field="*{lastName}" placeholder="Фамилия" required type="text" /> <br>
+            <label>Имя</label>
+            <input class="form-control" name="firstName" th:field="*{firstName}" placeholder="Имя" required type="text" /> <br>
+            <label>Отчество</label>
+            <input class="form-control" name="middleName" th:field="*{middleName}" placeholder="Отчество" required type="text" /> <br>
+            <label>Почта</label>
+            <input class="form-control" name="email" th:field="*{email}" placeholder="Почта" required type="text" /> <br>
+            <label>Баланс</label>
+            <input class="form-control" name="balance" th:field="*{balance}" placeholder="Баланс" required type="number" /> <br>
+            <label>Статус</label>
+            <select class="form-select" name="isActive" th:field="*{active}" required="required">
+                <option value="true">Выберите статус</option>
+                <option value="true">Активный</option>
+                <option value="false">Заблокированный</option>
+            </select> <br>
+            <div class="form-check">
+                <label th:each="role : ${roles}" class="form-check-label px-5 p-2" for="role" >Роль:
+                    <input id="role" class="form-check-input" type="checkbox" name="roles"  th:text="${role.name}" th:value="${role.name}" th:field="*{roles}"/>
+                </label>
+            </div><br>
+            <input class="btn btn-outline-success" type="submit" value="Сохранить изменения"/>
+        </form>
+    </div>
+</div>
+
+<div th:insert="/blocks/footer :: footer"></div>
+</body>
+</html>
