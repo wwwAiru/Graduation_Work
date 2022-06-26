@@ -26,14 +26,14 @@ public class ClientBalanceValidator {
         this.hasErrors = false;
         BigDecimal inputAmount = (BigDecimal) target;
         if (inputAmount == null){
-            redirectAttributes.addFlashAttribute("amount", "Поле не может быть пустым.");
+            redirectAttributes.addFlashAttribute("amountError", "Поле не может быть пустым.");
             this.hasErrors = true;
             return;
         } else if (client.getBalance().compareTo(inputAmount) < 0) {
-            redirectAttributes.addFlashAttribute("amount", "Вы не можете перевести больше чем "+ client.getBalance() + ".");
+            redirectAttributes.addFlashAttribute("amountError", "Вы не можете перевести больше чем "+ client.getBalance() + ".");
             this.hasErrors = true;
         } else if (inputAmount.compareTo(BigDecimal.valueOf(0)) < 0) {
-            redirectAttributes.addFlashAttribute("amount", "Значение не может быть отрицательным.");
+            redirectAttributes.addFlashAttribute("amountError", "Значение не может быть отрицательным.");
             this.hasErrors = true;
         }
     }

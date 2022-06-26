@@ -100,7 +100,7 @@ public class AccountController {
         }
         // защита от подмены id счёта для зачисления, проверяется содержит ли Set id из формы
         if (account == null || !((Set<Long>)session.getAttribute("clientAccountIds")).contains(account.getId())){
-            redirectAttributes.addFlashAttribute("validationError", "Попытка подмены id счёта отклонена.");
+            redirectAttributes.addFlashAttribute("accountValidationError", "Попытка подмены id счёта отклонена.");
         } else accountService.upAccountBalance(client, account.getId(), amount);
         session.removeAttribute("clientAccountIds");
         return "redirect:/account";
