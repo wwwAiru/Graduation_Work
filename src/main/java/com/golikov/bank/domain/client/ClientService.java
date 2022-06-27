@@ -1,8 +1,8 @@
 package com.golikov.bank.domain.client;
 
-import com.golikov.bank.domain.account.Account;
+import com.golikov.bank.domain.client.account.Account;
 import com.golikov.bank.domain.client.dto.NewClient;
-import com.golikov.bank.domain.account.AccountRepository;
+import com.golikov.bank.domain.client.account.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -48,20 +48,20 @@
 <div class="container album py-5 bg-light">
 
     <div th:each="account : ${clientAccounts}" class="container mt-5">
+        <!-- карточки открытых счетов -->
         <div class="card">
             <p th:text="'Счёт №: ' + ${account.getAccountNumber} + ', валюта счёта ' + ${account.getCurrency}" class="card-header"></p>
             <div class="card-body">
                 <h5 th:text="'Баланс счёта: '+ ${account.getBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
-
+                <p class="card-text" th:text="${account.getDescription}"></p>
                 <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
+                <br>
 
                 <!-- модальное окно для вывода денег со счёта -->
                 <div th:insert="account/blocks/withdraw_account_modal :: withdrawAccountBalance"></div>
 
-                <!-- карточки открытых счетов -->
-                <p class="card-text" th:text="${account.getDescription}"></p>
+
                 <div th:if="${!account.getClientInvestProds.isEmpty()}" class="card-footer">
-                    <!--                    <ul class="list-group list-group-flush" >-->
                     <table class="table table-bordered">
                         <tr>
                             <th class="text-center">Инвест продукт</th>
@@ -76,7 +76,7 @@
                             <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getName}"></td>
                             <td class="col-1 text-center" th:text="${clientInvestment.getInvestProduct.getInterestRate} + ' %'"></td>
                             <td class="col-1 text-center" th:text="${clientInvestment.getBalance} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
-                            <td class="col-1 text-center" th:text="${#temporals.format(clientInvestment.getExpireDate, 'dd-MM-yyyy  HH:mm')}"></td>
+                            <td class="col-1 text-center" th:text="${#temporals.format(clientInvestment.getExpireDate, 'dd.MM.yyyy  HH:mm')}"></td>
                             <td class="col-1 text-center" th:text="${clientInvestment.getDays}"></td>
                             <td class="col-1 text-center" th:text="${clientInvestment.getProfit} + ' ' + ${clientInvestment.getInvestProduct.getCurrency}"></td>
                             <td class="col-1 text-center">

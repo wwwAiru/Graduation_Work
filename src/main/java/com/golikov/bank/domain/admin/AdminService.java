@@ -18,7 +18,7 @@ public class AdminService {
     InvestProductRepository investProductRepository;
 
     public List<Client> findAllClients(){
-        return  clientRepository.findAll();
+        return  clientRepository.findAllByOrderById();
     }
 
     public void save(Client client){

@@ -1,4 +1,4 @@
-package com.golikov.bank.domain.account;
+package com.golikov.bank.domain.client.account;
 
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.investment.ClientInvestProd;

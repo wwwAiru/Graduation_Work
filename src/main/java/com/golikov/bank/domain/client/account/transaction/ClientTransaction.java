@@ -1,4 +1,4 @@
-package com.golikov.bank.domain.account.transaction;
+package com.golikov.bank.domain.client.account.transaction;
 
 import lombok.Getter;
 import lombok.Setter;

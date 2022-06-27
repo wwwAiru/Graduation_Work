@@ -1,6 +1,6 @@
-package com.golikov.bank.domain.account.validator;
+package com.golikov.bank.domain.client.account.validator;
 
-import com.golikov.bank.domain.account.Account;
+import com.golikov.bank.domain.client.account.Account;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;

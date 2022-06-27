@@ -1,4 +1,4 @@
-package com.golikov.bank.domain.account.utils;
+package com.golikov.bank.domain.client.account.utils;
 
 // утилитарный класс для генерации номера счёта
 public class AccountNumGenerator {

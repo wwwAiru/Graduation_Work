@@ -15,7 +15,7 @@
     </h2>
     <br>
     <div class="conteiner col-6 mx-auto">
-        <form method="post" th:action="@{/add-inv-product}" th:object="${investProduct}">
+        <form method="post" th:action="@{/save-inv-product}" th:object="${investProduct}">
             <input class="form-control" th:field="*{name}" placeholder="Название инвестиционного продукта" type="text"/>
             <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="alert alert-danger"></div>
             <br>

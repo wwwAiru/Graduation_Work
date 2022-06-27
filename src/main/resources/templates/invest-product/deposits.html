@@ -20,7 +20,7 @@
 <div class="container album py-2 bg-light">
     <!--  кнопка Добавить инвестиционный продукт -->
     <div class="container mt-5">
-        <a type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Добавить новый инвестиционный продукт</a>
+        <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Добавить новый инвестиционный продукт</a>
     </div>
     <div th:each="invProduct : ${invProducts}" class="container mt-5">
         <div th:if="${invProduct.isActive}" class="card">
@@ -28,14 +28,11 @@
             <div class="card-body">
                 <h5 th:text="${invProduct.getName}" class="card-title"></h5>
                 <p th:text="${invProduct.getDescription}" class="card-text"></p>
-                <div class="card-footer">
+                <div sec:authorize="isAuthenticated()" class="card-footer">
                     <div class="btn-group">
-                        <a th:href="@{/product/invest/{id}(id=${invProduct.getId})}"
-                           class="btn btn-sm btn-outline-secondary">Инвестировать</a>
-                        <a th:href="@{/product/edit/{id}(id=${invProduct.getId})}"
-                           class="btn btn-sm btn-outline-secondary">Редактировать</a>
-                        <a th:href="@{/product/delete/{id}(id=${invProduct.getId})}"
-                           class="btn btn-sm btn-outline-secondary">Удалить</a>
+                        <a th:href="@{/product/invest/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Инвестировать</a>
+                        <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/product/edit/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/product/delete/{id}(id=${invProduct.getId})}" class="btn btn-sm btn-outline-secondary">Удалить</a>
                     </div>
                 </div>
             </div>

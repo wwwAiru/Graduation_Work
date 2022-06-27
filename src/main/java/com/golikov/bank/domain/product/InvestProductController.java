@@ -1,13 +1,14 @@
 package com.golikov.bank.domain.product;
 
-import com.golikov.bank.domain.account.Account;
+import com.golikov.bank.domain.client.account.Account;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.investment.ClientInvestProd;
-import com.golikov.bank.domain.account.AccountService;
+import com.golikov.bank.domain.client.account.AccountService;
 import com.golikov.bank.domain.product.validator.AccountValidator;
 import com.golikov.bank.domain.product.validator.DepositDaysValidator;
 import com.golikov.bank.domain.investment.validator.InvestmentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,13 +42,15 @@ public class InvestProductController {
 
     // создание нового инвестиционного продукта
     @GetMapping("/product/add-inv-product")
+    @PreAuthorize("hasAuthority('HEAD_MANAGER')")
     public String createInvProduct(Model model){
         model.addAttribute("investProduct", new InvestProduct());
         return "invest-product/add-inv-product";
     }
 
     // сохранение нового инвестиционного продукта
-    @PostMapping("/add-inv-product")
+    @PostMapping("/save-inv-product")
+    @PreAuthorize("hasAuthority('HEAD_MANAGER')")
     public String addInvProduct(@ModelAttribute("investProduct") @Valid InvestProduct investProduct,
                                 BindingResult result,
                                 RedirectAttributes redirectAttributes){
@@ -62,6 +65,7 @@ public class InvestProductController {
 
     // форма редактирование инвест продукта
     @GetMapping("/product/edit/{investProduct}")
+    @PreAuthorize("hasAuthority('HEAD_MANAGER')")
     public String editProduct(@PathVariable InvestProduct investProduct, HttpSession session){
         session.setAttribute("securedId", investProduct.getId());
         return "invest-product/deposit-edit";
@@ -70,6 +74,7 @@ public class InvestProductController {
 
     // сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
+    @PreAuthorize("hasAuthority('HEAD_MANAGER')")
     public String saveEditedProduct(@ModelAttribute InvestProduct investProduct,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes){
@@ -85,6 +90,7 @@ public class InvestProductController {
 
     // удаление инвест продукта(сделать неактивным)
     @GetMapping("/product/delete/{investProduct}")
+    @PreAuthorize("hasAuthority('HEAD_MANAGER')")
     public String deleteProduct(@PathVariable InvestProduct investProduct){
         investProductServise.delete(investProduct);
         return "redirect:/deposits";

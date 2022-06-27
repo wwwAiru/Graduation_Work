@@ -1,6 +1,5 @@
-package com.golikov.bank.domain.account;
+package com.golikov.bank.domain.client.account;
 
-import com.golikov.bank.domain.account.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
