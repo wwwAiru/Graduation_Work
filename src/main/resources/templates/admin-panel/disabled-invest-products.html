@@ -16,46 +16,42 @@
 <div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
 
 
-<!-- список инвест продуктов-->
-<!--<div class="container album py-2">-->
-    <!--  кнопка Добавить инвестиционный продукт -->
-    <div class="container mt-5">
-        <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Добавить новый инвестиционный продукт</a>
-    </div><br>
-    <div class="container">
-        <table class="table">
-            <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Название</th>
-                <th class="text-center">Описание</th>
-                <th class="text-center">Процентная ставка</th>
-                <th class="text-center">Валюта</th>
-                <th class="text-center">Минимальный депозит</th>
-                <th class="text-center">Максимальный депозит</th>
-                <th class="text-center">Минимальный срок вклада</th>
-                <th class="text-center">Максимальный срок вклада</th>
-                <th class="text-center">Актуальность</th>
-                <th class="text-center">Действия</th>
-            </tr>
-            <tr th:each="investProduct : ${investProducts}">
-                <td class="col-1 text-center" th:text="${investProduct.getId}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getName}"></td>
-                <td class="col-2 text-center" th:text="${investProduct.getDescription}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getInterestRate}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getCurrency}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getMinDeposit}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getMaxDeposit}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getMinDepositTerm}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.getMaxDepositTerm}"></td>
-                <td class="col-1 text-center" th:text="${investProduct.isActive}"></td>
-                <td class="col-1 text-center" >
+<div class="container mt-5">
+    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Добавить новый инвестиционный продукт</a>
+</div><br>
+<div class="container album py-2">
+    <table class="table">
+        <tr>
+            <th class="text-center">ID</th>
+            <th class="text-center">Название</th>
+            <th class="text-center">Описание</th>
+            <th class="text-center">Процентная ставка</th>
+            <th class="text-center">Валюта</th>
+            <th class="text-center">Минимальный депозит</th>
+            <th class="text-center">Максимальный депозит</th>
+            <th class="text-center">Минимальный срок вклада</th>
+            <th class="text-center">Максимальный срок вклада</th>
+            <th class="text-center">Актуальность</th>
+            <th class="text-center">Действия</th>
+        </tr>
+        <tr th:each="investProduct : ${investProducts}">
+            <td class="col-1 text-center" th:text="${investProduct.getId}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getName}"></td>
+            <td class="col-2" th:text="${investProduct.getDescription}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getInterestRate}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getCurrency}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getMinDeposit}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getMaxDeposit}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getMinDepositTerm}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.getMaxDepositTerm}"></td>
+            <td class="col-1 text-center" th:text="${investProduct.isActive}"></td>
+            <td class="col-1 text-center" >
                 <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/product/edit/{id}(id=${investProduct.getId})}" class="btn btn-sm btn-outline-info m-2">Редактировать</a>
                 <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/admin/product/delete/{id}(id=${investProduct.getId})}" class="btn btn-sm btn-outline-danger m-2">Удалить</a>
-                </td>
-            </tr>
-        </table>
-    </div>
-<!--</div>-->
+            </td>
+        </tr>
+    </table>
+</div>
 <div th:insert="/blocks/footer :: footer"></div>
 </body>
 </html>
