@@ -66,7 +66,12 @@ public class InvestProductController {
     // форма редактирование инвест продукта
     @GetMapping("/product/edit/{investProduct}")
     @PreAuthorize("hasAuthority('HEAD_MANAGER')")
-    public String editProduct(@PathVariable InvestProduct investProduct, HttpSession session){
+    public String editProduct(@PathVariable InvestProduct investProduct,
+                              HttpSession session,
+                              Model model){
+        if (!model.containsAttribute("investProductEdit")) {
+            model.addAttribute("investProductEdit", investProduct);
+        }
         session.setAttribute("securedId", investProduct.getId());
         return "invest-product/deposit-edit";
     }
@@ -75,13 +80,17 @@ public class InvestProductController {
     // сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
     @PreAuthorize("hasAuthority('HEAD_MANAGER')")
-    public String saveEditedProduct(@ModelAttribute InvestProduct investProduct,
+    public String saveEditedProduct(@ModelAttribute("investProduct") @Valid InvestProduct investProduct,
+                                    BindingResult result,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes){
         Long securedId = (Long) session.getAttribute("securedId");
         session.removeAttribute("securedId");
-        if (securedId!=investProduct.getId()){
+        if (securedId!=investProduct.getId() | result.hasErrors()){
             redirectAttributes.addFlashAttribute("error", "Попытка подмены id отклонена");
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.investProductEdit", result);
+            redirectAttributes.addFlashAttribute("investProductEdit", investProduct);
+            return "redirect:/product/edit/"+investProduct.getId();
         } else {
         investProductServise.save(investProduct);
         }

@@ -7,4 +7,6 @@ import java.util.List;
 public interface InvestProductRepository extends JpaRepository<InvestProduct, Long> {
     //сортировка результатов инвест продуктов по уменьшению доходности
     List<InvestProduct> findAllByIsActiveIsTrueOrderByName();
+
+    List<InvestProduct> findAllByIsActiveIsFalseOrderById();
 }

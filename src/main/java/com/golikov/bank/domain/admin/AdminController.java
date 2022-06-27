@@ -40,8 +40,9 @@ public class AdminController {
         return "redirect:/admin/clients";
     }
 
-    @GetMapping("/disable-products")
+    @GetMapping("/disabled-products")
     public String productsEdit(Model model){
-        return "admin/invest-products-edit";
+        model.addAttribute("investProducts", adminService.findAllDisabledProducts());
+        return "admin-panel/disabled-invest-products";
     }
 }
