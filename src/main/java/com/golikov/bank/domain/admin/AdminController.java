@@ -43,6 +43,15 @@ public class AdminController {
         return "redirect:/admin/clients";
     }
 
+
+    @GetMapping("/clients/investments")
+    public String clientsInvestments(Model model){
+        model.addAttribute("investments", adminService.findAllClientsInvestments());
+        return "admin-panel/clients-investments";
+    }
+
+
+
     @GetMapping("/product/delete/{id}")
     public String productDelete(@ModelAttribute("id") InvestProduct investProduct){
         adminService.delete(investProduct);

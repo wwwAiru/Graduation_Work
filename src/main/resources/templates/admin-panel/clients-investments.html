@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- блок head с ресурсами JS и bootstrap -->
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+
+<header th:insert="blocks/navbar :: navbar"></header>
+
+
+<section class="py-5 text-center mt-5 container"><h1>Инвестиции клиентов</h1></section>
+
+
+<div th:if="${success}" class="container alert alert-success text-center" th:text="${success}"></div>
+
+
+<div class="container mt-5">
+    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Активировать режим закрытия вкладов с процентами</a>
+    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Вернуть даты закрытия вкладов</a>
+</div><br>
+<div class="container album py-2">
+    <table class="table">
+        <tr>
+            <th class="text-center">Название продукта</th>
+            <th class="text-center">Клиент</th>
+            <th class="text-center">Сумма</th>
+            <th class="text-center">Процентная ставка</th>
+            <th class="text-center">Потенциальный доход</th>
+            <th class="text-center">Количество дней</th>
+            <th class="text-center">Номер аккаунта</th>
+            <th class="text-center">Дата начала вклада</th>
+            <th class="text-center">Дата окончания вклада</th>
+
+        </tr>
+        <tr th:each="investment : ${investments}">
+            <td class="col-1 text-center" th:text="${investment.getInvestProduct.getName}"></td>
+            <td class="col-3 text-center">
+                <p th:text="${investment.getAccount.getClient.getFullName}"></p>
+                <p th:text="' (' + ${investment.getAccount.getClient.getEmail} + ')'"></p>
+            </td>
+            <td class="col-1 text-center" th:text="${investment.getBalance} + ' ' + ${investment.getAccount.getCurrency}"></td>
+            <td class="col-1 text-center" th:text="${investment.getInvestProduct.getInterestRate} + ' %'"></td>
+            <td class="col-1 text-center" th:text="${investment.getProfit} + ' ' + ${investment.getAccount.getCurrency}"></td>
+            <td class="col-1 text-center" th:text="${investment.getDays}"></td>
+            <td class="col-1 text-center" th:text="${investment.getAccount.getAccountNumber}"></td>
+            <td class="col-1 text-center" th:text="${#temporals.format(investment.getBeginDate, 'dd.MM.yyyy  HH:mm')}"></td>
+            <td class="col-1 text-center" th:text="${#temporals.format(investment.getExpireDate, 'dd.MM.yyyy  HH:mm')}"></td>
+        </tr>
+    </table>
+</div>
+<div th:insert="/blocks/footer :: footer"></div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.golikov.bank.domain.client.account.validator;
+package com.golikov.bank.domain.account.validator;
 
 import com.golikov.bank.domain.client.Client;
 import lombok.Getter;

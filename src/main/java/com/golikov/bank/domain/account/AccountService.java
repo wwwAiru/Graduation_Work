@@ -1,14 +1,14 @@
-package com.golikov.bank.domain.client.account;
+package com.golikov.bank.domain.account;
 
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.investment.ClientInvestProd;
 import com.golikov.bank.domain.product.InvestProduct;
-import com.golikov.bank.domain.client.account.transaction.ClientTransaction;
+import com.golikov.bank.domain.account.transaction.ClientTransaction;
 import com.golikov.bank.domain.investment.ClientInvestProdRepository;
 import com.golikov.bank.domain.client.ClientRepository;
-import com.golikov.bank.domain.client.account.transaction.ClientTransactionRepository;
+import com.golikov.bank.domain.account.transaction.ClientTransactionRepository;
 import com.golikov.bank.domain.currency.CurrencyService;
-import com.golikov.bank.domain.client.account.utils.AccountNumGenerator;
+import com.golikov.bank.domain.account.utils.AccountNumGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

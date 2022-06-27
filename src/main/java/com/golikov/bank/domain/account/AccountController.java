@@ -1,10 +1,10 @@
-package com.golikov.bank.domain.client.account;
+package com.golikov.bank.domain.account;
 
 
+import com.golikov.bank.domain.account.transaction.ClientTransaction;
+import com.golikov.bank.domain.account.validator.ClientBalanceValidator;
+import com.golikov.bank.domain.account.validator.TransferBalanceValidator;
 import com.golikov.bank.domain.client.Client;
-import com.golikov.bank.domain.client.account.transaction.ClientTransaction;
-import com.golikov.bank.domain.client.account.validator.ClientBalanceValidator;
-import com.golikov.bank.domain.client.account.validator.TransferBalanceValidator;
 import com.golikov.bank.domain.investment.ClientInvestProd;
 import com.golikov.bank.domain.client.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.golikov.bank.domain.investment;
 
-import com.golikov.bank.domain.client.account.Account;
+import com.golikov.bank.domain.account.Account;
 import com.golikov.bank.domain.product.InvestProduct;
 import lombok.Getter;
 import lombok.Setter;

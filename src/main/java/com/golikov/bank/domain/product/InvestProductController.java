@@ -1,9 +1,9 @@
 package com.golikov.bank.domain.product;
 
-import com.golikov.bank.domain.client.account.Account;
+import com.golikov.bank.domain.account.Account;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.investment.ClientInvestProd;
-import com.golikov.bank.domain.client.account.AccountService;
+import com.golikov.bank.domain.account.AccountService;
 import com.golikov.bank.domain.product.validator.AccountValidator;
 import com.golikov.bank.domain.product.validator.DepositDaysValidator;
 import com.golikov.bank.domain.investment.validator.InvestmentValidator;

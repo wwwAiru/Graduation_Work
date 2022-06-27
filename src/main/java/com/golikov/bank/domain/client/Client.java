@@ -1,6 +1,6 @@
 package com.golikov.bank.domain.client;
 
-import com.golikov.bank.domain.client.account.Account;
+import com.golikov.bank.domain.account.Account;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

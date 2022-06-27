@@ -1,4 +1,4 @@
-package com.golikov.bank.domain.client.account.transaction;
+package com.golikov.bank.domain.account.transaction;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

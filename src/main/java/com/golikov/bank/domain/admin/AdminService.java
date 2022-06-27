@@ -2,6 +2,8 @@ package com.golikov.bank.domain.admin;
 
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.ClientRepository;
+import com.golikov.bank.domain.investment.ClientInvestProd;
+import com.golikov.bank.domain.investment.ClientInvestProdRepository;
 import com.golikov.bank.domain.product.InvestProduct;
 import com.golikov.bank.domain.product.InvestProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class AdminService {
     @Autowired
     InvestProductRepository investProductRepository;
 
+    @Autowired
+    ClientInvestProdRepository clientInvestProdRepository;
+
     public List<Client> findAllClients(){
         return  clientRepository.findAllByOrderById();
     }
@@ -29,6 +34,10 @@ public class AdminService {
 
     public List<InvestProduct> findAllDisabledProducts(){
         return investProductRepository.findAllByIsActiveIsFalseOrderById();
+    }
+
+    public List<ClientInvestProd> findAllClientsInvestments(){
+        return clientInvestProdRepository.findAll();
     }
 
     public void delete(InvestProduct investProduct){

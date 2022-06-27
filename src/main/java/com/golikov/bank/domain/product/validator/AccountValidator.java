@@ -1,7 +1,7 @@
 package com.golikov.bank.domain.product.validator;
 
 
-import com.golikov.bank.domain.client.account.Account;
+import com.golikov.bank.domain.account.Account;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
