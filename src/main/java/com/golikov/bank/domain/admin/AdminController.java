@@ -2,11 +2,14 @@ package com.golikov.bank.domain.admin;
 
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.Role;
+import com.golikov.bank.domain.product.InvestProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/admin")
@@ -40,9 +43,17 @@ public class AdminController {
         return "redirect:/admin/clients";
     }
 
-    @GetMapping("/disabled-products")
-    public String productsEdit(Model model){
+    @GetMapping("/product/delete/{id}")
+    public String productDelete(@ModelAttribute("id") InvestProduct investProduct){
+        adminService.delete(investProduct);
+        return "redirect:/admin/products/disabled";
+    }
+
+    @GetMapping("/products/disabled")
+    public String productsEdit(Model model, HttpSession session){
         model.addAttribute("investProducts", adminService.findAllDisabledProducts());
+        //добавил в сессию значение чтобы по его наличию делать редирект обратно в этот GetMapping
+        session.setAttribute("admin-edit", "1");
         return "admin-panel/disabled-invest-products";
     }
 }

@@ -30,4 +30,8 @@ public class AdminService {
     public List<InvestProduct> findAllDisabledProducts(){
         return investProductRepository.findAllByIsActiveIsFalseOrderById();
     }
+
+    public void delete(InvestProduct investProduct){
+        investProductRepository.delete(investProduct);
+    }
 }

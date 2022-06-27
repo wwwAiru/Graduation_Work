@@ -80,7 +80,7 @@ public class InvestProductController {
     // сохранение изменений инвест продукта
     @PostMapping("/product/edit/save")
     @PreAuthorize("hasAuthority('HEAD_MANAGER')")
-    public String saveEditedProduct(@ModelAttribute("investProduct") @Valid InvestProduct investProduct,
+    public String saveEditedProduct(@ModelAttribute("investProductEdit") @Valid InvestProduct investProduct,
                                     BindingResult result,
                                     HttpSession session,
                                     RedirectAttributes redirectAttributes){
@@ -91,8 +91,13 @@ public class InvestProductController {
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.investProductEdit", result);
             redirectAttributes.addFlashAttribute("investProductEdit", investProduct);
             return "redirect:/product/edit/"+investProduct.getId();
-        } else {
+        }
         investProductServise.save(investProduct);
+        String adminEdit = (String) session.getAttribute("admin-edit");
+    //  проверка: если редактирование пришло из админки, то вернуть в админку
+        if (adminEdit!=null) {
+            session.removeAttribute("admin-edit");
+            return "redirect:/admin/products/disabled";
         }
         return "redirect:/deposits";
     }
