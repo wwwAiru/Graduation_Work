@@ -130,4 +130,8 @@ public class AccountService {
         clientInvestProdRepository.delete(investment);
     }
 
+    public List<ClientTransaction> getClientTransactions(Client client){
+        return clientTransactionRepository.findAllClientTransactions(client.getId());
+    }
+
 }

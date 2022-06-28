@@ -137,9 +137,9 @@ public class AccountController {
         return "redirect:/account";
     }
 
-    @PostMapping("/account/investment/close/{investment}")
+    @PostMapping("/account/investment/close/{id}")
     public String closeInvestment(@AuthenticationPrincipal Client client,
-                                  @PathVariable(required = false) ClientInvestProd investment,
+                                  @PathVariable(name = "id", required = false) ClientInvestProd investment,
                                   RedirectAttributes redirectAttributes) {
         // защита от подмены id вклада
         List<Long> clientAccounts = client.getAccounts().stream().map(Account::getId).toList();
@@ -150,6 +150,13 @@ public class AccountController {
             redirectAttributes.addFlashAttribute("success", investment.getInvestProduct().getName() + " закрыт");
         }
         return "redirect:/account";
+    }
+
+    @GetMapping("account/transactions")
+    public String clientTransactions(@AuthenticationPrincipal Client client,
+                                     Model model){
+        model.addAttribute("transactions", accountService.getClientTransactions(client));
+        return "account/transactions";
     }
 
 }

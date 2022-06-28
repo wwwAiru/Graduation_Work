@@ -23,6 +23,8 @@
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cardModal">Пополнить</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createAccountModal">Открыть инвестиционный счёт</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#upAccountBalanceModal">Перевести деньги на счёт</button>
+            <a th:href="@{/account/transactions}" class="btn btn-outline-success">История пополнений</a>
+
 
             <!-- модальное окно пополнения баланса с карты -->
             <div th:insert="account/blocks/card_to_balance_modal :: card"></div>
@@ -52,10 +54,11 @@
         <div class="card">
             <p th:text="'Счёт №: ' + ${account.getAccountNumber} + ', валюта счёта ' + ${account.getCurrency}" class="card-header"></p>
             <div class="card-body">
-                <h5 th:text="'Баланс счёта: '+ ${account.getBalance} + ' '+ ${account.getCurrency}" class="card-title"></h5>
+                <h5 class="card-title btn-toolbar">
+                <p th:text="'Баланс счёта: '+ ${account.getBalance} + ' '+ ${account.getCurrency}"></p>
+                <button type="button" class="btn btn-outline-success mx-4" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
+                </h5>
                 <p class="card-text" th:text="${account.getDescription}"></p>
-                <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" th:attr="data-bs-target='#withdrawModal' + ${account.getId}">Вывести</button>
-                <br>
 
                 <!-- модальное окно для вывода денег со счёта -->
                 <div th:insert="account/blocks/withdraw_account_modal :: withdrawAccountBalance"></div>

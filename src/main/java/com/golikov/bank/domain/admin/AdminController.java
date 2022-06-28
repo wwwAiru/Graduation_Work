@@ -19,10 +19,6 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @GetMapping("/")
-    public String adminPanel(Model model){
-        return "admin-panel/admin";
-    }
 
     @GetMapping("/clients")
     public String clients(Model model){
@@ -50,13 +46,14 @@ public class AdminController {
         return "admin-panel/clients-investments";
     }
 
-
+    // устанавливает даты окончания всех вкладов -11 лет, для проверки работоспособности расчёта и начисления процентов на счета клиентов
     @GetMapping("/clients/investments/profitable-mode-enable")
     public String profitableModeEnable(){
         adminService.enableProfitableMode();
         return "redirect:/admin/clients/investments";
     }
 
+    // устанавливает даты окончания всех вкладов +11 лет, для того чтобы вернуть даты окончания вкладов к прежним значениям
     @GetMapping("/clients/investments/profitable-mode-disable")
     public String profitableModeDisable(){
         adminService.disableProfitableMode();
@@ -81,7 +78,7 @@ public class AdminController {
 
 
     @GetMapping("/products/disabled")
-    public String productsEdit(Model model, HttpSession session){
+    public String allDisabledProducts(Model model, HttpSession session){
         model.addAttribute("investProducts", adminService.findAllDisabledProducts());
         return "admin-panel/disabled-invest-products";
     }

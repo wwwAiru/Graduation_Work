@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<!-- блок head с ресурсами JS и bootstrap -->
+<div th:insert="blocks/head :: head"></div>
+
+<body>
+<header th:insert="blocks/navbar :: navbar"></header>
+<div class="container mt-4 p-4">
+    <h2 class="text-center mt-4 p-4">
+        История транзакций
+    </h2>
+    <table class="table">
+        <tr>
+            <th class="text-center">Тип транзакции</th>
+            <th class="text-center">Сумма</th>
+            <th class="text-center">Номер карты</th>
+            <th class="text-center">Дата, время</th>
+        </tr>
+        <tr th:each="transaction : ${transactions}">
+            <td class="col-1 text-center" th:text="${transaction.getTransactionType}"></td>
+            <td class="col-1 text-center" th:text="${transaction.getAmount}"></td>
+            <td class="col-1 text-center" th:text="${transaction.getCardNumber}"></td>
+            <td class="col-1 text-center" th:text="${#temporals.format(transaction.getDate, 'dd.MM.yyyy  HH:mm')}"></td>
+        </tr>
+    </table>
+
+
+    <div th:insert="/blocks/footer :: footer"></div>
+</body>
+</html>
