@@ -25,7 +25,7 @@ public class InvestProduct {
     private String name;
 
     @NotBlank(message = "Обязательное поле")
-    @Size(min = 20, max = 255, message = "Введите описание, минимум 20 символов, максимум 255")
+    @Size(min = 20, max = 500, message = "Введите описание, минимум 20 символов, максимум 500")
     @Column(name = "description")
     private String description;
 

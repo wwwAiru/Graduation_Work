@@ -127,9 +127,9 @@ public class AccountController {
     }
 
     // вывод денег с акаунта на общий счёт с пересчётом в рубли
-    @PostMapping("/account/withdraw/{account}")
+    @PostMapping("/account/withdraw/{id}")
     public String withdraw(@AuthenticationPrincipal Client client,
-                           @PathVariable(required = false) Account account,
+                           @PathVariable(name = "id", required = false) Account account,
                            @RequestParam(required = false) String amount,
                            RedirectAttributes redirectAttributes) {
         // защита от попадания строки в поле для цифр

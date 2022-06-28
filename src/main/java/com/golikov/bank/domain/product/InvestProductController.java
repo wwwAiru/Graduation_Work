@@ -64,9 +64,9 @@ public class InvestProductController {
     }
 
     // форма редактирование инвест продукта
-    @GetMapping("/product/edit/{investProduct}")
+    @GetMapping("/product/edit/{id}")
     @PreAuthorize("hasAuthority('HEAD_MANAGER')")
-    public String editProduct(@PathVariable InvestProduct investProduct,
+    public String editProduct(@PathVariable("id") InvestProduct investProduct,
                               HttpSession session,
                               Model model){
         if (!model.containsAttribute("investProductEdit")) {
@@ -103,17 +103,17 @@ public class InvestProductController {
     }
 
     // удаление инвест продукта(сделать неактивным)
-    @GetMapping("/product/delete/{investProduct}")
+    @GetMapping("/product/delete/{id}")
     @PreAuthorize("hasAuthority('HEAD_MANAGER')")
-    public String deleteProduct(@PathVariable InvestProduct investProduct){
+    public String deleteProduct(@PathVariable("id") InvestProduct investProduct){
         investProductServise.delete(investProduct);
         return "redirect:/deposits";
     }
 
     // инвестиция в продукт(открытие вклада)
-    @GetMapping("/product/invest/{investProduct}")
+    @GetMapping("/product/invest/{id}")
     public String invest(Model model,
-                         @PathVariable InvestProduct investProduct,
+                         @PathVariable("id") InvestProduct investProduct,
                          @AuthenticationPrincipal Client client,
                          HttpSession session){
         List<Account> accounts = accountService.findValidDepoAccounts(client.getId(),
