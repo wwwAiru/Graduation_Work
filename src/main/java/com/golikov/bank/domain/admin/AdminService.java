@@ -36,7 +36,10 @@ public class AdminService {
         return investProductRepository.findAllByIsActiveIsFalseOrderById();
     }
 
-    public List<ClientInvestProd> findAllClientsInvestments(){
+    public List<ClientInvestProd> findAllClientsInvestments(String keyword){
+        if (keyword != null) {
+            return clientInvestProdRepository.findAllKeyword(keyword);
+        }
         return clientInvestProdRepository.findAll();
     }
 
@@ -45,14 +48,16 @@ public class AdminService {
     }
 
     public void enableProfitableMode(){
-        List<ClientInvestProd> investments = findAllClientsInvestments();
+        List<ClientInvestProd> investments = clientInvestProdRepository.findAll();
         investments.forEach(investment -> investment.setExpireDate(investment.getExpireDate().minusYears(11)));
+        investments.forEach(investment -> investment.setBeginDate(investment.getBeginDate().minusYears(11)));
         clientInvestProdRepository.saveAll(investments);
     }
 
     public void disableProfitableMode(){
-        List<ClientInvestProd> investments = findAllClientsInvestments();
+        List<ClientInvestProd> investments = clientInvestProdRepository.findAll();
         investments.forEach(investment -> investment.setExpireDate(investment.getExpireDate().plusYears(11)));
+        investments.forEach(investment -> investment.setBeginDate(investment.getBeginDate().plusYears(11)));
         clientInvestProdRepository.saveAll(investments);
     }
 

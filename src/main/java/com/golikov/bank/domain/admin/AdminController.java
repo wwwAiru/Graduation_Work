@@ -41,8 +41,9 @@ public class AdminController {
 
 
     @GetMapping("/clients/investments")
-    public String clientsInvestments(Model model){
-        model.addAttribute("investments", adminService.findAllClientsInvestments());
+    public String clientsInvestments(Model model,
+                                     @RequestParam(required = false) String keyword){
+        model.addAttribute("investments", adminService.findAllClientsInvestments(keyword));
         return "admin-panel/clients-investments";
     }
 
