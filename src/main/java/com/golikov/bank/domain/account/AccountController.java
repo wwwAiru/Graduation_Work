@@ -2,11 +2,12 @@ package com.golikov.bank.domain.account;
 
 
 import com.golikov.bank.domain.account.transaction.ClientTransaction;
+import com.golikov.bank.domain.account.transaction.TransactionService;
 import com.golikov.bank.domain.account.validator.ClientBalanceValidator;
 import com.golikov.bank.domain.account.validator.TransferBalanceValidator;
 import com.golikov.bank.domain.client.Client;
-import com.golikov.bank.domain.investment.ClientInvestProd;
 import com.golikov.bank.domain.client.ClientService;
+import com.golikov.bank.domain.investment.ClientInvestProd;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -33,10 +34,10 @@ public class AccountController {
     AccountRepository accountRepository;
 
     @Autowired
-    ClientBalanceValidator clientBalanceValidator;
+    ClientService clientService;
 
     @Autowired
-    ClientService clientService;
+    TransactionService transactionService;
 
 
     @GetMapping("/account")
@@ -75,6 +76,26 @@ public class AccountController {
         return "redirect:/account";
     }
 
+    @PostMapping("/withdraw-balance")
+    public String withdrawBalance(@AuthenticationPrincipal Client client,
+                            @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
+                            BindingResult result,
+                            @ModelAttribute Account account,
+                            RedirectAttributes redirectAttributes){
+        ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "output");
+        clientBalanceValidator.validate(clientTransaction.getAmount());
+        if (result.hasErrors() | clientBalanceValidator.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
+            redirectAttributes.addFlashAttribute("transaction", clientTransaction);
+            redirectAttributes.addFlashAttribute("withdrawBalanceError", "withdrawBalanceError");
+            return "redirect:/account";
+        }
+        accountService.balanceToCard(clientTransaction, client);
+        redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
+        return "redirect:/account";
+    }
+
+
     // открытие ивест счёта
     @PostMapping("/account/create-account")
     public String createAccount(@AuthenticationPrincipal Client client,
@@ -91,11 +112,10 @@ public class AccountController {
                                       HttpSession session,
                                       RedirectAttributes redirectAttributes) {
         //валидация переводимой суммы денег
-        clientBalanceValidator.setClient(client);
-        clientBalanceValidator.setRedirectAttributes(redirectAttributes);
+        ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "input");
         clientBalanceValidator.validate(amount);
         // если есть ошибки валидации то редирект с флэш сообщениями из ClientBalanceValidator
-        if (clientBalanceValidator.isHasErrors()){
+        if (clientBalanceValidator.hasErrors()){
            return  "redirect:/account";
         }
         // защита от подмены id счёта для зачисления, проверяется содержит ли Set id из формы
@@ -155,7 +175,7 @@ public class AccountController {
     @GetMapping("account/transactions")
     public String clientTransactions(@AuthenticationPrincipal Client client,
                                      Model model){
-        model.addAttribute("transactions", accountService.getClientTransactions(client));
+        model.addAttribute("transactions", transactionService.getClientTransactions(client));
         return "account/transactions";
     }
 

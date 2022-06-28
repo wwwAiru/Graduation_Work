@@ -1,0 +1,49 @@
+<div th:fragment="withdrawBalance">
+    <!-- Modal -->
+    <div class="modal fade" id="withdrawBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                <h1 class="text-center">Вывод средств</h1>
+
+                <div class="container px-5">
+                        <form th:action="@{/withdraw-balance}" method="post" th:object="${transaction}">
+                            <div class="form-group  col-7">
+                                <label>Сумма перевода</label>
+                                <input th:field="*{amount}" type="number" min="0" class="form-control">
+                                <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
+                                <div th:if="${outputAmountError}" class="container alert alert-danger text-center" th:text="${outputAmountError}"></div>
+                            </div>
+
+                            <div class="form-group col-7">
+                                <label>Фамилия Имя владельца</label>
+                                <input th:field="*{ownerName}" type="text" class="form-control">
+                                <div th:if="${#fields.hasErrors('ownerName')}" th:errors="*{ownerName}" class="alert alert-danger"></div>
+                            </div>
+
+                            <div class="form-group col-7">
+                                <label>Номер карты</label>
+                                <input th:field="*{cardNumber}" type="text" class="form-control">
+                                <div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" class="alert alert-danger"></div>
+                            </div><br>
+
+
+                            <div class="form-group">
+                                <img src="https://bootstraptema.ru/snippets/form/2017/visa.jpg" id="visa">
+                                <img src="https://bootstraptema.ru/snippets/form/2017/mastercard.jpg" id="mastercard">
+                                <img src="https://bootstraptema.ru/snippets/form/2017/amex.jpg" id="amex">
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-outline-success">Перевод</button>
+                                <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>
+                            </div>
+
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

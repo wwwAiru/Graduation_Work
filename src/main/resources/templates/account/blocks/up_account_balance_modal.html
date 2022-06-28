@@ -19,7 +19,7 @@
                         <br>
                         <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" step="0.01"/> <br>
                         <!-- сообщения валидации из ClienBalanceValidator -->
-                        <div th:if="${amountError}" class="container alert alert-danger text-center" th:text="${amountError}"></div>
+                        <div th:if="${inputAmountError}" class="container alert alert-danger text-center" th:text="${inputAmountError}"></div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Перевод</button>
                             <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>

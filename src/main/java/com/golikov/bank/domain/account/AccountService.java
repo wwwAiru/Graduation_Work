@@ -49,6 +49,18 @@ public class AccountService {
         clientTransactionRepository.save(clientTransaction);
     }
 
+    @Transactional
+    public void balanceToCard(ClientTransaction clientTransaction, Client client){
+        clientTransaction.setDate(LocalDateTime.now());
+        clientTransaction.setClientId(client.getId());
+        clientTransaction.setTransactionType("Вывод средств");
+        BigDecimal currentBalance = client.getBalance();
+        BigDecimal amount = clientTransaction.getAmount();
+        client.setBalance(currentBalance.subtract(amount));
+        clientRepository.save(client);
+        clientTransactionRepository.save(clientTransaction);
+    }
+
     // метод для создания инвестиционных счетов, в этом методе дополняется сущность депозит акаунта
     // генерируется номер счёта, и устанавливается клиент владелец
     @Transactional
@@ -130,8 +142,5 @@ public class AccountService {
         clientInvestProdRepository.delete(investment);
     }
 
-    public List<ClientTransaction> getClientTransactions(Client client){
-        return clientTransactionRepository.findAllClientTransactions(client.getId());
-    }
 
 }

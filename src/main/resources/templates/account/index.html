@@ -21,13 +21,16 @@
                 У вас ещё нет инвестиционного счёта, для того чтобы начать пользоваться инвест-продуктами, откройте свой первый инвестиционный счёт и пополните его.
             </p>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#cardModal">Пополнить</button>
+            <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#withdrawBalanceModal">Вывод средств</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#createAccountModal">Открыть инвестиционный счёт</button>
             <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#upAccountBalanceModal">Перевести деньги на счёт</button>
-            <a th:href="@{/account/transactions}" class="btn btn-outline-success">История пополнений</a>
+            <a th:href="@{/account/transactions}" class="btn btn-outline-success">История транзакций</a>
 
 
-            <!-- модальное окно пополнения баланса с карты -->
-            <div th:insert="account/blocks/card_to_balance_modal :: card"></div>
+            <!-- модальное окно пополнение баланса с карты -->
+            <div th:insert="account/blocks/card_to_balance_modal :: cardToBalance"></div>
+            <!-- модальное окно вывод средств с баланса на карту -->
+            <div th:insert="account/blocks/balance_to_card_modal :: withdrawBalance"></div>
             <!-- модальное окно для открытия счёта -->
             <div th:insert="account/blocks/create_account_modal :: createAccount"></div>
             <!-- модальное окно для перевода денег на счета -->
@@ -105,9 +108,16 @@
 </script>
 
 <!--показывает ошибки формы пополнения баланса аккаунта-->
-<script th:if="${amountError}">
+<script th:if="${inputAmountError}">
     $(document).ready(function(){
         $("#upAccountBalanceModal").modal("show")
+    })
+</script>
+
+<!--показывает ошибки формы пополнения баланса аккаунта-->
+<script th:if="${outputAmountError}">
+    $(document).ready(function(){
+        $("#withdrawBalanceModal").modal("show")
     })
 </script>
 <!--показывает ошибки формы подмены id аккаунта при пополнении баланса аккаунта-->
