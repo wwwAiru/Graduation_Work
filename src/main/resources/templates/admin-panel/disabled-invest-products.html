@@ -46,7 +46,7 @@
             <td class="col-1 text-center" th:text="${investProduct.getMaxDepositTerm}"></td>
             <td class="col-1 text-center" th:text="${investProduct.isActive}"></td>
             <td class="col-1 text-center" >
-                <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/product/edit/{id}(id=${investProduct.getId})}" class="btn btn-sm btn-outline-info m-2">Редактировать</a>
+                <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/admin/product/edit/{id}(id=${investProduct.getId})}" class="btn btn-sm btn-outline-info m-2">Редактировать</a>
                 <a sec:authorize="hasAuthority('HEAD_MANAGER')" th:href="@{/admin/product/delete/{id}(id=${investProduct.getId})}" class="btn btn-sm btn-outline-danger m-2">Удалить</a>
             </td>
         </tr>

@@ -58,11 +58,17 @@ public class AdminController {
         return "redirect:/admin/products/disabled";
     }
 
+    @GetMapping("/product/edit/{id}")
+    public String productEdit(@ModelAttribute("id") InvestProduct investProduct,
+                              HttpSession session){
+        //добавил в сессию значение чтобы по его наличию делать редирект обратно в GetMapping /products/disabled
+        session.setAttribute("admin-edit", "1");
+        return "redirect:/product/edit/"+investProduct.getId();
+    }
+
     @GetMapping("/products/disabled")
     public String productsEdit(Model model, HttpSession session){
         model.addAttribute("investProducts", adminService.findAllDisabledProducts());
-        //добавил в сессию значение чтобы по его наличию делать редирект обратно в этот GetMapping
-        session.setAttribute("admin-edit", "1");
         return "admin-panel/disabled-invest-products";
     }
 }
