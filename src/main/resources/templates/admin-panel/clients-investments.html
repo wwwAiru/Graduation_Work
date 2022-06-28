@@ -17,8 +17,8 @@
 
 
 <div class="container mt-5">
-    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Активировать режим закрытия вкладов с процентами</a>
-    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/product/add-inv-product}">Вернуть даты закрытия вкладов</a>
+    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/admin/clients/investments/profitable-mode-enable}">Активировать режим закрытия вкладов с процентами</a>
+    <a sec:authorize="hasAuthority('HEAD_MANAGER')" type="button" class="btn btn-outline-success"  th:href="@{/admin/clients/investments/profitable-mode-disable}">Деактивировать режим закрытия вкладов с процентами</a>
 </div><br>
 <div class="container album py-2">
     <table class="table">

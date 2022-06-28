@@ -43,4 +43,17 @@ public class AdminService {
     public void delete(InvestProduct investProduct){
         investProductRepository.delete(investProduct);
     }
+
+    public void enableProfitableMode(){
+        List<ClientInvestProd> investments = findAllClientsInvestments();
+        investments.forEach(investment -> investment.setExpireDate(investment.getExpireDate().minusYears(11)));
+        clientInvestProdRepository.saveAll(investments);
+    }
+
+    public void disableProfitableMode(){
+        List<ClientInvestProd> investments = findAllClientsInvestments();
+        investments.forEach(investment -> investment.setExpireDate(investment.getExpireDate().plusYears(11)));
+        clientInvestProdRepository.saveAll(investments);
+    }
+
 }

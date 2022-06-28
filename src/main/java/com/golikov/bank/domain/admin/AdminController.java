@@ -51,12 +51,18 @@ public class AdminController {
     }
 
 
-
-    @GetMapping("/product/delete/{id}")
-    public String productDelete(@ModelAttribute("id") InvestProduct investProduct){
-        adminService.delete(investProduct);
-        return "redirect:/admin/products/disabled";
+    @GetMapping("/clients/investments/profitable-mode-enable")
+    public String profitableModeEnable(){
+        adminService.enableProfitableMode();
+        return "redirect:/admin/clients/investments";
     }
+
+    @GetMapping("/clients/investments/profitable-mode-disable")
+    public String profitableModeDisable(){
+        adminService.disableProfitableMode();
+        return "redirect:/admin/clients/investments";
+    }
+
 
     @GetMapping("/product/edit/{id}")
     public String productEdit(@ModelAttribute("id") InvestProduct investProduct,
@@ -65,6 +71,14 @@ public class AdminController {
         session.setAttribute("admin-edit", "1");
         return "redirect:/product/edit/"+investProduct.getId();
     }
+
+
+    @GetMapping("/product/delete/{id}")
+    public String productDelete(@ModelAttribute("id") InvestProduct investProduct){
+        adminService.delete(investProduct);
+        return "redirect:/admin/products/disabled";
+    }
+
 
     @GetMapping("/products/disabled")
     public String productsEdit(Model model, HttpSession session){
