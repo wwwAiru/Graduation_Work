@@ -3,6 +3,7 @@ package com.golikov.bank.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,7 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/", "/deposits", "/registration", "/js/**").permitAll() //полный доступ
+                    .antMatchers("/", "/deposits", "/registration",  "/product/**", "/js/**").permitAll() //полный доступ
                     .anyRequest().authenticated()
                 .and()
                     .formLogin()
@@ -47,9 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .permitAll();
+        http.csrf().disable(); // отключен для PUT POST запросов из REST
     }
 
-    // passwordEncoder шифрование пароля
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authProvider());

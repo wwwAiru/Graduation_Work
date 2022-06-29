@@ -9,4 +9,6 @@ public interface InvestProductRepository extends JpaRepository<InvestProduct, Lo
     List<InvestProduct> findAllByIsActiveIsTrueOrderByName();
 
     List<InvestProduct> findAllByIsActiveIsFalseOrderById();
+
+    List<InvestProduct> findAllByOrderById();
 }
