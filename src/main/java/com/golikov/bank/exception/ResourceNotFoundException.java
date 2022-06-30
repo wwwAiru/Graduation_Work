@@ -1,4 +1,4 @@
-package com.golikov.bank.domain.product.exception;
+package com.golikov.bank.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

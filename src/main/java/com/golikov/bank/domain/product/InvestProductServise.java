@@ -1,7 +1,7 @@
 package com.golikov.bank.domain.product;
 
 import com.golikov.bank.domain.product.dto.InvestProductDto;
-import com.golikov.bank.domain.product.exception.ResourceNotFoundException;
+import com.golikov.bank.exception.ResourceNotFoundException;
 import com.golikov.bank.domain.product.mapper.InvestProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,8 @@ public class InvestProductServise {
     }
 
     public InvestProductDto findByIdRest(Long id){
-        InvestProduct investProduct = investProductRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Инвестиционный продукт с id: " + id + " не найден"));
+        InvestProduct investProduct = investProductRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Инвестиционный продукт с id: " + id + " не найден"));
         return investProductMapper.toDto(investProduct);
     }
 

@@ -1,8 +1,10 @@
 package com.golikov.bank.domain.product;
 
 import com.golikov.bank.domain.product.dto.InvestProductDto;
-import com.golikov.bank.domain.product.exception.ResourceNotFoundException;
+import com.golikov.bank.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +28,13 @@ public class InvestProductRestController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InvestProductDto> investProductEdit(@PathVariable("id") Long id,
+    public ResponseEntity<InvestProductDto> investProductUpdate(@PathVariable("id") Long id,
                                                               @Valid @RequestBody InvestProductDto investProductDto)
                                                               throws ResourceNotFoundException {
         InvestProductDto productDtoOrErr = investProductServise.findByIdRest(id);
         InvestProductDto editedproduct = investProductServise.saveRest(id, investProductDto);
-        return ResponseEntity.ok(editedproduct);
+        HttpHeaders responseHeader = new HttpHeaders();
+        return new ResponseEntity<>(editedproduct, responseHeader, HttpStatus.OK);
     }
 
 

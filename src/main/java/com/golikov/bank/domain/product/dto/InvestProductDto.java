@@ -1,11 +1,13 @@
 package com.golikov.bank.domain.product.dto;
 
 import lombok.Data;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Data
+@Component
 public class InvestProductDto {
 
     private Long id;
@@ -42,7 +44,7 @@ public class InvestProductDto {
     @NotNull(message = "Обязательное поле")
     private Long maxDepositTerm;
 
-    @NotNull(message = "выберите актуальность продукта(по умолчанию 'Активный')")
+    @NotNull(message = "выберите актуальность продукта")
     private boolean isActive;
 
 
