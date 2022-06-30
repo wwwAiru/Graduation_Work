@@ -1,6 +1,7 @@
 package com.golikov.bank.domain.product;
 
-import com.golikov.bank.domain.product.dto.InvestProductResp;
+import com.golikov.bank.domain.product.dto.InvestProductDto;
+import com.golikov.bank.domain.product.exception.ResourceNotFoundException;
 import com.golikov.bank.domain.product.mapper.InvestProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +37,22 @@ public class InvestProductServise {
         return investProductRepository.findById(investProduct.getId()).get();
     }
 
-    public List<InvestProductResp> findAllRest () {
+    public List<InvestProductDto> findAllRest () {
         List<InvestProduct> investProducts = investProductRepository.findAllByOrderById();
-        return investProductMapper.toRespList(investProducts);
+        return investProductMapper.toDtoList(investProducts);
     }
 
-    public InvestProductResp findByIdRest(Long id){
-        InvestProduct investProduct = investProductRepository.findById(id).get();
-        return investProductMapper.toResp(investProduct);
+    public InvestProductDto findByIdRest(Long id){
+        InvestProduct investProduct = investProductRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Инвестиционный продукт с id: " + id + " не найден"));
+        return investProductMapper.toDto(investProduct);
     }
 
+    public InvestProductDto saveRest(Long id, InvestProductDto investProductDto){
+        investProductDto.setId(id);
+        InvestProduct investProductEdited = investProductMapper.toEntity(investProductDto);
+        investProductRepository.save(investProductEdited);
+        return investProductDto;
+    }
 
 
 }

@@ -1,14 +1,12 @@
 package com.golikov.bank.domain.product.dto;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Data
-public class InvestProductResp {
+public class InvestProductDto {
 
     private Long id;
 
@@ -48,10 +46,10 @@ public class InvestProductResp {
     private boolean isActive;
 
 
-    public InvestProductResp() {
+    public InvestProductDto() {
     }
 
-    public InvestProductResp(String name, String description, String currency, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, boolean isActive, Long minDepositTerm, Long maxDepositTerm) {
+    public InvestProductDto(String name, String description, String currency, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, boolean isActive, Long minDepositTerm, Long maxDepositTerm) {
         this.name = name;
         this.description = description;
         this.currency = currency;
