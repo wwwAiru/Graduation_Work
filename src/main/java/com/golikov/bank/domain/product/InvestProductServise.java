@@ -55,5 +55,11 @@ public class InvestProductServise {
         return investProductDto;
     }
 
+    public void deleteRest(Long id) {
+        InvestProductDto investProductDto = findByIdRest(id);
+        InvestProduct investProduct = investProductMapper.toEntity(investProductDto);
+        investProductRepository.delete(investProduct);
+    }
+
 
 }

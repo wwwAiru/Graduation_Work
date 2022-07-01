@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
-public class MainController {
+public class HomepageController {
 
     @Autowired
     CurrencyService currencyService;
