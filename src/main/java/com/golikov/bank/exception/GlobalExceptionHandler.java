@@ -3,6 +3,7 @@ package com.golikov.bank.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,9 +12,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toSet;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -24,11 +27,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> globleExcpetionHandler(Exception ex, WebRequest request) {
+	public ResponseEntity<?> globalExceptionHandler(Exception ex, WebRequest request) {
 		ErrorDetails errorDetails = new ErrorDetails(new Date(), ex.getMessage(), request.getDescription(false));
 		return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+
+	// обработка ошибок валидации
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 																  HttpHeaders headers,
@@ -39,12 +44,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		body.put("timestamp", new Date());
 		body.put("status", status.value());
 
-		//Get all errors
-		List<String> errors = ex.getBindingResult()
+		// собираются ошибки в Map с ключём - имя поля, значением - Set ошибок
+		Map<String, Set<String>> errors = ex.getBindingResult()
 				.getFieldErrors()
 				.stream()
-				.map(x ->x.getField() + ": " + x.getDefaultMessage())
-				.collect(Collectors.toList());
+				.collect(Collectors.groupingBy(FieldError::getField, Collectors.mapping(FieldError::getDefaultMessage, toSet())));
 
 		body.put("errors", errors);
 
