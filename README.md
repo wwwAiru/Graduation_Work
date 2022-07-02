@@ -77,6 +77,12 @@ _________
 ![admin_prod_edit](https://user-images.githubusercontent.com/92391770/177010224-ac680090-b6cb-4ee0-8da1-0f6bf520f708.jpg)
 ![admin_client_edit](https://user-images.githubusercontent.com/92391770/177010297-f8475439-1e5d-469b-9d06-e25c977863ea.jpg)
 
+<br>
+<br>
+<b>11. В учётной записи администратора на странице "Инвестиции клиентов" реализован поиск по email, фамилии, имени, отчеству клиента, названию инвестиционного продукта.  </b>
+
+![search](https://user-images.githubusercontent.com/92391770/177012784-6d46b179-4b89-4c12-9d2c-611c5486e262.jpg)
+
 _________
 В проекте реализовано несколько эндпоинтов спецификации REST, HTTP запросы GET POST PUT DELETE. Эндпоинты протестированы в Postman.
 1. http://localhost/api/v1/product/all  - GET запрос на получение списка всех инвестиционных продуктов. 
