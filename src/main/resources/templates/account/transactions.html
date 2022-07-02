@@ -14,12 +14,14 @@
     <table class="table">
         <tr>
             <th class="text-center">Тип транзакции</th>
+            <th class="text-center">Владелец</th>
             <th class="text-center">Сумма</th>
             <th class="text-center">Номер карты</th>
             <th class="text-center">Дата, время</th>
         </tr>
         <tr th:each="transaction : ${transactions}">
             <td class="col-1 text-center" th:text="${transaction.getTransactionType}"></td>
+            <td class="col-1 text-center" th:text="${transaction.getOwnerName}"></td>
             <td class="col-1 text-center" th:text="${transaction.getAmount}"></td>
             <td class="col-1 text-center" th:text="${transaction.getCardNumber}"></td>
             <td class="col-1 text-center" th:text="${#temporals.format(transaction.getDate, 'dd.MM.yyyy  HH:mm')}"></td>
