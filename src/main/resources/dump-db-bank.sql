@@ -5,7 +5,7 @@
 -- Dumped from database version 10.20
 -- Dumped by pg_dump version 10.20
 
--- Started on 2022-06-30 07:41:33
+-- Started on 2022-07-02 21:46:07
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -28,12 +28,12 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.accounts (
-    id bigint NOT NULL,
-    account_number character varying(255),
-    currency character varying(255),
-    balance numeric(19,2),
-    client_description character varying(255),
-    client_id bigint
+                                 id bigint NOT NULL,
+                                 account_number character varying(255),
+                                 currency character varying(255),
+                                 balance numeric(19,2),
+                                 client_description character varying(255),
+                                 client_id bigint
 );
 
 
@@ -45,14 +45,14 @@ ALTER TABLE public.accounts OWNER TO postgres;
 --
 
 CREATE TABLE public.client_invest_products (
-    id bigint NOT NULL,
-    begin_date timestamp without time zone,
-    expire_date timestamp without time zone,
-    balance numeric(19,2),
-    invest_prod_id bigint,
-    days integer,
-    profit numeric(19,2),
-    account_id bigint
+                                               id bigint NOT NULL,
+                                               begin_date timestamp without time zone,
+                                               expire_date timestamp without time zone,
+                                               balance numeric(19,2),
+                                               invest_prod_id bigint,
+                                               days integer,
+                                               profit numeric(19,2),
+                                               account_id bigint
 );
 
 
@@ -88,13 +88,13 @@ ALTER SEQUENCE public.client_invest_products_id_seq OWNED BY public.client_inves
 --
 
 CREATE TABLE public.client_transaction (
-    id bigint NOT NULL,
-    amount numeric(19,2),
-    card_number character varying(255),
-    client_id bigint,
-    date timestamp without time zone,
-    owner_name character varying(255),
-    transaction_type character varying(255)
+                                           id bigint NOT NULL,
+                                           amount numeric(19,2),
+                                           card_number character varying(255),
+                                           client_id bigint,
+                                           date timestamp without time zone,
+                                           owner_name character varying(255),
+                                           transaction_type character varying(255)
 );
 
 
@@ -130,14 +130,14 @@ ALTER SEQUENCE public.client_transaction_id_seq OWNED BY public.client_transacti
 --
 
 CREATE TABLE public.clients (
-    id bigint NOT NULL,
-    active boolean,
-    balance numeric(19,2) NOT NULL,
-    email character varying(255),
-    first_name character varying(255),
-    last_name character varying(255),
-    middle_name character varying(255),
-    password character varying(255)
+                                id bigint NOT NULL,
+                                active boolean,
+                                balance numeric(19,2) NOT NULL,
+                                email character varying(255),
+                                first_name character varying(255),
+                                last_name character varying(255),
+                                middle_name character varying(255),
+                                password character varying(255)
 );
 
 
@@ -173,8 +173,8 @@ ALTER SEQUENCE public.clients_id_seq OWNED BY public.clients.id;
 --
 
 CREATE TABLE public.clients_roles (
-    client_id bigint NOT NULL,
-    roles character varying(255)
+                                      client_id bigint NOT NULL,
+                                      roles character varying(255)
 );
 
 
@@ -225,16 +225,16 @@ ALTER TABLE public.hibernate_sequence OWNER TO postgres;
 --
 
 CREATE TABLE public.invest_products (
-    id bigint NOT NULL,
-    min_deposit_term bigint,
-    description text NOT NULL,
-    interest_rate numeric(19,2),
-    is_active boolean,
-    max_deposit numeric(19,2),
-    min_deposit numeric(19,2),
-    name character varying(255),
-    currency character varying(255),
-    max_deposit_term bigint
+                                        id bigint NOT NULL,
+                                        min_deposit_term bigint,
+                                        description text NOT NULL,
+                                        interest_rate numeric(19,2),
+                                        is_active boolean,
+                                        max_deposit numeric(19,2),
+                                        min_deposit numeric(19,2),
+                                        name character varying(255),
+                                        currency character varying(255),
+                                        max_deposit_term bigint
 );
 
 
@@ -316,6 +316,12 @@ INSERT INTO public.accounts VALUES (4, '4087771704371053', 'USD', 1039.89, '', 1
 INSERT INTO public.accounts VALUES (6, '4087771796120346', 'EUR', 1346.00, '', 1);
 INSERT INTO public.accounts VALUES (10, '4087772893046305', 'EUR', 0.00, 'Инвестиции на пенсию', 2);
 INSERT INTO public.accounts VALUES (8, '4087772175100901', 'RUB', 0.00, '', 2);
+INSERT INTO public.accounts VALUES (13, '4087775798161313', 'EUR', 0.00, '', 5);
+INSERT INTO public.accounts VALUES (12, '4087775781409911', 'USD', 37197.12, '', 5);
+INSERT INTO public.accounts VALUES (11, '4087775906322455', 'RUB', 150000.00, '', 5);
+INSERT INTO public.accounts VALUES (14, '4087776273645282', 'RUB', 10000.00, '', 6);
+INSERT INTO public.accounts VALUES (16, '4087776290109050', 'EUR', 0.00, '', 6);
+INSERT INTO public.accounts VALUES (15, '4087776874676064', 'USD', 299.28, '', 6);
 
 
 --
@@ -332,6 +338,10 @@ INSERT INTO public.client_invest_products VALUES (7, '2022-06-23 15:34:49.363966
 INSERT INTO public.client_invest_products VALUES (20, '2022-06-28 21:51:57.454014', '2022-12-28 21:51:57.454014', 1854.00, 3, 183, 37.18, 6);
 INSERT INTO public.client_invest_products VALUES (21, '2022-06-29 14:40:48.737633', '2023-04-25 14:40:48.737633', 3573.73, 3, 300, 117.49, 10);
 INSERT INTO public.client_invest_products VALUES (22, '2022-06-29 14:42:08.239952', '2022-12-28 14:42:08.239952', 64505.00, 2, 182, 3538.06, 8);
+INSERT INTO public.client_invest_products VALUES (24, '2022-07-02 19:38:31.854872', '2022-12-29 19:38:31.854872', 850000.00, 2, 180, 46109.59, 11);
+INSERT INTO public.client_invest_products VALUES (25, '2022-07-02 21:38:08.825524', '2022-12-31 21:38:08.825524', 240000.00, 2, 182, 13163.84, 14);
+INSERT INTO public.client_invest_products VALUES (26, '2022-07-02 21:38:38.786227', '2023-03-09 21:38:38.786227', 3548.72, 3, 250, 97.23, 16);
+INSERT INTO public.client_invest_products VALUES (27, '2022-07-02 21:38:51.12816', '2023-07-01 21:38:51.12816', 9000.00, 16, 364, 359.01, 15);
 
 
 --
@@ -353,6 +363,9 @@ INSERT INTO public.client_transaction VALUES (9, 50.00, '*****', 1, '2022-06-26 
 INSERT INTO public.client_transaction VALUES (3, 100.00, '****', 1, '2022-06-19 16:01:11.219605', 'ANDREI GOLIKOV', 'Пополнение баланса');
 INSERT INTO public.client_transaction VALUES (2, 10000000.00, '4815 2624 3214 6574', 1, '2022-06-16 02:59:56.953571', 'ANDREI GOLIKOV', 'Пополнение баланса');
 INSERT INTO public.client_transaction VALUES (15, 9100.00, '4815 1564 1237 4567 ', 1, '2022-06-28 19:19:48.810595', 'ANDREI GOLIKOV', 'Вывод средств');
+INSERT INTO public.client_transaction VALUES (16, 5000000.00, '4815 2645 7893 4851', 5, '2022-07-02 12:48:45.872782', 'FILIPOV YURI', 'Пополнение баланса');
+INSERT INTO public.client_transaction VALUES (17, 46109.59, '**** **** **** ****', 5, '2022-07-02 19:38:03.114938', '****', 'Вывод средств');
+INSERT INTO public.client_transaction VALUES (18, 1000000.00, '4852 2563 8795 1256', 6, '2022-07-02 21:29:34.222167', 'DARIA SIDOROVA', 'Пополнение баланса');
 
 
 --
@@ -361,6 +374,9 @@ INSERT INTO public.client_transaction VALUES (15, 9100.00, '4815 1564 1237 4567 
 -- Data for Name: clients; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.clients VALUES (5, true, 2000000.00, 'filipov@gmail.com', 'Юрий', 'Филипов', 'Олегович', '$2a$08$MBME3poMSNKiGRAF6KcBuurfSV4tyVH5xV8fI3Hz63Qegqsi4WjOm');
+INSERT INTO public.clients VALUES (7, true, 0.00, 'admin@gmail.com', 'Дмитрий', 'Корнеев', 'Викторович', '$2a$08$o2H7Y8NFw9pzhYqmy0ABQOoLv7V8J/t3xCAhVhmJC/7crp4cUrzZG');
+INSERT INTO public.clients VALUES (6, true, 50000.00, 'sda@gmail.com', 'Дарья', 'Сидорова', 'Алексеевна', '$2a$08$KAjf8dGbslA0Dv3VA/i20umqdblZ3w3POffPFw.nXRFhE7yMLpFPa');
 INSERT INTO public.clients VALUES (1, true, 3550599.67, 'z-a-t-o@yandex.ru', 'Андрей', 'Голиков', 'Игоревич', '$2a$08$GHm.4xrpEGncWXVnitcN0OM0kEwWbA7DgBbwgx.SFZNNri8SDZZZG');
 INSERT INTO public.clients VALUES (2, true, 0.29, 'erofeev@ya.ru', 'Дмитрий', 'Ерофеев', 'Анатольевич', '$2a$08$GHm.4xrpEGncWXVnitcN0OM0kEwWbA7DgBbwgx.SFZNNri8SDZZZG');
 
@@ -373,6 +389,9 @@ INSERT INTO public.clients VALUES (2, true, 0.29, 'erofeev@ya.ru', 'Дмитри
 
 INSERT INTO public.clients_roles VALUES (2, 'USER');
 INSERT INTO public.clients_roles VALUES (1, 'HEAD_MANAGER');
+INSERT INTO public.clients_roles VALUES (5, 'USER');
+INSERT INTO public.clients_roles VALUES (6, 'USER');
+INSERT INTO public.clients_roles VALUES (7, 'HEAD_MANAGER');
 
 
 --
@@ -381,13 +400,16 @@ INSERT INTO public.clients_roles VALUES (1, 'HEAD_MANAGER');
 -- Data for Name: invest_products; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.invest_products VALUES (21, 123, 'Тестовый вклад для проверки различных функций и валидации', 321.00, false, 123.00, 123.00, '"Тестовый вклад 3"', 'RUB', 1233);
 INSERT INTO public.invest_products VALUES (16, 182, 'Вклад со ставкой 4% годовых в долларах США, минимальный срок вклада 6 месяцев, максимальный срок 1 год. Подойдёт тем, кто опасается девальвации рубля.', 4.00, true, 100000.00, 1000.00, 'Вклад "Фантастическая четвёрка"', 'USD', 364);
+INSERT INTO public.invest_products VALUES (24, 123, 'Тестовый вклад для проверки различных функций и валидации', 321.00, false, 123.00, 123.00, '"Тестовый вклад 3"', 'RUB', 1233);
+INSERT INTO public.invest_products VALUES (25, 123, 'Тестовый вклад для проверки различных функций и валидации', 321.00, false, 123.00, 123.00, '"Тестовый вклад 3"', 'RUB', 1233);
 INSERT INTO public.invest_products VALUES (9, 123, 'Тестовый вклад для проверки различных функций и валидации', 100.00, false, 123.00, 123.00, '"Тестовый вклад 1"', 'RUB', 1233);
 INSERT INTO public.invest_products VALUES (22, 123, 'Тестовый вклад для проверки различных функций и валидации', 321.00, false, 123.00, 123.00, '"Тестовый вклад 3"', 'RUB', 1233);
-INSERT INTO public.invest_products VALUES (21, 123, 'Тестовый вклад для проверки различных функций и валидации', 321.00, false, 123.00, 123.00, '"Тестовый вклад 2"', 'RUB', 1233);
+INSERT INTO public.invest_products VALUES (1, 364, 'Если вы откладываете на пенсию, тогда вам хорошо подойдёт вклад "Пенсионный". Вклад с минимальной суммой - 100 000 рублей, а максимальной - 10 000 000 рублей. Этот вклад учитывает среднюю долгосрочную инфляцию в России 8.5%, таким образом, вы отлично сохраните свои деньги до пенсии.', 8.00, true, 10000000.00, 100000.00, 'Вклад "пенсионный".', 'RUB', 1820);
 INSERT INTO public.invest_products VALUES (2, 91, 'Рублёвый вклад со ставкой 11% годовых. Срок вклада от 3-х до 6 месяцев. Хорошее предложение для тех, кто хочет сберечь средства в непростой период. Минимальная сумма вклада 50 000, максимальная сумма 1 000 000 рублей.', 11.00, true, 1000000.00, 50000.00, 'Вклад "антикризисный".', 'RUB', 182);
 INSERT INTO public.invest_products VALUES (3, 182, 'Вклад со ставкой 4% годовых в Евро.  Срок вклада от 6 месяцев до 1 года. Минимальная сумма вклада 1000, максимальная сумма вклада 100 000 евро. ', 4.00, true, 100000.00, 1000.00, 'Вклад "Европейская четвёрочка".', 'EUR', 364);
-INSERT INTO public.invest_products VALUES (1, 364, 'Если вы откладываете на пенсию, тогда вам хорошо подойдёт вклад "Пенсионный". Вклад с минимальной суммой - 100 000 рублей, а максимальной - 10 000 000 рублей. Этот вклад учитывает среднюю долгосрочную инфляцию в России 8%, таким образом, вы отлично сохраните свои деньги до пенсии.', 8.00, true, 10000000.00, 100000.00, 'Вклад "пенсионный".', 'RUB', 1820);
+INSERT INTO public.invest_products VALUES (29, 123, 'Тестовый вклад для проверки различных функций и валидации', 321.00, false, 123.00, 123.00, '"Тестовый вклад add by POST request"', 'RUB', 1233);
 
 
 --
@@ -396,7 +418,7 @@ INSERT INTO public.invest_products VALUES (1, 364, 'Если вы отклады
 -- Name: client_invest_products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.client_invest_products_id_seq', 22, true);
+SELECT pg_catalog.setval('public.client_invest_products_id_seq', 27, true);
 
 
 --
@@ -405,7 +427,7 @@ SELECT pg_catalog.setval('public.client_invest_products_id_seq', 22, true);
 -- Name: client_transaction_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.client_transaction_id_seq', 15, true);
+SELECT pg_catalog.setval('public.client_transaction_id_seq', 18, true);
 
 
 --
@@ -414,7 +436,7 @@ SELECT pg_catalog.setval('public.client_transaction_id_seq', 15, true);
 -- Name: clients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.clients_id_seq', 4, true);
+SELECT pg_catalog.setval('public.clients_id_seq', 7, true);
 
 
 --
@@ -423,7 +445,7 @@ SELECT pg_catalog.setval('public.clients_id_seq', 4, true);
 -- Name: deposit_accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.deposit_accounts_id_seq', 10, true);
+SELECT pg_catalog.setval('public.deposit_accounts_id_seq', 16, true);
 
 
 --
@@ -441,7 +463,7 @@ SELECT pg_catalog.setval('public.hibernate_sequence', 1, true);
 -- Name: invest_products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.invest_products_id_seq', 23, true);
+SELECT pg_catalog.setval('public.invest_products_id_seq', 29, true);
 
 
 --
@@ -525,7 +547,7 @@ ALTER TABLE ONLY public.accounts
     ADD CONSTRAINT fkku1bil61rtyuvyit539yytmwl FOREIGN KEY (client_id) REFERENCES public.clients(id);
 
 
--- Completed on 2022-06-30 07:41:34
+-- Completed on 2022-07-02 21:46:08
 
 --
 -- PostgreSQL database dump complete
