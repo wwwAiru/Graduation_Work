@@ -41,7 +41,7 @@ public class ClientController {
             return "registration";
         }
         clientService.createClient(client);
-        redirectAttributes.addFlashAttribute("success", "Вы успешно зарегестрировались! Войдите в свою учётную запись");
+        redirectAttributes.addFlashAttribute("success", "Вы успешно зарегистрировались! Войдите в свою учётную запись");
         return "redirect:/login";
     }
 

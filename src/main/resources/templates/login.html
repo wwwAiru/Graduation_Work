@@ -23,7 +23,7 @@
         <div th:if="${param.error}" class="alert alert-danger">
             Неверная связка почта-пароль
         </div>
-        <div th:if="${success}" class="alert alert-success">        </div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}">        </div>
         <div th:if="${param.logout}" class="alert alert-info">
             Вы вышли из системы.
         </div>
