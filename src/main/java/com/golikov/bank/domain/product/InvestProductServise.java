@@ -48,11 +48,18 @@ public class InvestProductServise {
         return investProductMapper.toDto(investProduct);
     }
 
-    public InvestProductDto saveRest(Long id, InvestProductDto investProductDto){
+    public InvestProductDto saveEditedRest(Long id, InvestProductDto investProductDto){
         investProductDto.setId(id);
         InvestProduct investProductEdited = investProductMapper.toEntity(investProductDto);
         investProductRepository.save(investProductEdited);
         return investProductDto;
+    }
+
+    public InvestProductDto addNewRest(InvestProductDto investProductDto){
+        InvestProduct investProductEdited = investProductMapper.toEntity(investProductDto);
+        InvestProduct investProduct = investProductRepository.save(investProductEdited);
+        InvestProductDto newInvestProd = investProductMapper.toDto(investProduct);
+        return newInvestProd;
     }
 
     public void deleteRest(Long id) {

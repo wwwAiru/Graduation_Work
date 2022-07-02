@@ -29,12 +29,20 @@ public class InvestProductRestController {
         return investProductServise.findByIdRest(id);
     }
 
+    @PostMapping("/add")
+    public ResponseEntity<InvestProductDto>  investProduct(@Valid @RequestBody InvestProductDto investProductDto) {
+        InvestProductDto newProduct = investProductServise.addNewRest(investProductDto);
+        HttpHeaders responseHeader = new HttpHeaders();
+        return new ResponseEntity<>(newProduct, responseHeader, HttpStatus.OK);
+    }
+
+
     @PutMapping("/{id}")
     public ResponseEntity<InvestProductDto> investProductUpdate(@PathVariable("id") Long id,
                                                               @Valid @RequestBody InvestProductDto investProductDto)
                                                               throws ResourceNotFoundException {
         investProductServise.findByIdRest(id);
-        InvestProductDto editedProduct = investProductServise.saveRest(id, investProductDto);
+        InvestProductDto editedProduct = investProductServise.saveEditedRest(id, investProductDto);
         HttpHeaders responseHeader = new HttpHeaders();
         return new ResponseEntity<>(editedProduct, responseHeader, HttpStatus.OK);
     }
