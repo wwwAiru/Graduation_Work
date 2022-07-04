@@ -1,10 +1,15 @@
 package com.golikov.bank.domain.account.transaction;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -12,6 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "client_transaction")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientTransaction {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -40,16 +47,5 @@ public class ClientTransaction {
 
     @Column(name = "client_id")
     private Long clientId;
-
-    public ClientTransaction() {
-    }
-
-    public ClientTransaction(String ownerName, String cardNumber, BigDecimal amount, LocalDateTime date, Long clientId) {
-        this.ownerName = ownerName;
-        this.cardNumber = cardNumber;
-        this.amount = amount;
-        this.date = date;
-        this.clientId = clientId;
-    }
 
 }

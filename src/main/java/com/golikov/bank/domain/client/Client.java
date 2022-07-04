@@ -1,8 +1,9 @@
 package com.golikov.bank.domain.client;
 
 import com.golikov.bank.domain.account.Account;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +14,8 @@ import java.util.Set;
 @Entity
 @Table(name = "clients")
 @Data
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Client {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

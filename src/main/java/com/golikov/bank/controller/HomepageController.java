@@ -2,6 +2,7 @@ package com.golikov.bank.controller;
 
 import com.golikov.bank.domain.currency.Currency;
 import com.golikov.bank.domain.currency.CurrencyService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,11 +13,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
+@AllArgsConstructor
 public class HomepageController {
 
-    @Autowired
-    CurrencyService currencyService;
-
+    private CurrencyService currencyService;
 
     @GetMapping("/")
     public String homepage(Model model) {

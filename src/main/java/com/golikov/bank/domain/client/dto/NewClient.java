@@ -1,17 +1,18 @@
 package com.golikov.bank.domain.client.dto;
 
-import com.golikov.bank.domain.client.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
-import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NewClient {
 
     @NotBlank(message = "Обязательное поле")
@@ -33,17 +34,5 @@ public class NewClient {
     @NotBlank(message = "Обязательное поле")
     @Size(min = 8, max = 16, message = "Длина пароля должна быть не менее 8 и не более 16 символов")
     private String password;
-
-    private BigDecimal balance = new BigDecimal(0);
-
-//    private List<Account> accounts;
-
-    private boolean active;
-
-    private Set<Role> roles;
-
-    public NewClient() {
-    }
-
 
 }

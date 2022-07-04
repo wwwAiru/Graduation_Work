@@ -2,7 +2,9 @@ package com.golikov.bank.domain.investment;
 
 import com.golikov.bank.domain.account.Account;
 import com.golikov.bank.domain.product.InvestProduct;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -15,6 +17,8 @@ import java.time.LocalDateTime;
 @Table(name = "client_invest_products")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ClientInvestProd {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -51,14 +55,4 @@ public class ClientInvestProd {
     @Column(name = "expire_date")
     private LocalDateTime expireDate;
 
-    public ClientInvestProd() {
-    }
-
-    public ClientInvestProd(BigDecimal balance, Account account, InvestProduct investProduct, LocalDateTime beginDate, LocalDateTime expireDate) {
-        this.balance = balance;
-        this.account = account;
-        this.investProduct = investProduct;
-        this.beginDate = beginDate;
-        this.expireDate = expireDate;
-    }
 }

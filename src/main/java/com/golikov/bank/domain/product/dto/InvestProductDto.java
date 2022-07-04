@@ -1,13 +1,13 @@
 package com.golikov.bank.domain.product.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 @Data
-@Component
+@AllArgsConstructor
 public class InvestProductDto {
 
     private Long id;
@@ -47,19 +47,4 @@ public class InvestProductDto {
     @NotNull(message = "выберите актуальность продукта")
     private boolean isActive;
 
-
-    public InvestProductDto() {
-    }
-
-    public InvestProductDto(String name, String description, String currency, BigDecimal minDeposit, BigDecimal maxDeposit, BigDecimal interestRate, boolean isActive, Long minDepositTerm, Long maxDepositTerm) {
-        this.name = name;
-        this.description = description;
-        this.currency = currency;
-        this.minDeposit = minDeposit;
-        this.maxDeposit = maxDeposit;
-        this.interestRate = interestRate;
-        this.isActive = isActive;
-        this.minDepositTerm = minDepositTerm;
-        this.maxDepositTerm = maxDepositTerm;
-    }
 }

@@ -1,9 +1,7 @@
 package com.golikov.bank.domain.investment;
 
-import com.golikov.bank.domain.investment.ClientInvestProd;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
@@ -14,5 +12,5 @@ public interface ClientInvestProdRepository extends JpaRepository<ClientInvestPr
             "OR lower(cip.account.client.lastName) LIKE lower(concat('%', ?1,'%'))" +
             "OR cip.account.client.middleName LIKE lower(concat('%', ?1,'%'))" +
             "OR lower(cip.investProduct.name) LIKE lower(concat('%', ?1,'%'))")
-    public List<ClientInvestProd> findAllKeyword(String keyword);
+    List<ClientInvestProd> findAllKeyword(String keyword);
 }

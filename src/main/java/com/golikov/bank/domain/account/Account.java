@@ -2,7 +2,9 @@ package com.golikov.bank.domain.account;
 
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.investment.ClientInvestProd;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -14,6 +16,8 @@ import java.util.Set;
 @Table(name = "accounts")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
     @Id
@@ -39,15 +43,6 @@ public class Account {
 
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private Set<ClientInvestProd> clientInvestProds;
-
-    public Account() {
-    }
-
-    public Account(String description, String currency, Client client) {
-        this.description = description;
-        this.currency = currency;
-        this.client = client;
-    }
 
     public void addClientInvestProd(ClientInvestProd clientInvestProd) {
         if (clientInvestProds == null) {

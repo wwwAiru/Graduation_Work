@@ -1,7 +1,7 @@
 package com.golikov.bank.domain.client;
 
 import com.golikov.bank.domain.client.dto.NewClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,10 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 
 @Controller
+@AllArgsConstructor
 public class ClientController {
 
-    @Autowired
-    ClientService clientService;
+    private ClientService clientService;
 
     @RequestMapping("/login")
     public String login() {

@@ -1,9 +1,9 @@
 package com.golikov.bank.domain.client;
 
 import com.golikov.bank.domain.account.Account;
-import com.golikov.bank.domain.client.dto.NewClient;
 import com.golikov.bank.domain.account.AccountRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.golikov.bank.domain.client.dto.NewClient;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,16 +11,14 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ClientService {
 
-    @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
-    @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     public Client findByEmail(String email){
         return clientRepository.findByEmail(email);

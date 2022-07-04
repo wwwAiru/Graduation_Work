@@ -9,6 +9,7 @@ import com.golikov.bank.domain.client.ClientRepository;
 import com.golikov.bank.domain.account.transaction.ClientTransactionRepository;
 import com.golikov.bank.domain.currency.CurrencyService;
 import com.golikov.bank.domain.account.utils.AccountNumGenerator;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,19 +20,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AccountService {
 
-    @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
-    @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
-    @Autowired
-    ClientTransactionRepository clientTransactionRepository;
+    private ClientTransactionRepository clientTransactionRepository;
 
-    @Autowired
-    ClientInvestProdRepository clientInvestProdRepository;
+    private ClientInvestProdRepository clientInvestProdRepository;
 
     @Autowired
     CurrencyService currencyService;

@@ -6,22 +6,20 @@ import com.golikov.bank.domain.investment.ClientInvestProd;
 import com.golikov.bank.domain.investment.ClientInvestProdRepository;
 import com.golikov.bank.domain.product.InvestProduct;
 import com.golikov.bank.domain.product.InvestProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class AdminService {
 
-    @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
-    @Autowired
-    InvestProductRepository investProductRepository;
+    private InvestProductRepository investProductRepository;
 
-    @Autowired
-    ClientInvestProdRepository clientInvestProdRepository;
+    private ClientInvestProdRepository clientInvestProdRepository;
 
     public List<Client> findAllClients(){
         return  clientRepository.findAllByOrderById();

@@ -9,6 +9,7 @@ import com.golikov.bank.domain.account.validator.TransferBalanceValidator;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.ClientService;
 import com.golikov.bank.domain.investment.ClientInvestProd;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,16 +27,13 @@ import java.util.stream.Collectors;
 
 
 // Контроллер для личного кабинета клиента
-@Controller()
+@Controller
+@AllArgsConstructor
 public class AccountController {
-    @Autowired
-    AccountService accountService;
 
-    @Autowired
-    AccountRepository accountRepository;
+    private AccountService accountService;
 
-    @Autowired
-    ClientService clientService;
+    private ClientService clientService;
 
     @Autowired
     TransactionService transactionService;
