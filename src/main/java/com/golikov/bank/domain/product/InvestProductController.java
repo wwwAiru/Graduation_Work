@@ -1,13 +1,14 @@
 package com.golikov.bank.domain.product;
 
+import com.golikov.bank.config.security.UserDetailsImpl;
 import com.golikov.bank.domain.account.Account;
+import com.golikov.bank.domain.account.AccountService;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.investment.ClientInvestProd;
-import com.golikov.bank.domain.account.AccountService;
+import com.golikov.bank.domain.investment.validator.InvestmentValidator;
 import com.golikov.bank.domain.product.validator.AccountValidator;
 import com.golikov.bank.domain.product.validator.DepositDaysValidator;
-import com.golikov.bank.domain.investment.validator.InvestmentValidator;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,12 +25,12 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
+@AllArgsConstructor
 public class InvestProductController {
-    @Autowired
-    InvestProductServise investProductServise;
 
-    @Autowired
-    AccountService accountService;
+    private InvestProductServise investProductServise;
+
+    private AccountService accountService;
 
 
     @GetMapping("/deposits")
@@ -114,8 +115,9 @@ public class InvestProductController {
     @GetMapping("/product/invest/{id}")
     public String invest(Model model,
                          @PathVariable("id") InvestProduct investProduct,
-                         @AuthenticationPrincipal Client client,
+                         @AuthenticationPrincipal UserDetailsImpl userDetails,
                          HttpSession session){
+        Client client = userDetails.getClient();
         List<Account> accounts = accountService.findValidDepoAccounts(client.getId(),
                                                                           investProduct.getCurrency(),
                                                                           investProduct.getMinDeposit());

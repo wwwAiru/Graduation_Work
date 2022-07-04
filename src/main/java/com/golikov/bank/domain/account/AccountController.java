@@ -1,6 +1,7 @@
 package com.golikov.bank.domain.account;
 
 
+import com.golikov.bank.config.security.UserDetailsImpl;
 import com.golikov.bank.domain.account.transaction.ClientTransaction;
 import com.golikov.bank.domain.account.transaction.TransactionService;
 import com.golikov.bank.domain.account.validator.ClientBalanceValidator;
@@ -41,10 +42,11 @@ public class AccountController {
 
 
     @GetMapping("/account")
-    public String account(@AuthenticationPrincipal Client client,
+    public String account(@AuthenticationPrincipal UserDetailsImpl userDetails,
                           ClientTransaction clientTransaction,
                           Model model,
                           HttpSession session) {
+        Client client = userDetails.getClient();
         model.addAttribute("client", client);
         List<Account> clientAccounts = clientService.findClientAccounts(client.getId());
         // добавил в сессию id всех аккаунтов пользователя для последующих проверок
@@ -61,11 +63,12 @@ public class AccountController {
 
     // пополнения баланса с карты
     @PostMapping("/up-balance")
-    public String upBalance(@AuthenticationPrincipal Client client,
+    public String upBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
                             BindingResult result,
                             @ModelAttribute Account account,
                             RedirectAttributes redirectAttributes){
+        Client client = userDetails.getClient();
         if (result.hasErrors()){
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
             redirectAttributes.addFlashAttribute("transaction", clientTransaction);
@@ -77,11 +80,12 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw-balance")
-    public String withdrawBalance(@AuthenticationPrincipal Client client,
+    public String withdrawBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
                             BindingResult result,
                             @ModelAttribute Account account,
                             RedirectAttributes redirectAttributes){
+        Client client = userDetails.getClient();
         ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "output");
         clientBalanceValidator.validate(clientTransaction.getAmount());
         if (result.hasErrors() | clientBalanceValidator.hasErrors()){
@@ -98,19 +102,21 @@ public class AccountController {
 
     // открытие ивест счёта
     @PostMapping("/account/create-account")
-    public String createAccount(@AuthenticationPrincipal Client client,
+    public String createAccount(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                 @ModelAttribute("newAccount") Account account) {
+        Client client = userDetails.getClient();
         accountService.createAccount(client, account);
         return "redirect:/account";
     }
 
     // перевод средств на аккаунт
     @PostMapping("/account/up-balance")
-    public String upAccountBalance(@AuthenticationPrincipal Client client,
+    public String upAccountBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                       @ModelAttribute("account") Account account,
                                       @RequestParam(required = false) BigDecimal amount,
                                       HttpSession session,
                                       RedirectAttributes redirectAttributes) {
+        Client client = userDetails.getClient();
         //валидация переводимой суммы денег
         ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "input");
         clientBalanceValidator.validate(amount);
@@ -128,10 +134,11 @@ public class AccountController {
 
     // вывод денег с акаунта на общий счёт с пересчётом в рубли
     @PostMapping("/account/withdraw/{id}")
-    public String withdraw(@AuthenticationPrincipal Client client,
+    public String withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            @PathVariable(name = "id", required = false) Account account,
                            @RequestParam(required = false) String amount,
                            RedirectAttributes redirectAttributes) {
+        Client client = userDetails.getClient();
         // защита от попадания строки в поле для цифр
         BigDecimal amountDecimal = null;
         if (amount.matches("\\d+|\\d+\\.\\d+")){
@@ -158,9 +165,10 @@ public class AccountController {
     }
 
     @PostMapping("/account/investment/close/{id}")
-    public String closeInvestment(@AuthenticationPrincipal Client client,
+    public String closeInvestment(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                   @PathVariable(name = "id", required = false) ClientInvestProd investment,
                                   RedirectAttributes redirectAttributes) {
+        Client client = userDetails.getClient();
         // защита от подмены id вклада
         List<Long> clientAccounts = client.getAccounts().stream().map(Account::getId).toList();
         if (investment == null || !clientAccounts.contains(investment.getAccount().getId())){
@@ -173,8 +181,9 @@ public class AccountController {
     }
 
     @GetMapping("account/transactions")
-    public String clientTransactions(@AuthenticationPrincipal Client client,
+    public String clientTransactions(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                      Model model){
+        Client client = userDetails.getClient();
         model.addAttribute("transactions", transactionService.getClientTransactions(client));
         return "account/transactions";
     }

@@ -1,7 +1,8 @@
 package com.golikov.bank.config.security;
 
+import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.ClientRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,13 +10,15 @@ import org.springframework.stereotype.Service;
 
 // реализация UserDetailsService для SpringSecurity
 @Service
+@AllArgsConstructor
 public class UserDetailServiceImpl implements UserDetailsService {
 
-    @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return clientRepository.findByEmail(email);
+        UserDetailsImpl userDetails = new UserDetailsImpl(new Client());
+        userDetails.setClient(clientRepository.findByEmail(email));
+        return userDetails;
     }
 }
