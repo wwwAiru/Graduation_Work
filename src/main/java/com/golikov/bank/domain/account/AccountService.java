@@ -1,16 +1,15 @@
 package com.golikov.bank.domain.account;
 
-import com.golikov.bank.domain.client.Client;
-import com.golikov.bank.domain.investment.ClientInvestProd;
-import com.golikov.bank.domain.product.InvestProduct;
 import com.golikov.bank.domain.account.transaction.ClientTransaction;
-import com.golikov.bank.domain.investment.ClientInvestProdRepository;
-import com.golikov.bank.domain.client.ClientRepository;
 import com.golikov.bank.domain.account.transaction.ClientTransactionRepository;
-import com.golikov.bank.domain.currency.CurrencyService;
 import com.golikov.bank.domain.account.utils.AccountNumGenerator;
+import com.golikov.bank.domain.client.Client;
+import com.golikov.bank.domain.client.ClientRepository;
+import com.golikov.bank.domain.currency.CurrencyHolder;
+import com.golikov.bank.domain.investment.ClientInvestProd;
+import com.golikov.bank.domain.investment.ClientInvestProdRepository;
+import com.golikov.bank.domain.product.InvestProduct;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,8 +30,7 @@ public class AccountService {
 
     private ClientInvestProdRepository clientInvestProdRepository;
 
-    @Autowired
-    CurrencyService currencyService;
+    private CurrencyHolder currencyHolder;
 
     // метод для пополнения баланса клиента и запись истории транзакции
     @Transactional
@@ -76,7 +74,7 @@ public class AccountService {
         client.setBalance(client.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
         if (!account.getCurrency().equals("RUB")){
-            amount = amount.divide(currencyService.getCurrencies().get(account.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
+            amount = amount.divide(currencyHolder.getCurrencies().get(account.getCurrency()).getValue(),2,  RoundingMode.HALF_UP);
         }
         account.setBalance(account.getBalance().add(amount));
         clientRepository.save(client);
@@ -94,7 +92,7 @@ public class AccountService {
         account.setBalance(account.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
         if (!account.getCurrency().equals("RUB")){
-            amount = amount.multiply(currencyService.getCurrencies().get(account.getCurrency()).getValue());
+            amount = amount.multiply(currencyHolder.getCurrencies().get(account.getCurrency()).getValue());
         }
         client.setBalance(client.getBalance().add(amount));
         clientRepository.save(client);

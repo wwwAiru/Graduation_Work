@@ -1,15 +1,15 @@
 package com.golikov.bank.domain.currency;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-
-//этот вспомогательный класс для CurrencyService и удобства работы в валютой
+@Component
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class Currency {
 
@@ -20,5 +20,4 @@ public class Currency {
     private BigDecimal Value;
 
     private Integer Nominal;
-
 }

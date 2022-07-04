@@ -1,46 +1,29 @@
 package com.golikov.bank.domain.currency;
 
-import com.golikov.bank.domain.currency.Currency;
 import com.google.gson.Gson;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-@EnableScheduling
+// сервис для получения курсов валют с сайта ЦБ
 @Service
-@Getter
-@Setter
+@EnableScheduling
+@NoArgsConstructor
 public class CurrencyService {
 
-    private Map<String, Currency> currencies;
+    @Autowired(required=false)
+    private CurrencyHolder currencyHolder;
 
-    public CurrencyService() {
-    }
-
-    // Устанавливаются дефолтные значения Евро и Доллара на случай если не получилось получить список валют с сайта ЦБ
-    @PostConstruct
-    private void defaultCurrencies(){
-        if (currencies==null) currencies = new HashMap<>();
-        Currency currencyUSD = new Currency("USD", "Доллар США", BigDecimal.valueOf(57.8021), 1);
-        this.currencies.put("USD", currencyUSD);
-        Currency currencyEUR = new Currency("EUR", "Евро", BigDecimal.valueOf(61.3718), 1);
-        this.currencies.put("EUR", currencyEUR);
-        System.out.println("Set default values to currencies");
-    }
 
     //установил выполнение этого метода 1 раз в 4 часа
     @Scheduled(fixedDelay = 1000*60*60*4)
-    private void update() {
+    private void updateCurrencies() {
         try {
             // Преобразует массив байт в строку.
             String json = new String(
@@ -57,17 +40,17 @@ public class CurrencyService {
                     .getJSONObject("Valute");
 
             // Получает коды валют из полученных данных.
-            currencies = currenciesData.keySet()
+            currencyHolder.setCurrencies(currenciesData.keySet()
                     // Преобразовывает Set в Stream.
                     .stream()
                     // При помощи GSON переводит JSON строчку валюты к классу Currency.
                     .map((currency) -> new Gson().fromJson(currenciesData.getJSONObject(currency).toString(), Currency.class))
                     // Преобразовывает Stream в Map с ключом - названием валюты(CharCode), значением - объект валюты (Currency).
-                    .collect(Collectors.toMap(Currency::getCharCode, c -> c));
+                    .collect(Collectors.toMap(Currency::getCharCode, c -> c)));
 
             System.out.println("Currencies updated");
 
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) { ignored.getStackTrace();}
     }
 
 
