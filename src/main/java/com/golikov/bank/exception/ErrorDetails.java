@@ -5,7 +5,9 @@ import lombok.Data;
 
 import java.util.Date;
 
-
+/**
+ * класс для создания ошибок с детальной информацией
+ */
 @Data
 @AllArgsConstructor
 public class ErrorDetails {

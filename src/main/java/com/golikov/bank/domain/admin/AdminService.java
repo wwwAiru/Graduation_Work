@@ -36,7 +36,7 @@ public class AdminService {
 
     public List<ClientInvestProd> findAllClientsInvestments(String keyword){
         if (keyword != null) {
-            return clientInvestProdRepository.findAllKeyword(keyword);
+            return clientInvestProdRepository.findAllByKeyword(keyword);
         }
         return clientInvestProdRepository.findAll();
     }

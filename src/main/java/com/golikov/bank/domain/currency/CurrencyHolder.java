@@ -23,11 +23,11 @@ import java.util.Map;
 public class CurrencyHolder {
 
     private Currency currency;
+
     private Map<String, Currency> currencies;
 
     // Устанавливаются дефолтные значения Евро и Доллара на случай если не получилось получить список валют с сайта ЦБ
     @PostConstruct
-    @Bean
     private void defaultCurrencies(){
         if (currencies==null) currencies = new HashMap<>();
         Currency currencyUSD = new Currency("USD", "Доллар США", BigDecimal.valueOf(57.8021), 1);
