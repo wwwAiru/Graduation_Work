@@ -4,13 +4,13 @@ package com.golikov.bank.domain.account;
 import com.golikov.bank.config.security.UserDetailsImpl;
 import com.golikov.bank.domain.account.transaction.ClientTransaction;
 import com.golikov.bank.domain.account.transaction.TransactionService;
+import com.golikov.bank.domain.account.transaction.validator.ClientTransactionValidator;
 import com.golikov.bank.domain.account.validator.ClientBalanceValidator;
 import com.golikov.bank.domain.account.validator.TransferBalanceValidator;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.ClientService;
 import com.golikov.bank.domain.investment.ClientInvestProd;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +35,14 @@ public class AccountController {
 
     private ClientService clientService;
 
-    @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
+
+    private ClientTransactionValidator clientTransactionValidator;
+
+//    @InitBinder("transaction")
+//    private void initBinder(WebDataBinder binder) {
+//        binder.setValidator(clientTransactionValidator);
+//    }
 
 
     @GetMapping("/account")
@@ -63,12 +69,12 @@ public class AccountController {
     @PostMapping("/up-balance")
     public String upBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
-                            BindingResult result,
-                            @ModelAttribute Account account,
+                            BindingResult bindingResult,
                             RedirectAttributes redirectAttributes){
         Client client = userDetails.getClient();
-        if (result.hasErrors()){
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", bindingResult);
             redirectAttributes.addFlashAttribute("transaction", clientTransaction);
             redirectAttributes.addFlashAttribute("upBalanceError", "upBalanceError");
             return "redirect:/account";
@@ -80,14 +86,12 @@ public class AccountController {
     @PostMapping("/withdraw-balance")
     public String withdrawBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
-                            BindingResult result,
-                            @ModelAttribute Account account,
-                            RedirectAttributes redirectAttributes){
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
         Client client = userDetails.getClient();
-        ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "output");
-        clientBalanceValidator.validate(clientTransaction.getAmount());
-        if (result.hasErrors() | clientBalanceValidator.hasErrors()){
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
+        clientTransactionValidator.validate(clientTransaction, bindingResult);
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", bindingResult);
             redirectAttributes.addFlashAttribute("transaction", clientTransaction);
             redirectAttributes.addFlashAttribute("withdrawBalanceError", "withdrawBalanceError");
             return "redirect:/account";

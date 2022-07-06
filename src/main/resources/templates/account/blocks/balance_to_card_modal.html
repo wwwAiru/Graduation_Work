@@ -14,7 +14,6 @@
                                 <label>Сумма перевода</label>
                                 <input th:field="*{amount}" type="number" step="0.01" class="form-control">
                                 <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
-                                <div th:if="${outputAmountError}" class="container alert alert-danger text-center" th:text="${outputAmountError}"></div>
                             </div>
 
                             <div class="form-group col-7">
