@@ -45,10 +45,6 @@ public class Account {
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private Set<ClientInvestProd> clientInvestProds;
 
-    public Account(Long id) {
-        this.id = id;
-    }
-
     public void addClientInvestProd(ClientInvestProd clientInvestProd) {
         if (clientInvestProds == null) {
             clientInvestProds = new HashSet<>();

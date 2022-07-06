@@ -4,7 +4,6 @@ import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.Role;
 import com.golikov.bank.domain.product.InvestProduct;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,8 +1,8 @@
 package com.golikov.bank.domain.product;
 
 import com.golikov.bank.domain.product.dto.InvestProductDto;
-import com.golikov.bank.exception.ResourceNotFoundException;
 import com.golikov.bank.domain.product.mapper.InvestProductMapper;
+import com.golikov.bank.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
