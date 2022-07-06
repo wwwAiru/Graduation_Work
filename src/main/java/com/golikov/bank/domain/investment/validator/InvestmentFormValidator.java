@@ -32,9 +32,9 @@ public class InvestmentFormValidator implements Validator {
 
         // валидация суммы инвистиции
         if(investment.getAmount() == null || investment.getAmount().compareTo(investment.getInvestProduct().getMinDeposit())<0){
-            errors.rejectValue("amount", "Investment.amount.error", "Вы не можете инвестировать меньше чем "+ investment.getInvestProduct().getMinDeposit() + " " + investment.getInvestProduct().getCurrency());
+            errors.rejectValue("amount", "Investment.amountLower.error", "Вы не можете инвестировать меньше чем "+ investment.getInvestProduct().getMinDeposit() + " " + investment.getInvestProduct().getCurrency());
         } else if(investment.getAmount().compareTo(investment.getInvestProduct().getMaxDeposit())>0) {
-            errors.rejectValue("amount", "Investment.amount.error", "Вы не можете инвестировать больше чем "+ investment.getInvestProduct().getMaxDeposit() + " " + investment.getInvestProduct().getCurrency());
+            errors.rejectValue("amount", "Investment.amountBigger.error", "Вы не можете инвестировать больше чем "+ investment.getInvestProduct().getMaxDeposit() + " " + investment.getInvestProduct().getCurrency());
         }  else if (investment.getAmount().compareTo(investment.getChosenAccount().getBalance()) > 0) {
             errors.rejectValue("amount", "Investment.error", "Вы не можете инвестировать больше чем " + investment.getChosenAccount().getBalance() + " " + investment.getChosenAccount().getCurrency());
         }
