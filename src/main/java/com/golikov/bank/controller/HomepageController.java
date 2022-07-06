@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 @Controller
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class HomepageController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         LocalDateTime date = LocalDateTime.now();
         String formattedDate = date.format(formatter);
-        model.addAttribute("currencies", currencyHolder.getCurrencies().values().stream().toList());
+        model.addAttribute("currencies", new ArrayList<>(currencyHolder.getCurrencies().values()));
         model.addAttribute("date", formattedDate);
         return "homepage";
     }

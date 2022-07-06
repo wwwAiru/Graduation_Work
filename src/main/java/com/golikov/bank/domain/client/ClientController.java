@@ -31,12 +31,14 @@ public class ClientController {
     }
 
     @PostMapping("/registration")
-    public String addClient(@ModelAttribute @Valid NewClient client,
+    public String addClient(@ModelAttribute("client") @Valid NewClient client,
                             BindingResult result,
                             RedirectAttributes redirectAttributes,
                             Model model){
         Client clientFromDb = clientService.findByEmail(client.getEmail());
-        if (result.hasErrors() | clientFromDb != null) {
+        if (result.hasErrors()) {
+            return "registration";
+        } else if (clientFromDb != null) {
             model.addAttribute("emailError", "Пользователь с почтой "+client.getEmail()+" уже существует");
             return "registration";
         }

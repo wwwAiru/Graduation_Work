@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 // Контроллер для личного кабинета клиента
@@ -171,7 +172,7 @@ public class AccountController {
                                   RedirectAttributes redirectAttributes) {
         Client client = userDetails.getClient();
         // защита от подмены id вклада
-        List<Long> clientAccounts = client.getAccounts().stream().map(Account::getId).toList();
+        List<Long> clientAccounts = client.getAccounts().stream().map(Account::getId).collect(Collectors.toList());
         if (investment == null || !clientAccounts.contains(investment.getAccount().getId())){
             redirectAttributes.addFlashAttribute("validationError", "Некоррекный идентификатор");
         } else {
