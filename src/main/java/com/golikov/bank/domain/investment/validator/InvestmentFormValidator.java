@@ -1,5 +1,6 @@
 package com.golikov.bank.domain.investment.validator;
 
+import com.golikov.bank.domain.account.dto.UpAccountBalanceFormDto;
 import com.golikov.bank.domain.investment.dto.InvestmentFormDto;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ public class InvestmentFormValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return InvestmentFormDto.class.isAssignableFrom(clazz);
+        return InvestmentFormDto.class.equals(clazz);
     }
 
     @Override
