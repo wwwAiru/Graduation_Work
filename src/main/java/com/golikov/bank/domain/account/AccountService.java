@@ -68,8 +68,7 @@ public class AccountService {
 
     //переревод денег с баланса на банкововский счёт (аккаунт)
     @Transactional
-    public void upAccountBalance(Client client, Long id, BigDecimal amount){
-        Account account = accountRepository.findById(id).get();
+    public void upAccountBalance(Client client, Account account, BigDecimal amount){
         // вычитается сумма с баланса клиента
         client.setBalance(client.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты

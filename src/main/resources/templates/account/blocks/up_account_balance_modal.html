@@ -7,19 +7,21 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <h1 class="text-center">Перевод средств</h1>
-
                 <div class="container px-5">
                     <p class="alert alert-primary d-flex align-items-center">Внимание! При переводе рублей на валютные счета, произойдёт автоматическая конвертация по текущим курсам.</p>
-                    <form th:action="@{/account/up-balance}" th:object="${account}"  method="post">
+                    <!--/*@thymesVar id="accountForm" type="com.golikov.bank.domain.account.dto.UpAccountBalanceFormDto"*/-->
+                    <form th:action="@{/account/up-balance}" th:object="${accountForm}"  method="post">
                         <label for="depo" class="form-label">Выберите счёт: </label>
-                        <select  id="depo"  class="form-select" th:field="*{id}" required>
-                                <option th:each="account : ${clientAccounts}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' Баланс: ' + ${account.getBalance}+ ' ' + ${account.getCurrency}"></option>
+                        <select  id="depo"  class="form-select" th:field="*{chosenAccount}" required>
+                                <option th:each="account : ${accountForm.getAccounts()}" th:value="${account.getId}" th:text="${account.getAccountNumber} + ' Баланс: ' + ${account.getBalance}+ ' ' + ${account.getCurrency}"></option>
                         </select>
-                        <div th:if="${accountValidationError}" class="container alert alert-danger text-center" th:text="${accountValidationError}"></div>
+                        <div th:if="${#fields.hasErrors('chosenAccount')}" th:errors="*{chosenAccount}" class="alert alert-danger"></div>
+
+                        <!--                        <div th:if="${accountValidationError}" class="container alert alert-danger text-center" th:text="${accountValidationError}"></div>-->
                         <br>
-                        <input class="form-control" name="amount" placeholder="сумма в рублях" type="number" step="0.01"/> <br>
-                        <!-- сообщения валидации из ClienBalanceValidator -->
-                        <div th:if="${inputAmountError}" class="container alert alert-danger text-center" th:text="${inputAmountError}"></div>
+                        <input class="form-control" th:field="*{amount}" placeholder="сумма в рублях" type="number" step="0.01"/> <br>
+                        <!-- сообщения валидации из UpAccountBalanceValidator -->
+                        <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Перевод</button>
                             <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>
