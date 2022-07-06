@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -19,12 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 public class InvestmentFormDto {
 
-    @NotNull(message = "Поле не может быть пустым")
-    @Min(value = 0, message = "Поле не может содержать отрицательное число")
     private BigDecimal amount;
 
-    @Min(value = 0, message = "Поле не может содержать отрицательное число")
-    @NotNull(message = "Поле не может быть пустым")
     private Integer days;
 
     private Account chosenAccount;
