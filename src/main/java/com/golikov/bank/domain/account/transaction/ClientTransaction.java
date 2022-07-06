@@ -29,15 +29,16 @@ public class ClientTransaction {
     private String transactionType;
 
     @NotBlank(message = "Обязательное поле")
+    @NotNull
     @Column(name = "owner_name")
     private String ownerName;
 
     @NotBlank(message = "Обязательное поле")
+    @NotNull
     @Column(name = "card_number")
     private String cardNumber;
 
     @Column(name = "amount")
-    @NotNull(message = "Поле не может быть пустым")
     @DecimalMin(value = "1", message = "Значение неможет быть меньше 1")
     @DecimalMax(value = "10000000000", message = "Превышено максимальное значение")
     private BigDecimal amount;
