@@ -10,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -44,11 +45,28 @@ public class Account {
     @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private Set<ClientInvestProd> clientInvestProds;
 
+    public Account(Long id) {
+        this.id = id;
+    }
+
     public void addClientInvestProd(ClientInvestProd clientInvestProd) {
         if (clientInvestProds == null) {
             clientInvestProds = new HashSet<>();
         }
         clientInvestProd.setAccount(this);
         clientInvestProds.add(clientInvestProd);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return id.equals(account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

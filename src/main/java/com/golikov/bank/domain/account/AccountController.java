@@ -2,28 +2,30 @@ package com.golikov.bank.domain.account;
 
 
 import com.golikov.bank.config.security.UserDetailsImpl;
+import com.golikov.bank.domain.account.dto.UpAccountBalanceFormDto;
+import com.golikov.bank.domain.account.dto.WithdrawAccountBalanceFormDto;
 import com.golikov.bank.domain.account.transaction.ClientTransaction;
 import com.golikov.bank.domain.account.transaction.TransactionService;
-import com.golikov.bank.domain.account.validator.ClientBalanceValidator;
-import com.golikov.bank.domain.account.validator.TransferBalanceValidator;
+import com.golikov.bank.domain.account.transaction.validator.ClientTransactionValidator;
+import com.golikov.bank.domain.account.validator.UpAccountBalanceValidator;
+import com.golikov.bank.domain.account.validator.WithdrawAccountBalanceValidator;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.ClientService;
 import com.golikov.bank.domain.investment.ClientInvestProd;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 
 // Контроллер для личного кабинета клиента
@@ -35,8 +37,18 @@ public class AccountController {
 
     private ClientService clientService;
 
-    @Autowired
-    TransactionService transactionService;
+    private TransactionService transactionService;
+
+    private ClientTransactionValidator clientTransactionValidator;
+
+    private UpAccountBalanceValidator upAccountBalanceValidator;
+
+    private WithdrawAccountBalanceValidator withdrawAccountBalanceValidator;
+
+//    @InitBinder("transaction")
+//    private void initBinder(WebDataBinder binder) {
+//        binder.setValidator(clientTransactionValidator);
+//    }
 
 
     @GetMapping("/account")
@@ -48,14 +60,18 @@ public class AccountController {
         model.addAttribute("client", client);
         List<Account> clientAccounts = clientService.findClientAccounts(client.getId());
         // добавил в сессию id всех аккаунтов пользователя для последующих проверок
-        Set<Long> clientAccountIds = clientAccounts.stream().map(Account::getId).collect(Collectors.toSet());
-        session.setAttribute("clientAccountIds", clientAccountIds);
+//        session.setAttribute("clientAccounts", clientAccounts);
         model.addAttribute("clientAccounts", clientAccounts);
         if (!model.containsAttribute("transaction")) {
             model.addAttribute("transaction", new ClientTransaction());
         }
+        if (!model.containsAttribute("accountForm")) {
+            model.addAttribute("accountForm", new UpAccountBalanceFormDto(clientAccounts));
+        }
+        if (!model.containsAttribute("withdrawAccountForm")) {
+            model.addAttribute("withdrawAccountForm", new WithdrawAccountBalanceFormDto());
+        }
         model.addAttribute("newAccount", new Account());
-        model.addAttribute("account", new Account());
         return "account/index";
     }
 
@@ -63,12 +79,11 @@ public class AccountController {
     @PostMapping("/up-balance")
     public String upBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
-                            BindingResult result,
-                            @ModelAttribute Account account,
+                            BindingResult bindingResult,
                             RedirectAttributes redirectAttributes){
         Client client = userDetails.getClient();
-        if (result.hasErrors()){
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", bindingResult);
             redirectAttributes.addFlashAttribute("transaction", clientTransaction);
             redirectAttributes.addFlashAttribute("upBalanceError", "upBalanceError");
             return "redirect:/account";
@@ -80,14 +95,12 @@ public class AccountController {
     @PostMapping("/withdraw-balance")
     public String withdrawBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
                             @ModelAttribute("transaction") @Valid ClientTransaction clientTransaction,
-                            BindingResult result,
-                            @ModelAttribute Account account,
-                            RedirectAttributes redirectAttributes){
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
         Client client = userDetails.getClient();
-        ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "output");
-        clientBalanceValidator.validate(clientTransaction.getAmount());
-        if (result.hasErrors() | clientBalanceValidator.hasErrors()){
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", result);
+        clientTransactionValidator.validate(clientTransaction, bindingResult);
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.transaction", bindingResult);
             redirectAttributes.addFlashAttribute("transaction", clientTransaction);
             redirectAttributes.addFlashAttribute("withdrawBalanceError", "withdrawBalanceError");
             return "redirect:/account";
@@ -110,54 +123,44 @@ public class AccountController {
     // перевод средств на аккаунт
     @PostMapping("/account/up-balance")
     public String upAccountBalance(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                      @ModelAttribute("account") Account account,
-                                      @RequestParam(required = false) BigDecimal amount,
+                                      @ModelAttribute("accountForm") @Valid UpAccountBalanceFormDto accountForm,
+                                      BindingResult bindingResult,
                                       HttpSession session,
                                       RedirectAttributes redirectAttributes) {
         Client client = userDetails.getClient();
+        accountForm.setAccounts(client.getAccounts());
         //валидация переводимой суммы денег
-        ClientBalanceValidator clientBalanceValidator = new ClientBalanceValidator(client, redirectAttributes, "input");
-        clientBalanceValidator.validate(amount);
-        // если есть ошибки валидации то редирект с флэш сообщениями из ClientBalanceValidator
-        if (clientBalanceValidator.hasErrors()){
-           return  "redirect:/account";
+        upAccountBalanceValidator.validate(accountForm, bindingResult);
+        // если есть ошибки валидации то редирект с флэш сообщениями из upAccountBalanceValidator
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.accountForm", bindingResult);
+            redirectAttributes.addFlashAttribute("accountForm", accountForm);
+            redirectAttributes.addFlashAttribute("inputAmountError", "inputAmountError");
+            return  "redirect:/account";
         }
-        // защита от подмены id счёта для зачисления, проверяется содержит ли Set id из формы
-        if (account == null || !((Set<Long>)session.getAttribute("clientAccountIds")).contains(account.getId())){
-            redirectAttributes.addFlashAttribute("accountValidationError", "Попытка подмены id счёта отклонена.");
-        } else accountService.upAccountBalance(client, account.getId(), amount);
+        accountService.upAccountBalance(client, accountForm.getChosenAccount(), accountForm.getAmount());
         session.removeAttribute("clientAccountIds");
         return "redirect:/account";
     }
 
-    // вывод денег с акаунта на общий счёт с пересчётом в рубли
+//     вывод денег с акаунта на общий счёт с пересчётом в рубли
     @PostMapping("/account/withdraw/{id}")
     public String withdraw(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            @PathVariable(name = "id", required = false) Account account,
-                           @RequestParam(required = false) String amount,
+                           @ModelAttribute @Valid WithdrawAccountBalanceFormDto withdrawAccountForm,
+                           BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
         Client client = userDetails.getClient();
-        // защита от попадания строки в поле для цифр
-        BigDecimal amountDecimal = null;
-        if (amount.matches("\\d+|\\d+\\.\\d+")){
-            amountDecimal = new BigDecimal(amount);
-        } else {
-            redirectAttributes.addFlashAttribute("validationError", "Допускаются только числовые положительные значения");
+        withdrawAccountForm.setAccount(account);
+        // кастомный валидатор
+        withdrawAccountBalanceValidator.validate(withdrawAccountForm, bindingResult);
+        // если есть ошибки валидации то редирект с флэш сообщениями из withdrawAccountBalanceValidator
+        if (bindingResult.hasErrors()){
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.withdrawAccountForm", bindingResult);
+            redirectAttributes.addFlashAttribute("withdrawAccountForm", withdrawAccountForm);
             return "redirect:/account";
         }
-        // защита от подмены id счёта вывода денег
-        if (account == null || account.getClient().getId() != client.getId()){
-            redirectAttributes.addFlashAttribute("validationError", "Попытка подмены id счёта отклонена.");
-            return "redirect:/account";
-        }
-        // валидация выводимой суммы денег
-        TransferBalanceValidator balanceValidator = new TransferBalanceValidator(account, redirectAttributes);
-        balanceValidator.validate(amountDecimal);
-        // если есть ошибки валидации то редирект с флэш сообщениями из TransferBalanceValidator
-        if (balanceValidator.hasErrors()){
-            return "redirect:/account";
-        }
-        accountService.withdrawMoney(client, account, amountDecimal);
+        accountService.withdrawMoney(client, account, withdrawAccountForm.getAmount());
         redirectAttributes.addFlashAttribute("success", "Денежные средства успешно выведены");
         return "redirect:/account";
     }

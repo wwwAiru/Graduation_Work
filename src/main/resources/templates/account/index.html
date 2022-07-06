@@ -114,8 +114,8 @@
     })
 </script>
 
-<!--показывает ошибки формы пополнения баланса аккаунта-->
-<script th:if="${outputAmountError}">
+<!--показывает ошибки формы вывода денег общего счёта-->
+<script th:if="${withdrawBalanceError}">
     $(document).ready(function(){
         $("#withdrawBalanceModal").modal("show")
     })

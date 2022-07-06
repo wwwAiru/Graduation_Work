@@ -8,7 +8,6 @@ import com.golikov.bank.domain.client.ClientRepository;
 import com.golikov.bank.domain.currency.CurrencyHolder;
 import com.golikov.bank.domain.investment.ClientInvestProd;
 import com.golikov.bank.domain.investment.ClientInvestProdRepository;
-import com.golikov.bank.domain.product.InvestProduct;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,6 +44,7 @@ public class AccountService {
         clientTransactionRepository.save(clientTransaction);
     }
 
+    // вывод денег с общего баланса на карту и апись в историю транзакций
     @Transactional
     public void balanceToCard(ClientTransaction clientTransaction, Client client){
         clientTransaction.setDate(LocalDateTime.now());
@@ -66,10 +66,9 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    //переревод денег с баланса на банкововский счёт
+    //переревод денег с баланса на банкововский счёт (аккаунт)
     @Transactional
-    public void upAccountBalance(Client client, Long id, BigDecimal amount){
-        Account account = accountRepository.findById(id).get();
+    public void upAccountBalance(Client client, Account account, BigDecimal amount){
         // вычитается сумма с баланса клиента
         client.setBalance(client.getBalance().subtract(amount));
         // если валюта не рубль то amount пересчитать по курсу соответствующей валюты
@@ -81,11 +80,14 @@ public class AccountService {
         accountRepository.save(account);
     }
 
+    // найти все аккаунты, которые подходят по параметрам вклада
+    // должны совпадать валюта, и дожно быть достаточно денег
     @Transactional
     public List<Account> findValidDepoAccounts(Long id, String currency, BigDecimal balance){
         return accountRepository.findByClientIdAndCurrencyLikeAndBalanceGreaterThan(id, currency, balance);
     }
 
+    // вывод денег с баланса аккауунта
     @Transactional
     public void withdrawMoney(Client client, Account account, BigDecimal amount){
         // вычитается сумма с баланса аккаунта
@@ -98,28 +100,7 @@ public class AccountService {
         clientRepository.save(client);
         accountRepository.save(account);
     }
-    @Transactional
-    public void makeInvest(ClientInvestProd investment, Account account, InvestProduct investProduct) {
-        BigDecimal hundred = BigDecimal.valueOf(100);
-        BigDecimal year = BigDecimal.valueOf(365);
-        //    расчёт процентов вклада
-        BigDecimal profit = investProduct.getInterestRate()
-                                .divide(hundred, 2, RoundingMode.HALF_UP)
-                                    .divide(year, 16, RoundingMode.HALF_UP)
-                                        .multiply(BigDecimal.valueOf(investment.getDays()))
-                                            .add(BigDecimal.valueOf(1))
-                                                .multiply(investment.getBalance())
-                                                    .subtract(investment.getBalance());
-        //    операции по перемещению денег
-        account.setBalance(account.getBalance().subtract(investment.getBalance()));
-        account.addClientInvestProd(investment);
-        investment.setInvestProduct(investProduct);
-        investment.setBeginDate(LocalDateTime.now());
-        investment.setExpireDate(investment.getBeginDate().plusDays(investment.getDays()));
-        investment.setProfit(profit);
-        accountRepository.save(account);
-        clientInvestProdRepository.save(investment);
-    }
+
 
     // закрытие вклада
     @Transactional

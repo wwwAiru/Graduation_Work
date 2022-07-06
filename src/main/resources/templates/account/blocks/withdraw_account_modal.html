@@ -9,9 +9,11 @@
                 <h1 class="text-center">Перевод средств</h1>
                 <div class="container px-5">
                     <p th:if="${!account.getCurrency.equals('RUB')}" class="alert alert-primary d-flex align-items-center" >Внимание! При выводе валюты на баланс, произойдёт автоматическая конвертация в рубль по текущим курсам.</p>
-                    <form th:action="@{/account/withdraw/{id}(id=${account.getId})}"  method="post">
+                    <!--/*@thymesVar id="withdrawAccountForm" type="com.golikov.bank.domain.account.dto.WithdrawAccountBalanceFormDto"*/-->
+                    <form th:action="@{/account/withdraw/{id}(id=${account.getId})}" th:object="${withdrawAccountForm}"  method="post">
                         <h5 th:text="'Баланс счёта: ' + ${account.getBalance} + ' ' + ${account.getCurrency}">  </h5><br>
-                        <input class="form-control" name="amount" type="number" placeholder="сумма" step="0.01"/> <br>
+                        <input class="form-control" th:field="*{amount}" type="number" placeholder="сумма" step="0.01"/> <br>
+                        <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Вывести</button>
                             <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>

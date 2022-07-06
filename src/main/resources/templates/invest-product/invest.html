@@ -12,12 +12,12 @@
     <!--/*@thymesVar id="error" type="java.lang.String"*/-->
     <div th:if="${error}" class="container alert alert-danger text-center" th:text="${error}"></div>
 </div>
-
+<!--/*@thymesVar id="investment" type="com.golikov.bank.domain.investment.dto.InvestmentFormDto"*/-->
 <div class="container mt-5">
     <div class="card">
-        <h5 class="card-header" style="background: #afecda;" th:text="${investProduct.getName}"></h5>
+        <h5 class="card-header" style="background: #afecda;" th:text="${investment.getInvestProduct().getName()}"></h5>
         <div class="card-body">
-            <p th:text="${investProduct.getDescription}" class="card-text"></p>
+            <p th:text="${investment.getInvestProduct().getDescription()}" class="card-text"></p>
 
             <div class="container">
                 <table class="table">
@@ -30,35 +30,36 @@
                         <th class="text-center">Валюта</th>
                     </tr>
                     <tr>
-                        <td class="col-1 text-center" th:text="${investProduct.getInterestRate} + ' %'"></td>
-                        <td class="col-1 text-center" th:text="${investProduct.getMinDepositTerm}"></td>
-                        <td class="col-1 text-center" th:text="${investProduct.getMaxDepositTerm}"></td>
-                        <td class="col-1 text-center" th:text="${investProduct.getMinDeposit}"></td>
-                        <td class="col-1 text-center" th:text="${investProduct.getMaxDeposit}"></td>
-                        <td class="col-1 text-center" th:text="${investProduct.getCurrency}"></td>
+                        <td class="col-1 text-center" th:text="${investment.getInvestProduct().getInterestRate()} + ' %'"></td>
+                        <td class="col-1 text-center" th:text="${investment.getInvestProduct().getMinDepositTerm()}"></td>
+                        <td class="col-1 text-center" th:text="${investment.getInvestProduct().getMaxDepositTerm()}"></td>
+                        <td class="col-1 text-center" th:text="${investment.getInvestProduct().getMinDeposit()}"></td>
+                        <td class="col-1 text-center" th:text="${investment.getInvestProduct().getMaxDeposit()}"></td>
+                        <td class="col-1 text-center" th:text="${investment.getInvestProduct().getCurrency()}"></td>
                     </tr>
                 </table>
             </div>
             <div class="card-footer">
-
+                <!--/*@thymesVar id="investment" type="com.golikov.bank.domain.investment.dto.InvestmentFormDto"*/-->
                 <form th:action="@{/product/invest/save}" th:object="${investment}"  method="post" class="row g-3">
+
+                    <input th:field="*{investProduct}" value="investProduct" type="hidden"/>
+                    <input th:field="*{accounts}" value="accounts" type="hidden"/>
 
                     <div class="col-md-5">
                         <label for="account" class="form-label">Выберите счёт: </label>
-                        <select  id="account"  class="form-select" th:field="*{account}">
-                            <option th:each="account : ${accounts}" th:value="${account.getId}" th:text="${account.getAccountNumber}  + ' __Баланс: ' + ${account.getBalance} + ' ' + ${account.getCurrency}"></option>
+                        <select  id="account"  class="form-select" th:field="*{chosenAccount}">
+                            <option th:each="account : ${investment.getAccounts()}" th:value="${account.getId}" th:text="${account.getAccountNumber}  + ' __Баланс: ' + ${account.getBalance} + ' ' + ${account.getCurrency}"></option>
                         </select> <br>
-                        <div th:if="${accountError}" class="alert alert-danger text-center" th:text="${accountError}"></div>
+                        <div th:if="${#fields.hasErrors('chosenAccount')}" th:errors="*{chosenAccount}" class="alert alert-danger"></div>
                     </div>
 
                     <div class="col-md-4">
                         <label class="form-label">Введите сумму: </label>
-                        <input class="form-control" th:field="*{balance}" placeholder="сумма инвестиции" type="number" step="0.01" /> <br>
-                        <div th:if="${#fields.hasErrors('balance')}" th:errors="*{balance}" class="alert alert-danger"></div>
-                        <!-- сообщение об ошибке баланса -->
-                        <div th:if="${amountError}" class="alert alert-danger text-center" th:text="${amountError}"></div>
+                        <input class="form-control" th:field="*{amount}" placeholder="сумма инвестиции" type="number" step="0.01" /> <br>
+                        <!-- сообщение об ошибках баланса -->
+                        <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
                     </div>
-
                     <div class="col-md-2">
                         <label for="days" class="form-label">Срок вклада (дней)</label>
                         <input id="days" class="form-control" th:field="*{days}" placeholder="срок вклада" type="number" /> <br>
