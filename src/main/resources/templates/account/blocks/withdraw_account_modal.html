@@ -14,6 +14,7 @@
                         <h5 th:text="'Баланс счёта: ' + ${account.getBalance} + ' ' + ${account.getCurrency}">  </h5><br>
                         <input class="form-control" th:field="*{amount}" type="number" placeholder="сумма" step="0.01"/> <br>
                         <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
+                        <div th:if="${#fields.hasErrors('account')}" th:errors="*{account}" class="alert alert-danger"></div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-outline-success">Вывести</button>
                             <button type="button" data-bs-dismiss="modal" class="btn btn-outline-danger">Отмена</button>

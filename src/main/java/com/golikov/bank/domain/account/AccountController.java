@@ -129,7 +129,7 @@ public class AccountController {
                                       HttpSession session,
                                       RedirectAttributes redirectAttributes) {
         Client client = userDetails.getClient();
-        accountForm.setAccounts(client.getAccounts());
+        accountForm.setAccounts(clientService.findClientAccounts(client.getId()));
         //валидация переводимой суммы денег
         upAccountBalanceValidator.validate(accountForm, bindingResult);
         // если есть ошибки валидации то редирект с флэш сообщениями из upAccountBalanceValidator

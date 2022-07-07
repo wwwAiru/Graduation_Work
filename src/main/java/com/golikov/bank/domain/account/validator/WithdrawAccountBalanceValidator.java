@@ -37,7 +37,7 @@ public class WithdrawAccountBalanceValidator implements Validator {
         BigDecimal balance = account.getBalance();
 
         if (accountForm.getAccount() == null || !userDetails.getClient().getAccounts().contains(account)) {
-            errors.rejectValue("accountId", "accountWithdrawForm.account.error", "ошибка аккаунта");
+            errors.rejectValue("account", "accountWithdrawForm.account.error", "ошибка аккаунта");
         }
 
         if (accountForm.getAmount() == null || accountForm.getAmount().compareTo(BigDecimal.ZERO) <0) {
