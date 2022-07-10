@@ -22,7 +22,6 @@ import java.util.List;
 
 
 // контроллер для инвестиции в продукт
-@SuppressWarnings("unchecked")
 @Controller
 @AllArgsConstructor
 public class InvestmentController {
@@ -35,7 +34,7 @@ public class InvestmentController {
 
     @InitBinder
     private void initBinder(WebDataBinder binder) {
-        binder.setValidator(investmentFormValidator);
+        binder.addValidators(investmentFormValidator);
     }
 
     // страница выбора параметров вклада

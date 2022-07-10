@@ -13,6 +13,7 @@
                     <form th:action="@{/account/withdraw/{id}(id=${account.getId})}" th:object="${withdrawAccountForm}"  method="post">
                         <h5 th:text="'Баланс счёта: ' + ${account.getBalance} + ' ' + ${account.getCurrency}">  </h5><br>
                         <input class="form-control" th:field="*{amount}" type="number" placeholder="сумма" step="0.01"/> <br>
+                        <input name="account" th:value="${account.getId}"  type="hidden"/>
                         <div th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="alert alert-danger"></div>
                         <div th:if="${#fields.hasErrors('account')}" th:errors="*{account}" class="alert alert-danger"></div>
                         <div class="modal-footer">

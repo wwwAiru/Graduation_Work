@@ -14,7 +14,7 @@ import java.util.List;
 public class InvestProductServise {
 
     @Autowired
-    InvestProductRepository investProductRepository;
+    private InvestProductRepository investProductRepository;
 
     private final InvestProductMapper investProductMapper;
 
@@ -26,12 +26,10 @@ public class InvestProductServise {
         return investProductRepository.findAllByIsActiveIsTrueOrderByName();
     }
 
-
     public void delete(InvestProduct investProduct){
         investProduct.setActive(false);
         investProductRepository.save(investProduct);
     }
-
 
     public InvestProduct findById(InvestProduct investProduct){
         return investProductRepository.findById(investProduct.getId()).get();

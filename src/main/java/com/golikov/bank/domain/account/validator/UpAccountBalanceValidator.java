@@ -3,7 +3,9 @@ package com.golikov.bank.domain.account.validator;
 import com.golikov.bank.config.security.UserDetailsImpl;
 import com.golikov.bank.domain.account.Account;
 import com.golikov.bank.domain.account.dto.UpAccountBalanceFormDto;
+import com.golikov.bank.domain.client.ClientService;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -15,6 +17,9 @@ import java.util.List;
 @Component
 @NoArgsConstructor
 public class UpAccountBalanceValidator implements Validator {
+
+    @Autowired
+    private ClientService clientService;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -31,11 +36,12 @@ public class UpAccountBalanceValidator implements Validator {
         // получаем баланс пользователя
         BigDecimal clientBalance = userDetails.getClient().getBalance();
         UpAccountBalanceFormDto accountForm = (UpAccountBalanceFormDto) target;
-
-        if (accountForm.getChosenAccount() == null || !accountForm.getAccounts().contains(accountForm.getChosenAccount())) {
+        // получаем аккаунты пользователя
+        List<Account> accounts = clientService.findClientAccounts(userDetails.getClient().getId());
+        // если в списке аккаунтов нет выбранного аккаунта или аккаунт null то выдать ошибку аккаунта
+        if (accountForm.getChosenAccount() == null || !accounts.contains(accountForm.getChosenAccount())) {
             errors.rejectValue("chosenAccount", "accountForm.account.error", "ошибка аккаунта");
         }
-
         if (accountForm.getAmount() == null || accountForm.getAmount().compareTo(BigDecimal.ZERO) <0) {
             errors.rejectValue("amount", "accountForm.amount.error", "Поле не может быть пустым, или принимать отрицательные значения");
         } else if ( clientBalance.compareTo(BigDecimal.ZERO) == 0) {

@@ -1,7 +1,7 @@
-package com.golikov.bank.domain.account.transaction.validator;
+package com.golikov.bank.domain.transaction.validator;
 
 import com.golikov.bank.config.security.UserDetailsImpl;
-import com.golikov.bank.domain.account.transaction.ClientTransaction;
+import com.golikov.bank.domain.transaction.ClientTransaction;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,7 @@ public class ClientTransactionValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return true;
+        return ClientTransaction.class.equals(clazz);
     }
 
     @Override

@@ -1,13 +1,13 @@
 package com.golikov.bank.domain.account;
 
-import com.golikov.bank.domain.account.transaction.ClientTransaction;
-import com.golikov.bank.domain.account.transaction.ClientTransactionRepository;
 import com.golikov.bank.domain.account.utils.AccountNumGenerator;
 import com.golikov.bank.domain.client.Client;
 import com.golikov.bank.domain.client.ClientRepository;
 import com.golikov.bank.domain.currency.CurrencyHolder;
 import com.golikov.bank.domain.investment.ClientInvestProd;
 import com.golikov.bank.domain.investment.ClientInvestProdRepository;
+import com.golikov.bank.domain.transaction.ClientTransaction;
+import com.golikov.bank.domain.transaction.ClientTransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +59,6 @@ public class AccountService {
 
     // метод для создания инвестиционных счетов, в этом методе дополняется сущность депозит акаунта
     // генерируется номер счёта, и устанавливается клиент владелец
-    @Transactional
     public void createAccount(Client client, Account account){
         account.setClient(client);
         account.setAccountNumber(AccountNumGenerator.generate(client.getId()));
@@ -82,7 +81,6 @@ public class AccountService {
 
     // найти все аккаунты, которые подходят по параметрам вклада
     // должны совпадать валюта, и дожно быть достаточно денег
-    @Transactional
     public List<Account> findValidDepoAccounts(Long id, String currency, BigDecimal balance){
         return accountRepository.findByClientIdAndCurrencyLikeAndBalanceGreaterThan(id, currency, balance);
     }
@@ -102,7 +100,9 @@ public class AccountService {
     }
 
 
-    // закрытие вклада
+    // закрытие вклада.
+    // если срок вклада истёк тогда проценты начисляются,
+    // если нет, тогда деньги переводятся на баланс аккаунта без процентов
     @Transactional
     public void closeInvestment(ClientInvestProd investment){
         Account account = investment.getAccount();
@@ -118,6 +118,5 @@ public class AccountService {
         accountRepository.save(account);
         clientInvestProdRepository.delete(investment);
     }
-
 
 }
