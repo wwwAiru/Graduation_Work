@@ -1,17 +1,17 @@
+************************************************************************************
+переименовать image
+docker tag postgres:14.5 zaxs135/postgres
+************************************************************************************
 
-1) чтобы создать image db 
+1) чтобы создать image db
 
 docker-compose -f compose-db.yaml up -d
 
-2) 
+2)
 
 docker build . --tag bank
 
 
-3)  
+3)
 
-docker run -p 8080:8080 bank
-
-4)
-
-docker run -ti --rm -e DATASOURCE_HOST=192.168.0.104 -p 8080:8080 bank
+docker run -ti --rm -e DATASOURCE_HOST=192.168.0.104 -p 8080:8080 zaxs135/bank
