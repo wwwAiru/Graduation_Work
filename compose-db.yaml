@@ -10,3 +10,5 @@ services:
       POSTGRES_DB: bank
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
+    volumes:
+      - ./data/dump:/docker-entrypoint-initdb.d
