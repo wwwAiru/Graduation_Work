@@ -10,9 +10,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.golikov</groupId>
-    <artifactId>Graduation_Work</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>Graduation_Work</name>
+    <artifactId>bank</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0</version>
+    <name>bank</name>
     <description>graduation work Egar Technology</description>
     <properties>
         <java.version>17</java.version>
@@ -94,6 +95,18 @@
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com/golikov/bank/Application.java</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

@@ -1,6 +1,6 @@
-../Graduation_Work/HELP.md
+../bank/HELP.md
 target/
-!../Graduation_Work/.mvn/wrapper/maven-wrapper.jar
+!../bank/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
