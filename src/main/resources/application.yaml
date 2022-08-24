@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: cats-api
+  datasource:
+    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5444/bank
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: false
+server:
+  servlet:
+    session:
+      persistent: false
+
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5

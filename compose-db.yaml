@@ -1,12 +1,12 @@
 version: '3'
 services:
   bank-db:
+    container_name: bank-db
     image: postgres:14.5
     restart: always
     ports:
       - 5444:5432
     environment:
+      POSTGRES_DB: bank
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
-      POSTGRES_DB: bank
-

@@ -97,8 +97,7 @@
         </div>
     </div>
 </div>
-<div th:insert="/blocks/footer :: footer"></div>
-
+<div th:insert="blocks/footer :: footer"></div>
 <!--показывает ошибки формы пополнения баланса клиента-->
 <script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 <script th:if="${upBalanceError}">
