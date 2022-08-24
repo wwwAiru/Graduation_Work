@@ -1,6 +1,7 @@
-FROM alpine:3.16
+FROM openjdk:18.0.2-jdk-oraclelinux7
 
-RUN apk add openjdk11
-COPY build/libs/bank.jar /bank.jar
+EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "/bank.jar"]
+COPY target/bank-1.0.jar /bank-1.0.jar
+
+ENTRYPOINT ["java", "-jar", "/bank-1.0.jar"]
