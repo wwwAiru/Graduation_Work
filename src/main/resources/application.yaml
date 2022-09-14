@@ -1,8 +1,5 @@
-spring:
-  application:
-    name: cats-api
-  datasource:
-    url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5444/bank
+datasource:
+  url: jdbc:postgresql://${DATASOURCE_HOST:localhost}:5444/bank
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
