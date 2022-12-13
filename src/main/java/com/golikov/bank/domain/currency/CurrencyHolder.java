@@ -21,8 +21,6 @@ import java.util.Map;
 @Getter
 public class CurrencyHolder {
 
-    private Currency currency;
-
     private Map<String, Currency> currencies;
 
     // Устанавливаются дефолтные значения Евро и Доллара на случай если не получилось получить список валют с сайта ЦБ

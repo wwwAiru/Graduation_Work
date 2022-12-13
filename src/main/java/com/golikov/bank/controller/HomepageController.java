@@ -13,15 +13,14 @@ import java.util.ArrayList;
 @Controller
 @AllArgsConstructor
 public class HomepageController {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private CurrencyHolder currencyHolder;
 
     @GetMapping("/")
     public String homepage(Model model) {
         // список валют на главную страницу
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        LocalDateTime date = LocalDateTime.now();
-        String formattedDate = date.format(formatter);
+        String formattedDate = FORMATTER.format(LocalDateTime.now());
         model.addAttribute("currencies", new ArrayList<>(currencyHolder.getCurrencies().values()));
         model.addAttribute("date", formattedDate);
         return "homepage";

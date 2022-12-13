@@ -34,24 +34,15 @@ public class CurrencyService {
                             // Считывает все данные в виде массива байт.
                             .readAllBytes()
             );
-
             // Парсит JSON и получает данные валют.
-            JSONObject currenciesData = new JSONObject(json)
-                    .getJSONObject("Valute");
-
+            JSONObject currenciesData = new JSONObject(json).getJSONObject("Valute");
             // Получает коды валют из полученных данных.
-            currencyHolder.setCurrencies(currenciesData.keySet()
-                    // Преобразовывает Set в Stream.
+            currencyHolder.setCurrencies(currenciesData.keySet()// Преобразовывает Set в Stream.
                     .stream()
                     // При помощи GSON переводит JSON строчку валюты к классу Currency.
-                    .map((currency) -> new Gson().fromJson(currenciesData.getJSONObject(currency).toString(), Currency.class))
+                    .map(currency -> new Gson().fromJson(currenciesData.getJSONObject(currency).toString(), Currency.class))
                     // Преобразовывает Stream в Map с ключом - названием валюты(CharCode), значением - объект валюты (Currency).
                     .collect(Collectors.toMap(Currency::getCharCode, c -> c)));
-
-            System.out.println("Currencies updated");
-
         } catch (Exception ignored) { ignored.getStackTrace();}
     }
-
-
 }
